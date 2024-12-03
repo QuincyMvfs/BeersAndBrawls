@@ -7,6 +7,9 @@
 #include "CombatComponent.generated.h"
 
 
+struct FCombatPatterns;
+enum class ECombatKey : uint8;
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BEERSANDBRAWLS_API UCombatComponent : public UActorComponent
 {
@@ -20,9 +23,13 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+public:
+	UFUNCTION(BlueprintCallable)
+	void SetCombatPattern(FCombatPatterns* NewCombatPattern);
 
-		
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	FCombatPatterns* M_SelectedCombatPattern;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	bool M_CanReceiveInputs = false;
 };

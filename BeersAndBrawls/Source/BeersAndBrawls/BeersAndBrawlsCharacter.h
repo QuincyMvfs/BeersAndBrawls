@@ -7,6 +7,11 @@
 #include "Logging/LogMacros.h"
 #include "BeersAndBrawlsCharacter.generated.h"
 
+class ULevelingComponent;
+class UInventoryComponent;
+class UHealthComponent;
+class UCurrencyComponent;
+class UCombatComponent;
 class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
@@ -20,6 +25,10 @@ class ABeersAndBrawlsCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+public:
+	ABeersAndBrawlsCharacter();
+
+/// Default Subobjects
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* CameraBoom;
@@ -27,19 +36,30 @@ class ABeersAndBrawlsCharacter : public ACharacter
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
-
-public:
-	ABeersAndBrawlsCharacter();
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
+	UCombatComponent* CombatComponent;
 
-public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
+	UCurrencyComponent* CurrencyComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
+	UHealthComponent* HealthComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
+	UInventoryComponent* InventoryComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
+	ULevelingComponent* LevelingComponent;
+	
+/// Public Functions
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
-			
+
+	void SetupDefaults();
 
 protected:
 	// To add mapping context
