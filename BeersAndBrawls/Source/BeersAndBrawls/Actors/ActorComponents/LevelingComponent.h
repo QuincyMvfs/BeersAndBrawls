@@ -7,6 +7,8 @@
 #include "LevelingComponent.generated.h"
 
 
+class UAbilityInfo;
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BEERSANDBRAWLS_API ULevelingComponent : public UActorComponent
 {
@@ -20,9 +22,11 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TArray<UAbilityInfo*> LockedAbilities;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TArray<UAbilityInfo*> UnlockedAbilities;
 
 		
 };
