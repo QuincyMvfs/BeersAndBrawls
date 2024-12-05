@@ -11,6 +11,7 @@
 struct FCombatPatterns;
 enum class ECombatKey : uint8;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCombatPatternReceived, FCombatPatterns, CombatPattern);
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BEERSANDBRAWLS_API UCombatComponent : public UActorComponent
 {
@@ -28,9 +29,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetCombatPattern(FCombatPatterns NewCombatPattern);
 
+	UFUNCTION()
+	void ReceiveInput(ECombatKey InputKey);
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FCombatPatterns M_SelectedCombatPattern;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool M_CanReceiveInputs = false;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnCombatPatternReceived OnCombatPatternReceived;
 };

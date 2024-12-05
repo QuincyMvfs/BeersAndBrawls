@@ -65,6 +65,11 @@ public:
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
 
+	void SendUpInput();
+	void SendDownInput();
+	void SendLeftInput();
+	void SendRightInput();
+
 	ABeersAndBrawlsCharacter* M_PossesedPawn;
 			
 };

@@ -22,4 +22,12 @@ void UCombatComponent::SetCombatPattern(FCombatPatterns NewCombatPattern)
 {
 	M_SelectedCombatPattern = NewCombatPattern;
 	M_CanReceiveInputs = true;
+	OnCombatPatternReceived.Broadcast(M_SelectedCombatPattern);
+}
+
+void UCombatComponent::ReceiveInput(ECombatKey InputKey)
+{
+	if (!M_CanReceiveInputs) return;
+
+	UE_LOG(LogTemp, Warning, TEXT("Input Received %hhd"), InputKey)
 }

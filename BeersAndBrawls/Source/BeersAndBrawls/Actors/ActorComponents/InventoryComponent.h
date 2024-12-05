@@ -7,6 +7,9 @@
 #include "InventoryComponent.generated.h"
 
 
+class UWeapon;
+class UItem;
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BEERSANDBRAWLS_API UInventoryComponent : public UActorComponent
 {
@@ -20,7 +23,11 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
-	
+public:
+	UPROPERTY(EditDefaultsOnly, Instanced)
+	UWeapon* M_SelectedWeapon;
+
+	UPROPERTY(EditDefaultsOnly, Instanced)
+	TArray<UItem*> M_Items;
 		
 };

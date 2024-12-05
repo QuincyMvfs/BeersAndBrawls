@@ -2,6 +2,8 @@
 #include "BeersAndBrawlsCharacter.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Actors/ActorComponents/CombatComponent.h"
+#include "Enums/ECombatKey.h"
 
 class UEnhancedInputLocalPlayerSubsystem;
 
@@ -14,20 +16,23 @@ void ABeersAndBrawlsPlayerController::BeginPlay()
 		Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		Subsystem->AddMappingContext(CombatMappingContext, 1);
 	}
-
-	SetupInputComponent();
 }
 
 void ABeersAndBrawlsPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
-
+	
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
 	{
 		// Looking and Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABeersAndBrawlsPlayerController::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABeersAndBrawlsPlayerController::Look);
 
+		// Combat Inputs
+		EnhancedInputComponent->BindAction(CombatUpAction, ETriggerEvent::Started, this, &ABeersAndBrawlsPlayerController::SendUpInput);
+		EnhancedInputComponent->BindAction(CombatDownAction, ETriggerEvent::Started, this, &ABeersAndBrawlsPlayerController::SendDownInput);
+		EnhancedInputComponent->BindAction(CombatLeftAction, ETriggerEvent::Started, this, &ABeersAndBrawlsPlayerController::SendLeftInput);
+		EnhancedInputComponent->BindAction(CombatRightAction, ETriggerEvent::Started, this, &ABeersAndBrawlsPlayerController::SendRightInput);
 		
 	}
 	else
@@ -58,3 +63,38 @@ void ABeersAndBrawlsPlayerController::Look(const FInputActionValue& Value)
 		M_PossesedPawn->Look(Value);
 	}
 }
+
+
+// CombatInputs
+void ABeersAndBrawlsPlayerController::SendUpInput()
+{
+	if (M_PossesedPawn)
+	{
+		M_PossesedPawn->CombatComponent->ReceiveInput(ECombatKey::Up);
+	}
+}
+
+void ABeersAndBrawlsPlayerController::SendDownInput()
+{
+	if (M_PossesedPawn)
+	{
+		M_PossesedPawn->CombatComponent->ReceiveInput(ECombatKey::Down);
+	}
+}
+
+void ABeersAndBrawlsPlayerController::SendLeftInput()
+{
+	if (M_PossesedPawn)
+	{
+		M_PossesedPawn->CombatComponent->ReceiveInput(ECombatKey::Left);
+	}
+}
+
+void ABeersAndBrawlsPlayerController::SendRightInput()
+{
+	if (M_PossesedPawn)
+	{
+		M_PossesedPawn->CombatComponent->ReceiveInput(ECombatKey::Right);
+	}
+}
+
