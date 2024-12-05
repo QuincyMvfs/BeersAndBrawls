@@ -16,7 +16,7 @@
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
-// ABeersAndBrawlsCharacter
+// ABeersAndBrawlsCharacter constructor
 ABeersAndBrawlsCharacter::ABeersAndBrawlsCharacter()
 {
 	SetupDefaults();

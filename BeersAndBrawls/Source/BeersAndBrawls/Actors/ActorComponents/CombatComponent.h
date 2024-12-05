@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BeersAndBrawls/Structs/FCombatPatterns.h"
 #include "Components/ActorComponent.h"
 #include "CombatComponent.generated.h"
 
@@ -25,10 +26,10 @@ protected:
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void SetCombatPattern(FCombatPatterns* NewCombatPattern);
+	void SetCombatPattern(FCombatPatterns NewCombatPattern);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	FCombatPatterns* M_SelectedCombatPattern;
+	FCombatPatterns M_SelectedCombatPattern;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool M_CanReceiveInputs = false;

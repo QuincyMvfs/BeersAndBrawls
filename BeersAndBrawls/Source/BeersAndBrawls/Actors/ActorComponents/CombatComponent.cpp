@@ -18,7 +18,7 @@ void UCombatComponent::BeginPlay()
 	
 }
 
-void UCombatComponent::SetCombatPattern(FCombatPatterns* NewCombatPattern)
+void UCombatComponent::SetCombatPattern(FCombatPatterns NewCombatPattern)
 {
 	M_SelectedCombatPattern = NewCombatPattern;
 	M_CanReceiveInputs = true;
