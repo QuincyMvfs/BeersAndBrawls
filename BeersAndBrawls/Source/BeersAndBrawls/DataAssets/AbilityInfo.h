@@ -21,6 +21,9 @@ public:
 	FText M_AbilityDescription;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float M_StatMultiplier = 1.0;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	bool M_IsUnlocked;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
