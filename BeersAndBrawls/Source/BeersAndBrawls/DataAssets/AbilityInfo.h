@@ -25,6 +25,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	bool M_IsUnlocked;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UTexture2D* M_AbilityIcon;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UAbilityPattern* M_ItemPatterns;
