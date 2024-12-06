@@ -6,7 +6,8 @@
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
 {
-	
+	M_SelectedWeapon = M_DefaultSelectedWeapon;
+	M_Items = M_DefaultItems;
 }
 
 
@@ -15,6 +16,8 @@ void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	M_SelectedWeapon = M_DefaultSelectedWeapon;
+	M_Items = M_DefaultItems;
 	// ...
 	
 }

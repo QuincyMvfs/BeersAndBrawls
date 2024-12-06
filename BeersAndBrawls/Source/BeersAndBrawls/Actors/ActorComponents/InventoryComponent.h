@@ -24,10 +24,16 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	UPROPERTY(EditDefaultsOnly, Instanced)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UWeapon* M_SelectedWeapon;
 
-	UPROPERTY(EditDefaultsOnly, Instanced)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<UItem*> M_Items;
+
+	UPROPERTY(EditDefaultsOnly, Instanced)
+	UWeapon* M_DefaultSelectedWeapon;
+
+	UPROPERTY(EditDefaultsOnly, Instanced)
+	TArray<UItem*> M_DefaultItems;
 		
 };

@@ -12,6 +12,9 @@ struct FCombatPatterns;
 enum class ECombatKey : uint8;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCombatPatternReceived, FCombatPatterns, CombatPattern);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCombatPatternCompleted);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCorrectInputGiven, ECombatKey, InputKey);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnFailInputGiven, ECombatKey, InputKey);
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BEERSANDBRAWLS_API UCombatComponent : public UActorComponent
 {
@@ -38,6 +41,18 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool M_CanReceiveInputs = false;
 
+	TArray<ECombatKey> M_RemainingInputs;
+	
 	UPROPERTY(BlueprintAssignable)
 	FOnCombatPatternReceived OnCombatPatternReceived;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnCombatPatternCompleted OnCombatPatternCompleted;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnCorrectInputGiven OnCorrectInputGiven;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnFailInputGiven OnFailInputGiven;
+
 };
