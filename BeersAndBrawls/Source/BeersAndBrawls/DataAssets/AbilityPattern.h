@@ -10,7 +10,7 @@ struct FCombatPatterns;
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class BEERSANDBRAWLS_API UAbilityPattern : public UDataAsset
 {
 	GENERATED_BODY()

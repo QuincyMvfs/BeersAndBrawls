@@ -4,31 +4,37 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
-#include "AbilityInfo.generated.h"
+#include "EnemyInfo.generated.h"
 
-class UAbilityPattern;
-
+class UWeapon;
+class UAbilityInfo;
+/**
+ * 
+ */
 UCLASS(BlueprintType)
-class BEERSANDBRAWLS_API UAbilityInfo : public UDataAsset
+class BEERSANDBRAWLS_API UEnemyInfo : public UDataAsset
 {
 	GENERATED_BODY()
-
+	
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FText M_AbilityName;
+	FText EnemyName;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FText M_AbilityDescription;
+	FText EnemyDescription;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	float M_StatMultiplier = 1.0;
+	int BeerBuxReward;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	bool M_IsUnlocked;
+	float ExpReward;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	UTexture2D* M_AbilityIcon;
-	
+	float AttackSpeedMultiplier;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	UAbilityPattern* M_ItemPatterns;
+	float CounterSpeedMultiplier;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UWeapon* EquippedWeapon;
 };
