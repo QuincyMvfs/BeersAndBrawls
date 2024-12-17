@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Enums/EPlayerInputState.h"
 #include "GameFramework/PlayerController.h"
 #include "BeersAndBrawlsPlayerController.generated.h"
 
+enum class EPlayerInputState : uint8;
 struct FInputActionValue;
 class UInputAction;
 class ABeersAndBrawlsCharacter;
@@ -47,6 +49,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* CombatRightAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	EPlayerInputState M_CurrentInputState = EPlayerInputState::World;
 
 public:
 	// APawn interface

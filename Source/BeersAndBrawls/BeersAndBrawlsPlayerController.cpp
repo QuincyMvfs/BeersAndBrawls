@@ -4,6 +4,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "Actors/ActorComponents/CombatComponent.h"
 #include "Enums/ECombatKey.h"
+#include "Enums/EPlayerInputState.h"
 
 class UEnhancedInputLocalPlayerSubsystem;
 
@@ -50,7 +51,7 @@ void ABeersAndBrawlsPlayerController::OnPossess(APawn* InPawn)
 
 void ABeersAndBrawlsPlayerController::Move(const FInputActionValue& Value)
 {
-	if (M_PossesedPawn)
+	if (M_PossesedPawn && M_CurrentInputState == EPlayerInputState::World)
 	{
 		M_PossesedPawn->Move(Value);
 	}
@@ -58,7 +59,7 @@ void ABeersAndBrawlsPlayerController::Move(const FInputActionValue& Value)
 
 void ABeersAndBrawlsPlayerController::Look(const FInputActionValue& Value)
 {
-	if (M_PossesedPawn)
+	if (M_PossesedPawn && M_CurrentInputState == EPlayerInputState::World)
 	{
 		M_PossesedPawn->Look(Value);
 	}
@@ -68,7 +69,7 @@ void ABeersAndBrawlsPlayerController::Look(const FInputActionValue& Value)
 // CombatInputs
 void ABeersAndBrawlsPlayerController::SendUpInput()
 {
-	if (M_PossesedPawn)
+	if (M_PossesedPawn && M_CurrentInputState == EPlayerInputState::Combat)
 	{
 		M_PossesedPawn->CombatComponent->ReceiveInput(ECombatKey::Up);
 	}
@@ -76,7 +77,7 @@ void ABeersAndBrawlsPlayerController::SendUpInput()
 
 void ABeersAndBrawlsPlayerController::SendDownInput()
 {
-	if (M_PossesedPawn)
+	if (M_PossesedPawn && M_CurrentInputState == EPlayerInputState::Combat)
 	{
 		M_PossesedPawn->CombatComponent->ReceiveInput(ECombatKey::Down);
 	}
@@ -84,7 +85,7 @@ void ABeersAndBrawlsPlayerController::SendDownInput()
 
 void ABeersAndBrawlsPlayerController::SendLeftInput()
 {
-	if (M_PossesedPawn)
+	if (M_PossesedPawn && M_CurrentInputState == EPlayerInputState::Combat)
 	{
 		M_PossesedPawn->CombatComponent->ReceiveInput(ECombatKey::Left);
 	}
@@ -92,7 +93,7 @@ void ABeersAndBrawlsPlayerController::SendLeftInput()
 
 void ABeersAndBrawlsPlayerController::SendRightInput()
 {
-	if (M_PossesedPawn)
+	if (M_PossesedPawn && M_CurrentInputState == EPlayerInputState::Combat)
 	{
 		M_PossesedPawn->CombatComponent->ReceiveInput(ECombatKey::Right);
 	}
