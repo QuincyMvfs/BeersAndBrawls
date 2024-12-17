@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "BeersAndBrawlsCharacter.h"
+
+#include "BeersAndBrawlsPlayerController.h"
 #include "Engine/LocalPlayer.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -13,6 +15,9 @@
 #include "Actors/ActorComponents/HealthComponent.h"
 #include "Actors/ActorComponents/InventoryComponent.h"
 #include "Actors/ActorComponents/LevelingComponent.h"
+#include "Enums/EPlayerInputState.h"
+#include "Interface/Interactable.h"
+#include "Items/Weapon.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -109,4 +114,50 @@ void ABeersAndBrawlsCharacter::SetupDefaults()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+}
+
+void ABeersAndBrawlsCharacter::TryInteract()
+{
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+	TArray<FHitResult> HitResults;
+	FVector PlayerPos = this->GetActorLocation();
+
+	bool IsHit = GetWorld()->SweepMultiByChannel( HitResults, PlayerPos, PlayerPos, FQuat::Identity,
+		ECC_Visibility, FCollisionShape::MakeSphere(150.0f), QueryParams);
+
+	if (IsHit)
+	{
+		for (auto HitResult : HitResults)
+		{
+			if (HitResult.GetActor()->GetClass()->ImplementsInterface(UInteractable::StaticClass()))
+			{
+				IInteractable::Execute_Interact(HitResult.GetActor(),
+					Cast<ABeersAndBrawlsPlayerController>(GetController()), this);
+			}
+		}
+	}
+}
+
+void ABeersAndBrawlsCharacter::DisplayNewWeaponMesh(EPlayerInputState NewState)
+{
+	//EquippedStaticMeshComponent
+	//BackSlotStaticMeshComponent
+
+	switch (NewState)
+	{
+		case EPlayerInputState::Combat:
+			EquippedStaticMeshComponent->SetStaticMesh(InventoryComponent->M_DefaultSelectedWeapon->ItemMesh);
+			BackSlotStaticMeshComponent->SetStaticMesh(nullptr);
+			return;
+		case EPlayerInputState::World:
+			EquippedStaticMeshComponent->SetStaticMesh(nullptr);
+			BackSlotStaticMeshComponent->SetStaticMesh(InventoryComponent->M_DefaultSelectedWeapon->ItemMesh);
+			return;
+		case EPlayerInputState::Shopping:
+			EquippedStaticMeshComponent->SetStaticMesh(nullptr);
+			BackSlotStaticMeshComponent->SetStaticMesh(InventoryComponent->M_DefaultSelectedWeapon->ItemMesh);
+			return;
+		
+	}
 }

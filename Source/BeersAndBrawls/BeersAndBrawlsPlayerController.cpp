@@ -17,6 +17,8 @@ void ABeersAndBrawlsPlayerController::BeginPlay()
 		Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		Subsystem->AddMappingContext(CombatMappingContext, 1);
 	}
+
+	UpdatePlayerInputState(EPlayerInputState::World);
 }
 
 void ABeersAndBrawlsPlayerController::SetupInputComponent()
@@ -28,6 +30,8 @@ void ABeersAndBrawlsPlayerController::SetupInputComponent()
 		// Looking and Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABeersAndBrawlsPlayerController::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABeersAndBrawlsPlayerController::Look);
+		// Interacting
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ABeersAndBrawlsPlayerController::SendInteractAction);
 
 		// Combat Inputs
 		EnhancedInputComponent->BindAction(CombatUpAction, ETriggerEvent::Started, this, &ABeersAndBrawlsPlayerController::SendUpInput);
@@ -96,6 +100,23 @@ void ABeersAndBrawlsPlayerController::SendRightInput()
 	if (M_PossesedPawn && M_CurrentInputState == EPlayerInputState::Combat)
 	{
 		M_PossesedPawn->CombatComponent->ReceiveInput(ECombatKey::Right);
+	}
+}
+
+void ABeersAndBrawlsPlayerController::SendInteractAction()
+{
+	if (M_PossesedPawn && M_CurrentInputState == EPlayerInputState::World)
+	{
+		M_PossesedPawn->TryInteract();
+	}
+}
+
+void ABeersAndBrawlsPlayerController::UpdatePlayerInputState(EPlayerInputState NewState)
+{
+	if (M_PossesedPawn)
+	{
+		M_CurrentInputState = NewState;
+		M_PossesedPawn->DisplayNewWeaponMesh(NewState);
 	}
 }
 

@@ -33,6 +33,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
+	// Interact
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* InteractAction;
+	
 	// Combat Mapping Context
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* CombatMappingContext;
@@ -73,6 +77,11 @@ public:
 	void SendDownInput();
 	void SendLeftInput();
 	void SendRightInput();
+
+	void SendInteractAction();
+
+	UFUNCTION(BlueprintCallable)
+	void UpdatePlayerInputState(EPlayerInputState NewState);
 
 	ABeersAndBrawlsCharacter* M_PossesedPawn;
 			

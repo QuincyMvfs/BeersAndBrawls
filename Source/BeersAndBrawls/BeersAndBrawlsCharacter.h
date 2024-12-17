@@ -7,6 +7,7 @@
 #include "Logging/LogMacros.h"
 #include "BeersAndBrawlsCharacter.generated.h"
 
+enum class EPlayerInputState : uint8;
 class ULevelingComponent;
 class UInventoryComponent;
 class UHealthComponent;
@@ -51,9 +52,11 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
 	ULevelingComponent* LevelingComponent;
-	
+
+	// Weapon Mesh Slots
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* EquippedStaticMeshComponent;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* BackSlotStaticMeshComponent;
 	
@@ -65,6 +68,10 @@ public:
 	void Look(const FInputActionValue& Value);
 
 	void SetupDefaults();
+
+	void TryInteract();
+	
+	void DisplayNewWeaponMesh(EPlayerInputState NewState);
 
 protected:
 	// To add mapping context
