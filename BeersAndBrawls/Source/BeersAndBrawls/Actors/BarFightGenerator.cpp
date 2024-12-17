@@ -30,11 +30,11 @@ FString ABarFightGenerator::GenerateRandomName()
 		return FakeName;
 	}
 	
-	int RandInt = FMath::RandRange(0, M_RandomName_Titles.Num());
+	int RandInt = FMath::RandRange(0, M_RandomName_Titles.Num() -1);
 	const FString Title = M_RandomName_Titles[RandInt];
-	RandInt = FMath::RandRange(0, M_RandomName_FirstNames.Num());
+	RandInt = FMath::RandRange(0, M_RandomName_FirstNames.Num() -1);
 	const FString FirstName = M_RandomName_FirstNames[RandInt];
-	RandInt = FMath::RandRange(0, M_RandomName_LastNames.Num());
+	RandInt = FMath::RandRange(0, M_RandomName_LastNames.Num() -1);
 	const FString LastName = M_RandomName_LastNames[RandInt];
 
 	const FString FullName = Title + " " + FirstName + " " + LastName;
@@ -50,7 +50,7 @@ FString ABarFightGenerator::GenerateRandomDescription()
 		return FakeDescription;
 	}
 
-	const int RandInt = FMath::RandRange(0, M_RandomName_Descriptions.Num());
+	const int RandInt = FMath::RandRange(0, M_RandomName_Descriptions.Num() -1);
 	const FString ChosenDescription = M_RandomName_Descriptions[RandInt];
 
 	return ChosenDescription;
@@ -67,26 +67,23 @@ UWeapon* ABarFightGenerator::GenerateRandomWeapon()
 		return Weapon;
 	}
 
-	const int RandInt = FMath::RandRange(0, M_AllPossibleWeapons.Num());
+	int RandInt = FMath::RandRange(0, M_AllPossibleWeapons.Num() -1);
 	return M_AllPossibleWeapons[RandInt];
 }
 
 UEnemyInfo* ABarFightGenerator::GenerateEnemyInfo()
 {
-	UWorld* World = GEngine->GetWorldFromContextObjectChecked(this);
-	UEnemyInfo* NewEnemy = NewObject<UEnemyInfo>(World);
-
-	if (NewEnemy)
+	if (TemplateEnemy)
 	{
-		NewEnemy->EnemyName = FText::FromString(GenerateRandomName());
-		NewEnemy->EnemyDescription = FText::FromString(GenerateRandomDescription());
-		NewEnemy->ExpReward = FMath::RandRange(M_Reward_MinimumExp, M_Reward_MaximumExp);
-		NewEnemy->BeerBuxReward = FMath::RandRange(M_Reward_MinimumCurrency, M_Reward_MaximumCurrency);
-		NewEnemy->AttackSpeedMultiplier = FMath::RandRange(0.8, 1.2);
-		NewEnemy->CounterSpeedMultiplier = FMath::RandRange(0.8, 1.2);
-		NewEnemy->EquippedWeapon = GenerateRandomWeapon();
+		TemplateEnemy->EnemyName = FText::FromString(GenerateRandomName());
+		TemplateEnemy->EnemyDescription = FText::FromString(GenerateRandomDescription());
+		TemplateEnemy->ExpReward = FMath::RoundToInt(FMath::RandRange(M_Reward_MinimumExp, M_Reward_MaximumExp));
+		TemplateEnemy->BeerBuxReward = FMath::RandRange(M_Reward_MinimumCurrency, M_Reward_MaximumCurrency);
+		TemplateEnemy->EquippedWeapon = GenerateRandomWeapon();
+		TemplateEnemy->AttackSpeedMultiplier = FMath::TruncToFloat(FMath::RandRange(0.8, 1.2) * 100) / 100;
+		TemplateEnemy->CounterSpeedMultiplier = FMath::TruncToFloat(FMath::RandRange(0.8, 1.2) * 100) / 100;
 	}
 
-	return NewEnemy;
+	return TemplateEnemy;
 }
 

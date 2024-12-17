@@ -64,9 +64,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Rewards", meta = (ClampMin = "501.0", ClampMax = "2000.0", UIMin = "501.0", UIMax = "2000.0"))
 	float M_Reward_MaximumExp;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enemy")
+	UEnemyInfo* TemplateEnemy;
+
 public:
 	FString GenerateRandomName();
 	FString GenerateRandomDescription();
 	UWeapon* GenerateRandomWeapon();
+	
+	UFUNCTION(BlueprintCallable)
 	UEnemyInfo* GenerateEnemyInfo();
 };
