@@ -31,4 +31,7 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UAbilityPattern* M_ItemPatterns;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UAnimMontage* M_Animation;
 };
