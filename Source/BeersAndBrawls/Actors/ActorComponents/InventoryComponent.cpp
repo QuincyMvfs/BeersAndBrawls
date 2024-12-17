@@ -18,6 +18,8 @@ void UInventoryComponent::BeginPlay()
 
 	M_SelectedWeapon = M_DefaultSelectedWeapon;
 	M_Items = M_DefaultItems;
+
+	
 	// ...
 	
 }

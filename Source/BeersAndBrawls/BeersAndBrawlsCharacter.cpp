@@ -27,6 +27,11 @@ ABeersAndBrawlsCharacter::ABeersAndBrawlsCharacter()
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
 	LevelingComponent = CreateDefaultSubobject<ULevelingComponent>(TEXT("LevelingComponent"));
+	EquippedStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponMeshSlot"));
+	EquippedStaticMeshComponent->SetupAttachment(GetMesh(), "WeaponSocket");
+
+	BackSlotStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HolsteredMeshSlot"));
+	BackSlotStaticMeshComponent->SetupAttachment(GetMesh(), "HolsterSocket");
 }
 
 void ABeersAndBrawlsCharacter::BeginPlay()

@@ -52,6 +52,11 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
 	ULevelingComponent* LevelingComponent;
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
+	UStaticMeshComponent* EquippedStaticMeshComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
+	UStaticMeshComponent* BackSlotStaticMeshComponent;
+	
 /// Public Functions
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
@@ -70,7 +75,7 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
-
+	
 	bool CanMove = true;
 };
 
