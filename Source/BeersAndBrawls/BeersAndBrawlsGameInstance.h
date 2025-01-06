@@ -15,5 +15,9 @@ class BEERSANDBRAWLS_API UBeersAndBrawlsGameInstance : public UGameInstance
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+	float M_PlayerExp;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
+	float M_PlayerBeerBux;
 };

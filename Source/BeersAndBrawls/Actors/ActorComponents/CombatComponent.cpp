@@ -14,8 +14,6 @@ UCombatComponent::UCombatComponent()
 void UCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	
 }
 
 void UCombatComponent::SetCombatPattern(FCombatPatterns NewCombatPattern)
