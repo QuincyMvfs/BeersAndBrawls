@@ -5,6 +5,7 @@
 
 #include "BeersAndBrawls/DataAssets/EnemyInfo.h"
 #include "BeersAndBrawls/Items/Weapon.h"
+#include "BeersAndBrawls/Structs/FEnemyInfoStruct.h"
 
 // Sets default values
 ABarFightGenerator::ABarFightGenerator()
@@ -71,19 +72,17 @@ UWeapon* ABarFightGenerator::GenerateRandomWeapon()
 	return M_AllPossibleWeapons[RandInt];
 }
 
-UEnemyInfo* ABarFightGenerator::GenerateEnemyInfo()
+FEnemyInfoStruct ABarFightGenerator::GenerateEnemyInfo()
 {
-	if (TemplateEnemy)
-	{
-		TemplateEnemy->EnemyName = FText::FromString(GenerateRandomName());
-		TemplateEnemy->EnemyDescription = FText::FromString(GenerateRandomDescription());
-		TemplateEnemy->ExpReward = FMath::RoundToInt(FMath::RandRange(M_Reward_MinimumExp, M_Reward_MaximumExp));
-		TemplateEnemy->BeerBuxReward = FMath::RandRange(M_Reward_MinimumCurrency, M_Reward_MaximumCurrency);
-		TemplateEnemy->EquippedWeapon = GenerateRandomWeapon();
-		TemplateEnemy->AttackSpeedMultiplier = FMath::TruncToFloat(FMath::RandRange(0.8, 1.2) * 100) / 100;
-		TemplateEnemy->CounterSpeedMultiplier = FMath::TruncToFloat(FMath::RandRange(0.8, 1.2) * 100) / 100;
-	}
-
-	return TemplateEnemy;
+	FEnemyInfoStruct NewEnemy;
+	NewEnemy.EnemyName = FText::FromString(GenerateRandomName());
+	NewEnemy.EnemyDescription = FText::FromString(GenerateRandomDescription());
+	NewEnemy.ExpReward = FMath::RoundToInt(FMath::RandRange(M_Reward_MinimumExp, M_Reward_MaximumExp));
+	NewEnemy.BeerBuxReward = FMath::RandRange(M_Reward_MinimumCurrency, M_Reward_MaximumCurrency);
+	NewEnemy.EquippedWeapon = GenerateRandomWeapon();
+	NewEnemy.AttackSpeedMultiplier = FMath::TruncToFloat(FMath::RandRange(0.8, 1.2) * 100) / 100;
+	NewEnemy.CounterSpeedMultiplier = FMath::TruncToFloat(FMath::RandRange(0.8, 1.2) * 100) / 100;
+	
+	return NewEnemy;
 }
 

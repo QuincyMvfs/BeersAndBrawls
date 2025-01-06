@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "BarFightGenerator.generated.h"
 
+struct FEnemyInfoStruct;
 class UEnemyInfo;
 class UWeapon;
 
@@ -47,6 +48,9 @@ public:
 	};
 	// BASIC INFO END
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Bar Fight Generator")
+	int M_FightsToGenerate = 4;
+
 	// WEAPONS
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Instanced, Category = "Weapons")
 	TArray<UWeapon*> M_AllPossibleWeapons;
@@ -73,5 +77,5 @@ public:
 	UWeapon* GenerateRandomWeapon();
 	
 	UFUNCTION(BlueprintCallable)
-	UEnemyInfo* GenerateEnemyInfo();
+	FEnemyInfoStruct GenerateEnemyInfo();
 };

@@ -134,6 +134,8 @@ void ABeersAndBrawlsCharacter::TryInteract()
 			{
 				IInteractable::Execute_Interact(HitResult.GetActor(),
 					Cast<ABeersAndBrawlsPlayerController>(GetController()), this);
+
+				break;
 			}
 		}
 	}
