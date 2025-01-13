@@ -38,7 +38,7 @@ void AEnemy::StartGivingInputs()
 	
 	FTimerHandle AttackLoop;
 	GetWorld()->GetTimerManager().SetTimer(
-		AttackLoop, this, SendInput, 0.1f, true);
+		AttackLoop, this, &AEnemy::SendInput, 0.1f, true);
 }
 
 void AEnemy::SendInput()

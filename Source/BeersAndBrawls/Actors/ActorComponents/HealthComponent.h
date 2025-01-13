@@ -6,7 +6,9 @@
 #include "Components/ActorComponent.h"
 #include "HealthComponent.generated.h"
 
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDamageTaken, float, DamageTaken);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHeal, float, HealthHealed);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeath, AActor*, Deceased);
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BEERSANDBRAWLS_API UHealthComponent : public UActorComponent
 {
@@ -20,9 +22,26 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+public:
+	UPROPERTY(BlueprintAssignable)
+	FOnDamageTaken OnDamageTakenEvent;
 
+	UPROPERTY(BlueprintAssignable)
+	FOnHeal OnHealEvent;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnDeath OnDeathEvent;
+	
+	void TakeDamage(float Damage, AActor* Instigator, AActor* Victim);
+	void Heal(float HealAmount, AActor* Instigator, AActor* Victim);
+	void ResetCurrentHealth();
+	void SetCurrentHealth(float NewCurrentHealth);
+	
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Health)
+	float M_CurrentHealth;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Health, meta = (UIMin = "0.0", UIMax = "500.0"))
+	float M_MaxHealth = 100;
 		
 };
