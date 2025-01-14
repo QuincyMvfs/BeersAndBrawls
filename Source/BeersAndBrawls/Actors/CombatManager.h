@@ -3,8 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BeersAndBrawls/Enums/EActiveUser.h"
 #include "GameFramework/Actor.h"
 #include "CombatManager.generated.h"
+
+enum class EActiveUser : uint8;
 
 UCLASS()
 class BEERSANDBRAWLS_API ACombatManager : public AActor
@@ -19,5 +22,15 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintCallable)
 	void StartCombat();
+
+	UFUNCTION(BlueprintCallable)
+	void EndCombat();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	EActiveUser ActiveUser = EActiveUser::Player;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EActiveUser DuelWinner = EActiveUser::Player;
 };

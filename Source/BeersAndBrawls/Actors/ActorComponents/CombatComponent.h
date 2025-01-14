@@ -8,6 +8,7 @@
 #include "CombatComponent.generated.h"
 
 
+class UAbilityInfo;
 struct FCombatPatterns;
 enum class ECombatKey : uint8;
 
@@ -29,6 +30,10 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	void GenerateRandomPatterns(UAbilityInfo* Ability);
+	FCombatPatterns GenerateRandomCombatPattern(UAbilityInfo* Ability);
+	FCombatPatterns GenerateRandomCounterPattern(UAbilityInfo* Ability);
+	
 	UFUNCTION(BlueprintCallable)
 	void SetCombatPattern(FCombatPatterns NewCombatPattern);
 
@@ -38,6 +43,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FCombatPatterns M_SelectedCombatPattern;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	FCombatPatterns M_SelectedCounterPattern;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool M_CanReceiveInputs = false;
 

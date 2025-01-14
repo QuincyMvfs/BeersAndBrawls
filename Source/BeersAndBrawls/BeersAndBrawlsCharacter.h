@@ -76,8 +76,9 @@ public:
 	
 	void DisplayNewWeaponMesh(EPlayerInputState NewState);
 
-	void SwapCameras(int index);
+	void SwapCameras(int Index);
 
+	void SetCanSelectAbility(bool Value);
 protected:
 	// To add mapping context
 	virtual void BeginPlay();
@@ -90,5 +91,8 @@ public:
 	
 	bool CanMove = true;
 	int ActiveCameraIndex = 0;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	bool CanSelectAbility = false;
 };
 

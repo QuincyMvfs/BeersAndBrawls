@@ -33,19 +33,25 @@ void AEnemy::InitializeEnemy(FEnemyInfoStruct NewEnemyInfo)
 	EnemyInfo = NewEnemyInfo;
 	InventoryComponent->M_SelectedWeapon = EnemyInfo.EquippedWeapon;
 	EquippedStaticMeshComponent->SetStaticMesh(InventoryComponent->M_SelectedWeapon->ItemMesh);
-
 }
 
-void AEnemy::StartGivingInputs()
+void AEnemy::StartSendingCombatInputs(FCombatPatterns Pattern)
+{
+	AttackLoop.Invalidate();
+	GetWorld()->GetTimerManager().ClearTimer(AttackLoop);
+	CombatComponent->M_SelectedCombatPattern = Pattern;
+	CombatComponent->SetCombatPattern(Pattern);
+	
+	GetWorld()->GetTimerManager().SetTimer(
+		AttackLoop, this, &AEnemy::SendInput, 0.1f, true);
+}
+
+UAbilityInfo* AEnemy::GenerateRandomAbility()
 {
 	int RandInt = FMath::RandRange(0, InventoryComponent->M_SelectedWeapon->Abilities.Num());
 	UAbilityInfo* SelectedAbility = InventoryComponent->M_SelectedWeapon->Abilities[RandInt];
-	RandInt = FMath::RandRange(0, SelectedAbility->M_ItemPatterns->CombatPatterns.Num());
-	CombatComponent->SetCombatPattern(SelectedAbility->M_ItemPatterns->CombatPatterns[RandInt]);
-	
-	FTimerHandle AttackLoop;
-	GetWorld()->GetTimerManager().SetTimer(
-		AttackLoop, this, &AEnemy::SendInput, 0.1f, true);
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *SelectedAbility->M_AbilityName.ToString());
+	return SelectedAbility;
 }
 
 void AEnemy::SendInput()

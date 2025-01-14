@@ -3,10 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BeersAndBrawls/Structs/FCombatPatterns.h"
 #include "BeersAndBrawls/Structs/FEnemyInfoStruct.h"
 #include "GameFramework/Actor.h"
 #include "Enemy.generated.h"
 
+class UAbilityInfo;
 struct FEnemyInfoStruct;
 class UInventoryComponent;
 class UHealthComponent;
@@ -45,11 +47,17 @@ protected:
 public:
 	UFUNCTION(BlueprintCallable)
 	void InitializeEnemy(FEnemyInfoStruct NewEnemyInfo);
+
+	UFUNCTION(BlueprintCallable)
+	void StartSendingCombatInputs(FCombatPatterns Pattern);
+
+	UFUNCTION(BlueprintCallable)
+	UAbilityInfo* GenerateRandomAbility();
 	
-	void StartGivingInputs();
 	void SendInput();
 	int InputIndex = 0;
-
+	FTimerHandle AttackLoop;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FEnemyInfoStruct EnemyInfo;
 

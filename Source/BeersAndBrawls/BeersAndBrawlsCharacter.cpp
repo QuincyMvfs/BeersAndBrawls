@@ -168,21 +168,26 @@ void ABeersAndBrawlsCharacter::DisplayNewWeaponMesh(EPlayerInputState NewState)
 	}
 }
 
-void ABeersAndBrawlsCharacter::SwapCameras(int index)
+void ABeersAndBrawlsCharacter::SwapCameras(int Index)
 {
 	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0))
 	{
-		if (index == 0)
+		if (Index == 0)
 		{
 			PlayerController->SetViewTargetWithBlend(this, 0.5f);
 			FollowCamera->SetActive(true);
 			CombatCamera->SetActive(false);
 		}
-		else if (index == 1)
+		else if (Index == 1)
 		{
 			PlayerController->SetViewTargetWithBlend(this, 0.5f);
 			FollowCamera->SetActive(false);
 			CombatCamera->SetActive(true);
 		}
 	}
+}
+
+void ABeersAndBrawlsCharacter::SetCanSelectAbility(bool Value)
+{
+	CanSelectAbility = Value;
 }

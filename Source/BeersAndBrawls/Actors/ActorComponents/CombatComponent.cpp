@@ -3,6 +3,9 @@
 
 #include "CombatComponent.h"
 
+#include "BeersAndBrawls/DataAssets/AbilityInfo.h"
+#include "BeersAndBrawls/DataAssets/AbilityPattern.h"
+
 // Sets default values for this component's properties
 UCombatComponent::UCombatComponent()
 {
@@ -14,6 +17,27 @@ UCombatComponent::UCombatComponent()
 void UCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void UCombatComponent::GenerateRandomPatterns(UAbilityInfo* Ability)
+{
+	FCombatPatterns NewCombatPattern = GenerateRandomCombatPattern(Ability);
+	FCombatPatterns NewCounterPattern = GenerateRandomCounterPattern(Ability);
+	
+	M_SelectedCombatPattern = NewCombatPattern;
+	M_SelectedCounterPattern = NewCounterPattern;
+}
+
+FCombatPatterns UCombatComponent::GenerateRandomCombatPattern(UAbilityInfo* Ability)
+{
+	int RandInt = Ability->M_ItemPatterns->CombatPatterns.Num();
+	return Ability->M_ItemPatterns->CombatPatterns[RandInt];
+}
+
+FCombatPatterns UCombatComponent::GenerateRandomCounterPattern(UAbilityInfo* Ability)
+{
+	int RandInt = Ability->M_ItemPatterns->CounterPatterns.Num();
+	return Ability->M_ItemPatterns->CounterPatterns[RandInt];
 }
 
 void UCombatComponent::SetCombatPattern(FCombatPatterns NewCombatPattern)
