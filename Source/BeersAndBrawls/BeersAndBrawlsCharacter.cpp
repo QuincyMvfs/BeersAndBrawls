@@ -18,6 +18,7 @@
 #include "Enums/EPlayerInputState.h"
 #include "Interface/Interactable.h"
 #include "Items/Weapon.h"
+#include "Kismet/GameplayStatics.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -37,6 +38,9 @@ ABeersAndBrawlsCharacter::ABeersAndBrawlsCharacter()
 
 	BackSlotStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HolsteredMeshSlot"));
 	BackSlotStaticMeshComponent->SetupAttachment(GetMesh(), "HolsterSocket");
+	
+	CombatCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CombatCamera"));
+	CombatCamera->SetupAttachment(GetCapsuleComponent());
 }
 
 void ABeersAndBrawlsCharacter::BeginPlay()
@@ -161,5 +165,24 @@ void ABeersAndBrawlsCharacter::DisplayNewWeaponMesh(EPlayerInputState NewState)
 			BackSlotStaticMeshComponent->SetStaticMesh(InventoryComponent->M_DefaultSelectedWeapon->ItemMesh);
 			return;
 		
+	}
+}
+
+void ABeersAndBrawlsCharacter::SwapCameras(int index)
+{
+	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0))
+	{
+		if (index == 0)
+		{
+			PlayerController->SetViewTargetWithBlend(this, 0.5f);
+			FollowCamera->SetActive(true);
+			CombatCamera->SetActive(false);
+		}
+		else if (index == 1)
+		{
+			PlayerController->SetViewTargetWithBlend(this, 0.5f);
+			FollowCamera->SetActive(false);
+			CombatCamera->SetActive(true);
+		}
 	}
 }

@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BeersAndBrawls/Structs/FEnemyInfoStruct.h"
 #include "GameFramework/Actor.h"
 #include "Enemy.generated.h"
 
+struct FEnemyInfoStruct;
 class UInventoryComponent;
 class UHealthComponent;
 class UCombatComponent;
@@ -41,8 +43,14 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	UFUNCTION(BlueprintCallable)
+	void InitializeEnemy(FEnemyInfoStruct NewEnemyInfo);
+	
 	void StartGivingInputs();
 	void SendInput();
 	int InputIndex = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FEnemyInfoStruct EnemyInfo;
 
 };

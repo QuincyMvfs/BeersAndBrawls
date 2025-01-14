@@ -26,7 +26,14 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void AEnemy::InitializeEnemy(FEnemyInfoStruct NewEnemyInfo)
+{
+	EnemyInfo = NewEnemyInfo;
+	InventoryComponent->M_SelectedWeapon = EnemyInfo.EquippedWeapon;
 	EquippedStaticMeshComponent->SetStaticMesh(InventoryComponent->M_SelectedWeapon->ItemMesh);
+
 }
 
 void AEnemy::StartGivingInputs()

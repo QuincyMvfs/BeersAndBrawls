@@ -117,6 +117,8 @@ void ABeersAndBrawlsPlayerController::UpdatePlayerInputState(EPlayerInputState N
 	{
 		M_CurrentInputState = NewState;
 		M_PossesedPawn->DisplayNewWeaponMesh(NewState);
+		int intValue = static_cast<int>(NewState);
+		M_PossesedPawn->SwapCameras(intValue);
 	}
 }
 

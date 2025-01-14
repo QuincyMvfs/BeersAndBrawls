@@ -37,6 +37,9 @@ public:
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UCameraComponent* CombatCamera;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
 	UCombatComponent* CombatComponent;
@@ -73,6 +76,8 @@ public:
 	
 	void DisplayNewWeaponMesh(EPlayerInputState NewState);
 
+	void SwapCameras(int index);
+
 protected:
 	// To add mapping context
 	virtual void BeginPlay();
@@ -84,5 +89,6 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	
 	bool CanMove = true;
+	int ActiveCameraIndex = 0;
 };
 
