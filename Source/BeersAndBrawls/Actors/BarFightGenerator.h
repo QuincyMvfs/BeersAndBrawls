@@ -94,6 +94,8 @@ public:
 	FString GenerateRandomName();
 	FString GenerateRandomDescription();
 	UWeapon* GenerateRandomWeapon();
+	int CalculateBeerBuxReward(float CombatSpeed, float CounterSpeed, int MaxHealth);
+	int CalculateExpReward(float CombatSpeed, float CounterSpeed, int MaxHealth);
 	
 	UFUNCTION(BlueprintCallable)
 	FEnemyInfoStruct GenerateEnemyInfo();

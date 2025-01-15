@@ -72,17 +72,44 @@ UWeapon* ABarFightGenerator::GenerateRandomWeapon()
 	return M_AllPossibleWeapons[RandInt];
 }
 
+int ABarFightGenerator::CalculateBeerBuxReward(float CombatSpeed, float CounterSpeed, int MaxHealth)
+{
+	int TotalReward = FMath::RandRange(M_Reward_MinimumCurrency, M_Reward_MaximumCurrency);
+	const int AttackSpeedReward = TotalReward * (M_AttackSpeed_Maximum / CombatSpeed);
+	const int CounterSpeedReward = TotalReward * (M_CounterSpeed_Maximum / CounterSpeed);
+	const int HealthReward = TotalReward * (MaxHealth / (M_Health_Maximum / 5));
+	TotalReward = (TotalReward + (AttackSpeedReward + CounterSpeedReward + HealthReward)) / 100;
+	
+	return TotalReward;
+}
+
+int ABarFightGenerator::CalculateExpReward(float CombatSpeed, float CounterSpeed, int MaxHealth)
+{
+	int TotalReward = FMath::RoundToInt(FMath::RandRange(M_Reward_MinimumExp, M_Reward_MaximumExp));
+	const int AttackSpeedReward = TotalReward * (M_AttackSpeed_Maximum / CombatSpeed);
+	const int CounterSpeedReward = TotalReward * (M_CounterSpeed_Maximum / CounterSpeed);
+	const int HealthReward = TotalReward * (MaxHealth / (M_Health_Maximum / 5));
+	TotalReward = (TotalReward + (AttackSpeedReward + CounterSpeedReward + HealthReward)) / 100;
+	
+	return TotalReward;
+}
+
 FEnemyInfoStruct ABarFightGenerator::GenerateEnemyInfo()
 {
 	FEnemyInfoStruct NewEnemy;
 	NewEnemy.EnemyName = FText::FromString(GenerateRandomName());
 	NewEnemy.EnemyDescription = FText::FromString(GenerateRandomDescription());
-	NewEnemy.ExpReward = FMath::RoundToInt(FMath::RandRange(M_Reward_MinimumExp, M_Reward_MaximumExp));
-	NewEnemy.BeerBuxReward = FMath::RandRange(M_Reward_MinimumCurrency, M_Reward_MaximumCurrency);
 	NewEnemy.EquippedWeapon = GenerateRandomWeapon();
-	NewEnemy.AttackSpeedMultiplier = FMath::TruncToFloat(FMath::RandRange(M_AttackSpeed_Minimum, M_AttackSpeed_Maximum) * 100) / 100;
-	NewEnemy.CounterSpeedMultiplier = FMath::TruncToFloat(FMath::RandRange(M_CounterSpeed_Minimum, M_CounterSpeed_Maximum) * 100) / 100;
-	NewEnemy.MaxHealth = FMath::RandRange(M_Health_Minimum, M_Health_Maximum);
+	
+	const float AttackSpeedMultiplier = FMath::TruncToFloat(FMath::RandRange(M_AttackSpeed_Minimum, M_AttackSpeed_Maximum) * 100) / 100;
+	NewEnemy.AttackSpeedMultiplier = AttackSpeedMultiplier;
+	const float CounterSpeedMultiplier = FMath::TruncToFloat(FMath::RandRange(M_CounterSpeed_Minimum, M_CounterSpeed_Maximum) * 100) / 100;
+	NewEnemy.CounterSpeedMultiplier = CounterSpeedMultiplier;
+	const int MaxHealth = FMath::RandRange(M_Health_Minimum, M_Health_Maximum);
+	NewEnemy.MaxHealth = MaxHealth;
+
+	NewEnemy.BeerBuxReward = CalculateBeerBuxReward(AttackSpeedMultiplier, CounterSpeedMultiplier, MaxHealth);
+	NewEnemy.ExpReward = CalculateExpReward(AttackSpeedMultiplier, CounterSpeedMultiplier, MaxHealth);
 	
 	return NewEnemy;
 }
