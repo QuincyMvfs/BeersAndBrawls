@@ -16,10 +16,8 @@ AEnemy::AEnemy()
 	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
-	
-	SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("EnemyMesh"));
-	EquippedStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponMeshSlot"));
-	EquippedStaticMeshComponent->SetupAttachment(SkeletalMesh, "WeaponSocket");
+	EquippedWeaponComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TheWeaponSocket"));
+	EquippedWeaponComponent->SetupAttachment(GetMesh(), "WeaponSocket");
 }
 
 // Called when the game starts or when spawned
@@ -33,7 +31,7 @@ void AEnemy::InitializeEnemy(FEnemyInfoStruct NewEnemyInfo)
 	EnemyInfo = NewEnemyInfo;
 	InventoryComponent->M_SelectedWeapon = EnemyInfo.EquippedWeapon;
 	HealthComponent->SetMaxHealth(EnemyInfo.MaxHealth);
-	EquippedStaticMeshComponent->SetStaticMesh(InventoryComponent->M_SelectedWeapon->ItemMesh);
+	EquippedWeaponComponent->SetStaticMesh(InventoryComponent->M_SelectedWeapon->ItemMesh);
 	
 }
 

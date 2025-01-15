@@ -6,6 +6,7 @@
 #include "BeersAndBrawls/Structs/FCombatPatterns.h"
 #include "BeersAndBrawls/Structs/FEnemyInfoStruct.h"
 #include "GameFramework/Actor.h"
+#include "GameFramework/Character.h"
 #include "Enemy.generated.h"
 
 class UAbilityInfo;
@@ -15,7 +16,7 @@ class UHealthComponent;
 class UCombatComponent;
 
 UCLASS()
-class BEERSANDBRAWLS_API AEnemy : public AActor
+class BEERSANDBRAWLS_API AEnemy : public ACharacter
 {
 	GENERATED_BODY()
 	
@@ -34,11 +35,8 @@ public:
 	UInventoryComponent* InventoryComponent;
 
 	// Mesh Slots
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Meshs", meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent* EquippedStaticMeshComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Meshs", meta = (AllowPrivateAccess = "true"))
-	USkeletalMeshComponent* SkeletalMesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Meshs", meta = (AllowPrivateAccess = "true"))
+	UStaticMeshComponent* EquippedWeaponComponent;
 
 protected:
 	// Called when the game starts or when spawned
