@@ -19,6 +19,8 @@ class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTurnChanged);
+
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 UCLASS(config=Game)
@@ -62,6 +64,9 @@ public:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* BackSlotStaticMeshComponent;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnTurnChanged OnTurnChangedEvent;
 	
 /// Public Functions
 	/** Called for movement input */
@@ -78,6 +83,7 @@ public:
 
 	void SwapCameras(int Index);
 
+	UFUNCTION(BlueprintCallable)
 	void SetCanSelectAbility(bool Value);
 protected:
 	// To add mapping context

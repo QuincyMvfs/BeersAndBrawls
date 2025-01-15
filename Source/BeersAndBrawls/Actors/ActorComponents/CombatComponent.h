@@ -30,6 +30,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	UFUNCTION(BlueprintCallable)
 	void GenerateRandomPatterns(UAbilityInfo* Ability);
 	FCombatPatterns GenerateRandomCombatPattern(UAbilityInfo* Ability);
 	FCombatPatterns GenerateRandomCounterPattern(UAbilityInfo* Ability);
@@ -40,11 +41,17 @@ public:
 	UFUNCTION()
 	void ReceiveInput(ECombatKey InputKey);
 
+	UFUNCTION(BlueprintCallable)
+	void StopInputs();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FCombatPatterns M_SelectedCombatPattern;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FCombatPatterns M_SelectedCounterPattern;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UAbilityInfo* SelectedAbility;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool M_CanReceiveInputs = false;

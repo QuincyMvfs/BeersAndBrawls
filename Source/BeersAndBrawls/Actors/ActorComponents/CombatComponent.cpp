@@ -30,13 +30,13 @@ void UCombatComponent::GenerateRandomPatterns(UAbilityInfo* Ability)
 
 FCombatPatterns UCombatComponent::GenerateRandomCombatPattern(UAbilityInfo* Ability)
 {
-	int RandInt = Ability->M_ItemPatterns->CombatPatterns.Num();
+	int RandInt = Ability->M_ItemPatterns->CombatPatterns.Num() - 1;
 	return Ability->M_ItemPatterns->CombatPatterns[RandInt];
 }
 
 FCombatPatterns UCombatComponent::GenerateRandomCounterPattern(UAbilityInfo* Ability)
 {
-	int RandInt = Ability->M_ItemPatterns->CounterPatterns.Num();
+	int RandInt = Ability->M_ItemPatterns->CounterPatterns.Num() - 1;
 	return Ability->M_ItemPatterns->CounterPatterns[RandInt];
 }
 
@@ -69,4 +69,9 @@ void UCombatComponent::ReceiveInput(ECombatKey InputKey)
 		UE_LOG(LogTemp, Warning, TEXT("FAIL Input Received"));
 		OnFailInputGiven.Broadcast(InputKey);
 	}
+}
+
+void UCombatComponent::StopInputs()
+{
+	M_CanReceiveInputs = false;
 }

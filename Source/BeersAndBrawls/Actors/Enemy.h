@@ -52,6 +52,9 @@ public:
 	void StartSendingCombatInputs(FCombatPatterns Pattern);
 
 	UFUNCTION(BlueprintCallable)
+	void StopSendingInputs();
+	
+	UFUNCTION(BlueprintCallable)
 	UAbilityInfo* GenerateRandomAbility();
 	
 	void SendInput();

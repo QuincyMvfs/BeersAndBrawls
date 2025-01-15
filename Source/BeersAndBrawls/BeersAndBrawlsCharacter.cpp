@@ -189,5 +189,7 @@ void ABeersAndBrawlsCharacter::SwapCameras(int Index)
 
 void ABeersAndBrawlsCharacter::SetCanSelectAbility(bool Value)
 {
+	// This is used on the WBP_CombatHUD
 	CanSelectAbility = Value;
+	OnTurnChangedEvent.Broadcast();
 }

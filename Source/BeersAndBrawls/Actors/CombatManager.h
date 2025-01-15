@@ -22,13 +22,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UFUNCTION(BlueprintCallable)
-	void StartCombat();
-
-	UFUNCTION(BlueprintCallable)
-	void EndCombat();
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EActiveUser ActiveUser = EActiveUser::Player;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

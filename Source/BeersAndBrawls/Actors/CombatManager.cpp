@@ -16,12 +16,3 @@ void ACombatManager::BeginPlay()
 	
 }
 
-void ACombatManager::StartCombat()
-{
-	
-}
-
-void ACombatManager::EndCombat()
-{
-}
-

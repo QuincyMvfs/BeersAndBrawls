@@ -31,10 +31,17 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnDeath OnDeathEvent;
-	
+
+	UFUNCTION(BlueprintCallable)
 	void TakeDamage(float Damage, AActor* Instigator, AActor* Victim);
+	
+	UFUNCTION(BlueprintCallable)
 	void Heal(float HealAmount, AActor* Instigator, AActor* Victim);
+	
+	UFUNCTION(BlueprintCallable)
 	void ResetCurrentHealth();
+	
+	UFUNCTION(BlueprintCallable)
 	void SetCurrentHealth(float NewCurrentHealth);
 	
 public:

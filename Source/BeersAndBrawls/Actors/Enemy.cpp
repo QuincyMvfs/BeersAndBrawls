@@ -37,18 +37,30 @@ void AEnemy::InitializeEnemy(FEnemyInfoStruct NewEnemyInfo)
 
 void AEnemy::StartSendingCombatInputs(FCombatPatterns Pattern)
 {
-	AttackLoop.Invalidate();
-	GetWorld()->GetTimerManager().ClearTimer(AttackLoop);
+	if (GetWorld()->GetTimerManager().IsTimerActive(AttackLoop))
+	{
+		StopSendingInputs();
+	}
+	
+	
 	CombatComponent->M_SelectedCombatPattern = Pattern;
 	CombatComponent->SetCombatPattern(Pattern);
 	
 	GetWorld()->GetTimerManager().SetTimer(
-		AttackLoop, this, &AEnemy::SendInput, 0.1f, true);
+		AttackLoop, this, &AEnemy::SendInput, 0.4f, true);
+}
+
+void AEnemy::StopSendingInputs()
+{
+	GetWorld()->GetTimerManager().ClearTimer(AttackLoop);
+	AttackLoop.Invalidate();
+
+	InputIndex = 0;
 }
 
 UAbilityInfo* AEnemy::GenerateRandomAbility()
 {
-	int RandInt = FMath::RandRange(0, InventoryComponent->M_SelectedWeapon->Abilities.Num());
+	int RandInt = FMath::RandRange(0, InventoryComponent->M_SelectedWeapon->Abilities.Num() - 1);
 	UAbilityInfo* SelectedAbility = InventoryComponent->M_SelectedWeapon->Abilities[RandInt];
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *SelectedAbility->M_AbilityName.ToString());
 	return SelectedAbility;
@@ -56,6 +68,13 @@ UAbilityInfo* AEnemy::GenerateRandomAbility()
 
 void AEnemy::SendInput()
 {
+	if (InputIndex > CombatComponent->M_SelectedCombatPattern.KeyInputs.Num() -1)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("STILL ACTIVE"))
+		StopSendingInputs();
+		return;
+	}
+	
 	ECombatKey Input = CombatComponent->M_SelectedCombatPattern.KeyInputs[InputIndex];
 	CombatComponent->ReceiveInput(Input);
 	InputIndex++;
