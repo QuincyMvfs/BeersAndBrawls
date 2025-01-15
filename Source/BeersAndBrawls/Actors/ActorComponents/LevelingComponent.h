@@ -23,6 +23,14 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Levels")
+	TArray<int> ExpRequiredPerLevel = {
+		500, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 7500, 10000
+	};
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Levels")
+	int CurrentLevel = 0;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<UAbilityInfo*> LockedAbilities;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)

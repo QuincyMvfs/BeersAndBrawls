@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "CurrencyComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnBeerBuxAdded, int, AmountAdded);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnBeerBuxRemoved, int, AmountRemoved);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BEERSANDBRAWLS_API UCurrencyComponent : public UActorComponent
@@ -20,9 +22,21 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	UPROPERTY(BlueprintAssignable)
+	FOnBeerBuxAdded OnBeerBuxAddedEvent;
 
-		
+	UPROPERTY(BlueprintAssignable)
+	FOnBeerBuxRemoved OnBeerBuxRemovedEvent;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	int M_TotalBeerBux = 0;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	int M_MaxBeerBux = 9999999;
+
+	UFUNCTION(BlueprintCallable)
+	void AddBeerBux(int AmountToAdd);
+
+	UFUNCTION(BlueprintCallable)
+	void RemoveBeerBux(int AmountToRemove);
 };

@@ -6,11 +6,7 @@
 // Sets default values for this component's properties
 UCurrencyComponent::UCurrencyComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
+	
 }
 
 
@@ -18,17 +14,22 @@ UCurrencyComponent::UCurrencyComponent()
 void UCurrencyComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
 }
 
-
-// Called every frame
-void UCurrencyComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UCurrencyComponent::AddBeerBux(int AmountToAdd)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
+	M_TotalBeerBux += AmountToAdd;
+	FMath::Clamp(M_TotalBeerBux, 0, M_MaxBeerBux);
+	
+	OnBeerBuxAddedEvent.Broadcast(AmountToAdd);
 }
+
+void UCurrencyComponent::RemoveBeerBux(int AmountToRemove)
+{
+	M_TotalBeerBux -= AmountToRemove;
+	FMath::Clamp(M_TotalBeerBux, 0, M_MaxBeerBux);
+
+	OnBeerBuxRemovedEvent.Broadcast(AmountToRemove);
+}
+
 
