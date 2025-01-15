@@ -46,6 +46,25 @@ public:
 		"Brews and Beers and Booze and Drinks yeah im on meth", "I have a gun, and i want to shoot you!",
 		"The Shittiest Pisser in the room", "I will suck you off buddy", "Blah blah blah suck my cock pal", "kill yourself, NOW!" 
 	};
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats", meta = (ClampMin = "50", ClampMax = "200", UIMin = "50", UIMax = "200"))
+	int M_Health_Minimum = 50;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats", meta = (ClampMin = "201", ClampMax = "500", UIMin = "201", UIMax = "500"))
+	int M_Health_Maximum = 500;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats", meta = (ClampMin = "0.03", ClampMax = "0.4", UIMin = "0.1", UIMax = "0.4"))
+	float M_AttackSpeed_Minimum = 0.03;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats", meta = (ClampMin = "0.5", ClampMax = "1.1", UIMin = "0.5", UIMax = "1.1"))
+	float M_AttackSpeed_Maximum = 1.1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats", meta = (ClampMin = "0.03", ClampMax = "0.4", UIMin = "0.1", UIMax = "0.4"))
+	float M_CounterSpeed_Minimum = 0.03;                                                                   
+                                                                   
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats", meta = (ClampMin = "0.5", ClampMax = "1.1", UIMin = "0.5", UIMax = "1.1"))
+	float M_CounterSpeed_Maximum = 1.1;
+
 	// BASIC INFO END
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Bar Fight Generator")

@@ -49,7 +49,7 @@ public:
 	void InitializeEnemy(FEnemyInfoStruct NewEnemyInfo);
 
 	UFUNCTION(BlueprintCallable)
-	void StartSendingCombatInputs(FCombatPatterns Pattern);
+	void StartSendingCombatInputs(FCombatPatterns Pattern, bool IsDefending);
 
 	UFUNCTION(BlueprintCallable)
 	void StopSendingInputs();
@@ -61,7 +61,7 @@ public:
 	int InputIndex = 0;
 	FTimerHandle AttackLoop;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = "true"))
 	FEnemyInfoStruct EnemyInfo;
 
 };

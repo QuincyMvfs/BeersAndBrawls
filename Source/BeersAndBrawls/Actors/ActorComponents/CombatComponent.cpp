@@ -56,17 +56,14 @@ void UCombatComponent::ReceiveInput(ECombatKey InputKey)
 	{
 		OnCorrectInputGiven.Broadcast(InputKey);
 		M_RemainingInputs.RemoveAt(0);
-		UE_LOG(LogTemp, Warning, TEXT("Correct Input Received"));
 		if (M_RemainingInputs.Num() <= 0)
 		{
 			M_CanReceiveInputs = false;
-			UE_LOG(LogTemp, Warning, TEXT("Pattern Completed"));
 			OnCombatPatternCompleted.Broadcast();
 		}
 	}
 	else if (InputKey != M_RemainingInputs[0])
 	{
-		UE_LOG(LogTemp, Warning, TEXT("FAIL Input Received"));
 		OnFailInputGiven.Broadcast(InputKey);
 	}
 }

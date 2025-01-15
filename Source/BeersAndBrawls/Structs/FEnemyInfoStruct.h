@@ -19,6 +19,9 @@ struct FEnemyInfoStruct
 	FText EnemyDescription;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float MaxHealth;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	int BeerBuxReward;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)

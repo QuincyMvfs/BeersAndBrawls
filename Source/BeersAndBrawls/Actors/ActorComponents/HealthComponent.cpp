@@ -49,3 +49,9 @@ void UHealthComponent::SetCurrentHealth(float NewCurrentHealth)
 	FMath::Clamp(M_CurrentHealth, 0, M_MaxHealth);
 }
 
+void UHealthComponent::SetMaxHealth(float NewMaxHealth)
+{
+	M_MaxHealth = NewMaxHealth;
+	M_CurrentHealth = M_MaxHealth;
+}
+

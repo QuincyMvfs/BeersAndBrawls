@@ -32,22 +32,31 @@ void AEnemy::InitializeEnemy(FEnemyInfoStruct NewEnemyInfo)
 {
 	EnemyInfo = NewEnemyInfo;
 	InventoryComponent->M_SelectedWeapon = EnemyInfo.EquippedWeapon;
+	HealthComponent->SetMaxHealth(EnemyInfo.MaxHealth);
 	EquippedStaticMeshComponent->SetStaticMesh(InventoryComponent->M_SelectedWeapon->ItemMesh);
+	
 }
 
-void AEnemy::StartSendingCombatInputs(FCombatPatterns Pattern)
+void AEnemy::StartSendingCombatInputs(FCombatPatterns Pattern, bool IsDefending)
 {
 	if (GetWorld()->GetTimerManager().IsTimerActive(AttackLoop))
 	{
 		StopSendingInputs();
 	}
 	
-	
 	CombatComponent->M_SelectedCombatPattern = Pattern;
 	CombatComponent->SetCombatPattern(Pattern);
-	
-	GetWorld()->GetTimerManager().SetTimer(
-		AttackLoop, this, &AEnemy::SendInput, 0.4f, true);
+
+	if (IsDefending)
+	{
+		GetWorld()->GetTimerManager().SetTimer(
+			AttackLoop, this, &AEnemy::SendInput, EnemyInfo.CounterSpeedMultiplier, true);
+	}
+	else
+	{
+		GetWorld()->GetTimerManager().SetTimer(
+			AttackLoop, this, &AEnemy::SendInput, EnemyInfo.AttackSpeedMultiplier, true);
+	}
 }
 
 void AEnemy::StopSendingInputs()
@@ -62,7 +71,6 @@ UAbilityInfo* AEnemy::GenerateRandomAbility()
 {
 	int RandInt = FMath::RandRange(0, InventoryComponent->M_SelectedWeapon->Abilities.Num() - 1);
 	UAbilityInfo* SelectedAbility = InventoryComponent->M_SelectedWeapon->Abilities[RandInt];
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *SelectedAbility->M_AbilityName.ToString());
 	return SelectedAbility;
 }
 
@@ -70,7 +78,6 @@ void AEnemy::SendInput()
 {
 	if (InputIndex > CombatComponent->M_SelectedCombatPattern.KeyInputs.Num() -1)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("STILL ACTIVE"))
 		StopSendingInputs();
 		return;
 	}

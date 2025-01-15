@@ -80,8 +80,9 @@ FEnemyInfoStruct ABarFightGenerator::GenerateEnemyInfo()
 	NewEnemy.ExpReward = FMath::RoundToInt(FMath::RandRange(M_Reward_MinimumExp, M_Reward_MaximumExp));
 	NewEnemy.BeerBuxReward = FMath::RandRange(M_Reward_MinimumCurrency, M_Reward_MaximumCurrency);
 	NewEnemy.EquippedWeapon = GenerateRandomWeapon();
-	NewEnemy.AttackSpeedMultiplier = FMath::TruncToFloat(FMath::RandRange(0.8, 1.2) * 100) / 100;
-	NewEnemy.CounterSpeedMultiplier = FMath::TruncToFloat(FMath::RandRange(0.8, 1.2) * 100) / 100;
+	NewEnemy.AttackSpeedMultiplier = FMath::TruncToFloat(FMath::RandRange(M_AttackSpeed_Minimum, M_AttackSpeed_Maximum) * 100) / 100;
+	NewEnemy.CounterSpeedMultiplier = FMath::TruncToFloat(FMath::RandRange(M_CounterSpeed_Minimum, M_CounterSpeed_Maximum) * 100) / 100;
+	NewEnemy.MaxHealth = FMath::RandRange(M_Health_Minimum, M_Health_Maximum);
 	
 	return NewEnemy;
 }
