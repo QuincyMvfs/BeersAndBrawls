@@ -78,7 +78,7 @@ int ABarFightGenerator::CalculateBeerBuxReward(float CombatSpeed, float CounterS
 	const int AttackSpeedReward = TotalReward * (M_AttackSpeed_Maximum / CombatSpeed);
 	const int CounterSpeedReward = TotalReward * (M_CounterSpeed_Maximum / CounterSpeed);
 	const int HealthReward = TotalReward * (MaxHealth / (M_Health_Maximum / 5));
-	TotalReward = (TotalReward + (AttackSpeedReward + CounterSpeedReward + HealthReward)) / 100;
+	TotalReward = (TotalReward + (AttackSpeedReward + CounterSpeedReward + HealthReward)) / 50;
 	
 	return TotalReward;
 }
@@ -89,7 +89,7 @@ int ABarFightGenerator::CalculateExpReward(float CombatSpeed, float CounterSpeed
 	const int AttackSpeedReward = TotalReward * (M_AttackSpeed_Maximum / CombatSpeed);
 	const int CounterSpeedReward = TotalReward * (M_CounterSpeed_Maximum / CounterSpeed);
 	const int HealthReward = TotalReward * (MaxHealth / (M_Health_Maximum / 5));
-	TotalReward = (TotalReward + (AttackSpeedReward + CounterSpeedReward + HealthReward)) / 100;
+	TotalReward = (TotalReward + (AttackSpeedReward + CounterSpeedReward + HealthReward)) / 50;
 	
 	return TotalReward;
 }
