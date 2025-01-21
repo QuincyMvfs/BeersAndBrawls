@@ -25,7 +25,7 @@ struct FEnemyInfoStruct
 	int BeerBuxReward;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	float ExpReward;
+	int ExpReward;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float AttackSpeedMultiplier;

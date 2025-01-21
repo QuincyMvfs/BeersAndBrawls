@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BeersAndBrawls/BeersAndBrawlsGameInstance.h"
 #include "Components/ActorComponent.h"
 #include "CurrencyComponent.generated.h"
 
@@ -39,4 +40,6 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void RemoveBeerBux(int AmountToRemove);
+
+	UBeersAndBrawlsGameInstance* GameInstanceRef;
 };

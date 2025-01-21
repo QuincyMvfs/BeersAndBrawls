@@ -14,12 +14,15 @@ UCurrencyComponent::UCurrencyComponent()
 void UCurrencyComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	GameInstanceRef = Cast<UBeersAndBrawlsGameInstance>(GetWorld()->GetGameInstance());
 }
 
 void UCurrencyComponent::AddBeerBux(int AmountToAdd)
 {
 	M_TotalBeerBux += AmountToAdd;
-	FMath::Clamp(M_TotalBeerBux, 0, M_MaxBeerBux);
+	M_TotalBeerBux = FMath::Clamp(M_TotalBeerBux, 0, M_MaxBeerBux);
+	
+	GameInstanceRef->UpdatePlayerBeerBux(M_TotalBeerBux);
 	
 	OnBeerBuxAddedEvent.Broadcast(AmountToAdd);
 }
@@ -27,7 +30,9 @@ void UCurrencyComponent::AddBeerBux(int AmountToAdd)
 void UCurrencyComponent::RemoveBeerBux(int AmountToRemove)
 {
 	M_TotalBeerBux -= AmountToRemove;
-	FMath::Clamp(M_TotalBeerBux, 0, M_MaxBeerBux);
+	M_TotalBeerBux = FMath::Clamp(M_TotalBeerBux, 0, M_MaxBeerBux);
+
+	GameInstanceRef->UpdatePlayerExp(M_TotalBeerBux);
 
 	OnBeerBuxRemovedEvent.Broadcast(AmountToRemove);
 }

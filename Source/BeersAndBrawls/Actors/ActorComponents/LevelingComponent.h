@@ -7,6 +7,7 @@
 #include "LevelingComponent.generated.h"
 
 
+class UBeersAndBrawlsGameInstance;
 class UAbilityInfo;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -29,12 +30,18 @@ public:
 	};
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Levels")
-	int CurrentLevel = 0;
+	int M_CurrentLevel = 0;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Levels")
+	int M_CurrentExp = 0;
+
+	UFUNCTION(BlueprintCallable)
+	void AddExp(int AmountToAdd);
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<UAbilityInfo*> LockedAbilities;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<UAbilityInfo*> UnlockedAbilities;
 
-		
+	UBeersAndBrawlsGameInstance* GameInstanceRef;
 };
