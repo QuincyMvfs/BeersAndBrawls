@@ -153,16 +153,19 @@ void ABeersAndBrawlsCharacter::DisplayNewWeaponMesh(EPlayerInputState NewState)
 	switch (NewState)
 	{
 		case EPlayerInputState::Combat:
-			EquippedStaticMeshComponent->SetStaticMesh(InventoryComponent->M_DefaultSelectedWeapon->ItemMesh);
+			if (InventoryComponent->M_SelectedWeapon) EquippedStaticMeshComponent->SetStaticMesh(InventoryComponent->M_SelectedWeapon->ItemMesh);
+			else { EquippedStaticMeshComponent->SetStaticMesh(InventoryComponent->M_DefaultSelectedWeapon->ItemMesh); }
 			BackSlotStaticMeshComponent->SetStaticMesh(nullptr);
 			return;
 		case EPlayerInputState::World:
 			EquippedStaticMeshComponent->SetStaticMesh(nullptr);
-			BackSlotStaticMeshComponent->SetStaticMesh(InventoryComponent->M_DefaultSelectedWeapon->ItemMesh);
+		if (InventoryComponent->M_SelectedWeapon) BackSlotStaticMeshComponent->SetStaticMesh(InventoryComponent->M_SelectedWeapon->ItemMesh);
+		else { BackSlotStaticMeshComponent->SetStaticMesh(InventoryComponent->M_DefaultSelectedWeapon->ItemMesh); }
 			return;
 		case EPlayerInputState::Shopping:
 			EquippedStaticMeshComponent->SetStaticMesh(nullptr);
-			BackSlotStaticMeshComponent->SetStaticMesh(InventoryComponent->M_DefaultSelectedWeapon->ItemMesh);
+		if (InventoryComponent->M_SelectedWeapon) BackSlotStaticMeshComponent->SetStaticMesh(InventoryComponent->M_SelectedWeapon->ItemMesh);
+		else { BackSlotStaticMeshComponent->SetStaticMesh(InventoryComponent->M_DefaultSelectedWeapon->ItemMesh); }
 			return;
 		
 	}

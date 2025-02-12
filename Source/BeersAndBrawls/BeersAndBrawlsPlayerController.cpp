@@ -18,6 +18,7 @@ void ABeersAndBrawlsPlayerController::BeginPlay()
 		Subsystem->AddMappingContext(CombatMappingContext, 1);
 	}
 
+	
 	UpdatePlayerInputState(EPlayerInputState::World);
 }
 

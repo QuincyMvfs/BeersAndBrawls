@@ -31,7 +31,7 @@ public:
 	EItemType ItemType;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	float Cost;
+	int Cost;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<UAbilityInfo*> Abilities;

@@ -32,7 +32,7 @@ void UCurrencyComponent::RemoveBeerBux(int AmountToRemove)
 	M_TotalBeerBux -= AmountToRemove;
 	M_TotalBeerBux = FMath::Clamp(M_TotalBeerBux, 0, M_MaxBeerBux);
 
-	GameInstanceRef->UpdatePlayerExp(M_TotalBeerBux);
+	GameInstanceRef->UpdatePlayerBeerBux(M_TotalBeerBux);
 
 	OnBeerBuxRemovedEvent.Broadcast(AmountToRemove);
 }

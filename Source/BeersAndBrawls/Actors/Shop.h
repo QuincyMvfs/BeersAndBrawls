@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Shop.generated.h"
 
+class ABeersAndBrawlsCharacter;
 class UItem;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnItemBought, UItem*, PurchasedItem);
@@ -31,13 +32,17 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnItemSold OnItemSoldEvent;
 	
-	void BuyItem(UItem*);
+	UFUNCTION(BlueprintCallable)
+	bool BuyItem(UItem* ItemToBuy);
 
-	void SellItem(UItem*);
+	UFUNCTION(BlueprintCallable)
+	bool SellItem(UItem* ItemToSell);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Instanced, Category = "Items")
 	TArray<UItem*> M_ItemsForSale;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Instanced, Category = "Items")
 	TArray<UItem*> M_DefaultItemsForSale;
+
+	ABeersAndBrawlsCharacter* PlayerRef;
 };

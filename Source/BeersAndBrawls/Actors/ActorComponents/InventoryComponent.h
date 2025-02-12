@@ -7,6 +7,7 @@
 #include "InventoryComponent.generated.h"
 
 
+class ABeersAndBrawlsCharacter;
 class UWeapon;
 class UItem;
 
@@ -35,5 +36,19 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Instanced)
 	TArray<UItem*> M_DefaultItems;
+
+	UFUNCTION(BlueprintCallable)
+	void EquipWeapon(UItem* ItemToEquip);
+
+	UFUNCTION(BlueprintCallable)
+	void AddItem(UItem* ItemToAdd);
+
+	UFUNCTION(BlueprintCallable)
+	void RemoveItem(UItem* ItemToRemove);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool DoesPlayerHaveItem(UItem* ItemToCheck);
+
+	ABeersAndBrawlsCharacter* PlayerRef;
 		
 };
