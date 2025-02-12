@@ -6,6 +6,11 @@
 #include "GameFramework/Actor.h"
 #include "Shop.generated.h"
 
+class UItem;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnItemBought, UItem*, PurchasedItem);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnItemSold, UItem*, SoldItem);
+
 UCLASS()
 class BEERSANDBRAWLS_API AShop : public AActor
 {
@@ -19,4 +24,20 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+public:
+	UPROPERTY(BlueprintAssignable)
+	FOnItemBought OnItemBoughtEvent;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnItemSold OnItemSoldEvent;
+	
+	void BuyItem(UItem*);
+
+	void SellItem(UItem*);
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Instanced, Category = "Items")
+	TArray<UItem*> M_ItemsForSale;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Instanced, Category = "Items")
+	TArray<UItem*> M_DefaultItemsForSale;
 };

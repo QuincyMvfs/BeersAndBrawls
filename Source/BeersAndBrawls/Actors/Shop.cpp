@@ -16,3 +16,11 @@ void AShop::BeginPlay()
 	
 }
 
+void AShop::BuyItem(UItem*)
+{
+}
+
+void AShop::SellItem(UItem*)
+{
+}
+
