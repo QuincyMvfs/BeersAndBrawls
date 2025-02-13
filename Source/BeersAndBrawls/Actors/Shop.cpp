@@ -27,17 +27,12 @@ void AShop::BeginPlay()
 
 bool AShop::BuyItem(UItem* ItemToBuy)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Hello, UE5!"));
-	UE_LOG(LogTemp, Warning, TEXT("NO PLAYER"));
-	
 	if (PlayerRef && M_ItemsForSale.Num() > 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("NO ITEMS"));
-		if (PlayerRef->CurrencyComponent->M_TotalBeerBux >= ItemToBuy->Cost)
+		if (CanBuyItem(ItemToBuy))
 		{
 			PlayerRef->CurrencyComponent->RemoveBeerBux(ItemToBuy->Cost);
 			PlayerRef->InventoryComponent->EquipWeapon(ItemToBuy);
-			UE_LOG(LogTemp, Warning, TEXT("CAN BUY"))
 			return true;
 		}
 	}
@@ -47,14 +42,28 @@ bool AShop::BuyItem(UItem* ItemToBuy)
 
 bool AShop::SellItem(UItem* ItemToSell)
 {
-	if (PlayerRef->InventoryComponent->DoesPlayerHaveItem(ItemToSell))
+	if (CanSellItem(ItemToSell))
 	{
 		PlayerRef->CurrencyComponent->AddBeerBux(PlayerRef->InventoryComponent->M_SelectedWeapon->Cost);
 		PlayerRef->InventoryComponent->RemoveItem(ItemToSell);
-		UE_LOG(LogTemp, Warning, TEXT("CAN SELL"))
 
 		return true;
 	}
+
+	return false;
+}
+
+bool AShop::CanBuyItem(UItem* ItemToBuy)
+{
+	if (PlayerRef->CurrencyComponent->M_TotalBeerBux >= ItemToBuy->Cost) return true;
+
+	return false;
+}
+
+bool AShop::CanSellItem(UItem* ItemToSell)
+{
+	if (PlayerRef->InventoryComponent->DoesPlayerHaveItem(ItemToSell) &&
+		PlayerRef->InventoryComponent->CanPlayerSellWeapon()) { return true; }
 
 	return false;
 }

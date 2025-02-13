@@ -4,6 +4,7 @@
 #include "InventoryComponent.h"
 
 #include "BeersAndBrawls/BeersAndBrawlsCharacter.h"
+#include "BeersAndBrawls/Enums/EItemType.h"
 #include "BeersAndBrawls/Enums/EPlayerInputState.h"
 #include "BeersAndBrawls/Items/UItem.h"
 #include "BeersAndBrawls/Items/Weapon.h"
@@ -67,6 +68,20 @@ bool UInventoryComponent::DoesPlayerHaveItem(UItem* ItemToCheck)
 	}
 
 	return false;
+}
+
+bool UInventoryComponent::CanPlayerSellWeapon()
+{
+	int TotalWeapons = 0;
+	for (const UItem* Item : M_Items)
+	{
+		if (Item->ItemType == EItemType::Blunt ||
+			Item->ItemType == EItemType::Chop ||
+			Item->ItemType == EItemType::Cut) TotalWeapons++;
+	}
+
+	if (TotalWeapons > 1) { return true; }
+	else { return false; }
 }
 
 

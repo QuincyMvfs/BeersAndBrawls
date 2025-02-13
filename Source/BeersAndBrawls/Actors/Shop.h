@@ -38,6 +38,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool SellItem(UItem* ItemToSell);
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool CanBuyItem(UItem* ItemToBuy);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool CanSellItem(UItem* ItemToSell);
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Instanced, Category = "Items")
 	TArray<UItem*> M_ItemsForSale;
 

@@ -49,6 +49,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	bool DoesPlayerHaveItem(UItem* ItemToCheck);
 
+	bool CanPlayerSellWeapon();
+
 	ABeersAndBrawlsCharacter* PlayerRef;
 		
 };
