@@ -55,7 +55,11 @@ void UInventoryComponent::RemoveItem(UItem* ItemToRemove)
 		M_Items.Remove(ItemToRemove);
 		if (ItemToRemove == M_SelectedWeapon)
 		{
-			EquipWeapon(Cast<UWeapon>(M_Items[0]));	
+			if (M_Items[0])
+			{
+				EquipWeapon(Cast<UWeapon>(M_Items[0]));	
+			}
+			else { M_SelectedWeapon = nullptr; }
 		}
 	}
 }
@@ -73,6 +77,8 @@ bool UInventoryComponent::DoesPlayerHaveItem(UItem* ItemToCheck)
 bool UInventoryComponent::CanPlayerSellWeapon()
 {
 	int TotalWeapons = 0;
+	if (M_Items.Num() <= 0) return false;
+	
 	for (const UItem* Item : M_Items)
 	{
 		if (Item->ItemType == EItemType::Blunt ||

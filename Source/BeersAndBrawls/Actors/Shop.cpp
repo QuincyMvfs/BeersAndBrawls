@@ -44,7 +44,7 @@ bool AShop::SellItem(UItem* ItemToSell)
 {
 	if (CanSellItem(ItemToSell))
 	{
-		PlayerRef->CurrencyComponent->AddBeerBux(PlayerRef->InventoryComponent->M_SelectedWeapon->Cost);
+		PlayerRef->CurrencyComponent->AddBeerBux(ItemToSell->Cost);
 		PlayerRef->InventoryComponent->RemoveItem(ItemToSell);
 
 		return true;
@@ -63,7 +63,8 @@ bool AShop::CanBuyItem(UItem* ItemToBuy)
 bool AShop::CanSellItem(UItem* ItemToSell)
 {
 	if (PlayerRef->InventoryComponent->DoesPlayerHaveItem(ItemToSell) &&
-		PlayerRef->InventoryComponent->CanPlayerSellWeapon()) { return true; }
+		PlayerRef->InventoryComponent->CanPlayerSellWeapon() &&
+		ItemToSell != PlayerRef->InventoryComponent->M_SelectedWeapon) { return true; }
 
 	return false;
 }
