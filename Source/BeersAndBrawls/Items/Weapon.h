@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UItem.h"
+#include "BeersAndBrawls/Enums/EAbilitySpeeds.h"
 #include "Weapon.generated.h"
 
 /**
@@ -17,4 +18,7 @@ class BEERSANDBRAWLS_API UWeapon : public UItem
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float BaseDamage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	EAbilitySpeeds AverageSpeed;
 };

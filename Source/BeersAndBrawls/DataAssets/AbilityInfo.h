@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BeersAndBrawls/Enums/EAbilitySpeeds.h"
 #include "Engine/DataAsset.h"
 #include "AbilityInfo.generated.h"
 
@@ -23,6 +24,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float M_StatMultiplier = 1.0;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	EAbilitySpeeds M_AbilitySpeed = EAbilitySpeeds::Average;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	bool M_IsUnlocked;
 
