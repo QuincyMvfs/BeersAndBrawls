@@ -51,6 +51,7 @@ bool AShop::SellItem(UItem* ItemToSell)
 	}
 
 	return false;
+	//
 }
 
 bool AShop::CanBuyItem(UItem* ItemToBuy)
