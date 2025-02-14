@@ -14,7 +14,4 @@ struct FCombatPatterns
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TArray<ECombatKey> KeyInputs;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	float TimeToComplete = 1.0f;
 };

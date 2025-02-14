@@ -5,15 +5,14 @@
 #include "CoreMinimal.h"
 
 UENUM(BlueprintType)
-enum class  EAbilitySpeeds:uint8
+enum class EComboComplexity:uint8
 {
-	Impossibly_Slow,
-	Comically_Slow,
-	Very_Slow,
-	Sluggish,
+	Good_Luck,
+	Incredibly_Difficult,
+	Difficult,
+	Hard,
+	Kinda_Hard,
 	Average,
-	Quick,
-	Very_Quick,
-	Insanely_Fast,
-	Unfathomably_Fast
+	Easy,
+	Very_Easy
 };

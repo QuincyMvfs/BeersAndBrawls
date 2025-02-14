@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UItem.h"
 #include "BeersAndBrawls/Enums/EAbilitySpeeds.h"
+#include "BeersAndBrawls/Enums/EComboComplexity.h"
 #include "Weapon.generated.h"
 
 /**
@@ -18,7 +19,10 @@ class BEERSANDBRAWLS_API UWeapon : public UItem
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float BaseDamage;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	EAbilitySpeeds AverageSpeed = EAbilitySpeeds::Average;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	EAbilitySpeeds AverageSpeed;
+	EComboComplexity WeaponComplexity = EComboComplexity::Average;
 };

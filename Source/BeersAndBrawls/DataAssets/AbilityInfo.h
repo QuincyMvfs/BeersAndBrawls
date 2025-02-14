@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "BeersAndBrawls/Enums/EAbilitySpeeds.h"
+#include "BeersAndBrawls/Enums/EComboComplexity.h"
 #include "Engine/DataAsset.h"
 #include "AbilityInfo.generated.h"
 
@@ -26,6 +27,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	EAbilitySpeeds M_AbilitySpeed = EAbilitySpeeds::Average;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	EComboComplexity M_AbilityComplexity = EComboComplexity::Average;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	bool M_IsUnlocked;
