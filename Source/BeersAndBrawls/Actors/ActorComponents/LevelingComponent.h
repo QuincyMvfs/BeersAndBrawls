@@ -10,6 +10,9 @@
 class UBeersAndBrawlsGameInstance;
 class UAbilityInfo;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLevelUp);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnExperienceGained);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BEERSANDBRAWLS_API ULevelingComponent : public UActorComponent
 {
@@ -24,9 +27,15 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	UPROPERTY(BlueprintAssignable)
+	FOnLevelUp OnLevelUpEvent;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnExperienceGained OnExperienceGainedEvent;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Levels")
-	TArray<int> ExpRequiredPerLevel = {
-		500, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 7500, 10000
+	TArray<int> M_ExpRequiredPerLevel = {
+		500, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 7500, 10000, 999999999
 	};
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Levels")
@@ -39,9 +48,17 @@ public:
 	void AddExp(int AmountToAdd);
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TArray<UAbilityInfo*> LockedAbilities;
+	TArray<UAbilityInfo*> M_LockedAbilities;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TArray<UAbilityInfo*> UnlockedAbilities;
+	TArray<UAbilityInfo*> M_UnlockedAbilities;
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	void GetLevelInfo( UPARAM(DisplayName = "Current XP") int& OutCurrentXP,
+		UPARAM(DisplayName = "XP Needed To Level Up") int& XPNeeded,
+		UPARAM(DisplayName = "Current Level") int& OutCurrentLevel,
+		UPARAM(DisplayName = "XP To Level Ratio") float& OutCurrentRatio
+		);
 
 	UBeersAndBrawlsGameInstance* GameInstanceRef;
 };

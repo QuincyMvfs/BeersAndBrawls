@@ -47,6 +47,7 @@ void UHealthComponent::Heal(float HealAmount, AActor* Instigator, AActor* Victim
 void UHealthComponent::ResetCurrentHealth()
 {
 	M_CurrentHealth = M_MaxHealth;
+	OnHealEvent.Broadcast(M_CurrentHealth);
 }
 
 void UHealthComponent::SetCurrentHealth(float NewCurrentHealth)
