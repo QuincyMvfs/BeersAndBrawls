@@ -24,7 +24,10 @@ void UInventoryComponent::BeginPlay()
 	Super::BeginPlay();
 
 	M_SelectedWeapon = M_DefaultSelectedWeapon;
-	M_Items = M_DefaultItems;
+	for (UItem* Element : M_DefaultItems)
+	{
+		AddItem(Element);
+	}
 	AddItem(M_SelectedWeapon);
 	
 	PlayerRef = Cast<ABeersAndBrawlsCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
@@ -38,7 +41,7 @@ void UInventoryComponent::EquipWeapon(UItem* ItemToEquip)
 	
 	if (PlayerRef)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("VALID"));
+		OnNewItemEquippedEvent.Broadcast(ItemToEquip);
 		PlayerRef->DisplayNewWeaponMesh(EPlayerInputState::World);
 	}
 }
@@ -46,6 +49,7 @@ void UInventoryComponent::EquipWeapon(UItem* ItemToEquip)
 void UInventoryComponent::AddItem(UItem* ItemToAdd)
 {
 	M_Items.Add(ItemToAdd);
+	OnItemAddedEvent.Broadcast(ItemToAdd);
 }
 
 void UInventoryComponent::RemoveItem(UItem* ItemToRemove)
@@ -53,11 +57,12 @@ void UInventoryComponent::RemoveItem(UItem* ItemToRemove)
 	if (M_Items.Contains(ItemToRemove))
 	{
 		M_Items.Remove(ItemToRemove);
+		OnItemRemovedEvent.Broadcast(ItemToRemove);
 		if (ItemToRemove == M_SelectedWeapon)
 		{
 			if (M_Items[0])
 			{
-				EquipWeapon(Cast<UWeapon>(M_Items[0]));	
+				EquipWeapon(Cast<UWeapon>(M_Items[0]));
 			}
 			else { M_SelectedWeapon = nullptr; }
 		}
@@ -81,7 +86,7 @@ bool UInventoryComponent::CanPlayerSellWeapon()
 	
 	for (const UItem* Item : M_Items)
 	{
-		if (Item->ItemType == EItemType::Blunt ||
+		if (Item->ItemType == EItemType::Blunt||
 			Item->ItemType == EItemType::Chop ||
 			Item->ItemType == EItemType::Cut) TotalWeapons++;
 	}

@@ -11,6 +11,10 @@ class ABeersAndBrawlsCharacter;
 class UWeapon;
 class UItem;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNewItemEquipped, UItem*, NewItem);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnItemAdded, UItem*, NewItem);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnItemRemoved, UItem*, NewItem);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BEERSANDBRAWLS_API UInventoryComponent : public UActorComponent
 {
@@ -25,6 +29,15 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	UPROPERTY(BlueprintAssignable)
+	FOnItemAdded OnItemAddedEvent;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnItemRemoved OnItemRemovedEvent;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnNewItemEquipped OnNewItemEquippedEvent;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UWeapon* M_SelectedWeapon;
 

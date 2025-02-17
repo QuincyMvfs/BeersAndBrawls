@@ -6,7 +6,7 @@
 #include "UItem.generated.h"
 
 class UAbilityInfo;
-enum class EItemType;
+enum class EItemType:uint8;
 class ABeersAndBrawlsCharacter;
 
 UCLASS(Abstract, BlueprintType, Blueprintable, EditInlineNew, DefaultToInstanced)

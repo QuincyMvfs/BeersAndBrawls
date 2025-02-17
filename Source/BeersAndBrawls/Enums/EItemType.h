@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 
 UENUM(BlueprintType)
-enum class EItemType
+enum class EItemType:uint8
 {
 	Blunt,
 	Chop,
