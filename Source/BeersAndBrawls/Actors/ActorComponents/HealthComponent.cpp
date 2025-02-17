@@ -17,15 +17,21 @@ void UHealthComponent::BeginPlay()
 	M_CurrentHealth = M_MaxHealth;
 }
 
-void UHealthComponent::TakeDamage(float Damage, AActor* Instigator, AActor* Victim)
+bool UHealthComponent::TakeDamage(float Damage, AActor* Instigator, AActor* Victim)
 {
-	if (!Damage) return;
+	if (!Damage) return false;
 
 	M_CurrentHealth -= Damage;
 	FMath::Clamp(M_CurrentHealth, 0, M_MaxHealth);
 	
 	OnDamageTakenEvent.Broadcast(Damage);
-	if (M_CurrentHealth <= 0) OnDeathEvent.Broadcast(Victim);
+	if (M_CurrentHealth <= 0)
+	{
+		OnDeathEvent.Broadcast(Victim);
+		return true;
+	}
+
+	return false;
 }
 
 void UHealthComponent::Heal(float HealAmount, AActor* Instigator, AActor* Victim)

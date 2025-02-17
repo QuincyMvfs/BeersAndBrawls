@@ -64,6 +64,7 @@ void UCombatComponent::ReceiveInput(ECombatKey InputKey)
 	}
 	else if (InputKey != M_RemainingInputs[0])
 	{
+		M_RemainingInputs = M_SelectedCombatPattern.KeyInputs;
 		OnFailInputGiven.Broadcast(InputKey);
 	}
 }

@@ -33,7 +33,7 @@ public:
 	FOnDeath OnDeathEvent;
 
 	UFUNCTION(BlueprintCallable)
-	void TakeDamage(float Damage, AActor* Instigator, AActor* Victim);
+	bool TakeDamage(float Damage, AActor* Instigator, AActor* Victim);
 	
 	UFUNCTION(BlueprintCallable)
 	void Heal(float HealAmount, AActor* Instigator, AActor* Victim);

@@ -50,7 +50,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats", meta = (ClampMin = "50", ClampMax = "200", UIMin = "50", UIMax = "200"))
 	int M_Health_Minimum = 50;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats", meta = (ClampMin = "201", ClampMax = "500", UIMin = "201", UIMax = "500"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats", meta = (ClampMin = "201", ClampMax = "50000", UIMin = "201", UIMax = "5000"))
 	int M_Health_Maximum = 500;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats", meta = (ClampMin = "0.03", ClampMax = "0.4", UIMin = "0.1", UIMax = "0.4"))
