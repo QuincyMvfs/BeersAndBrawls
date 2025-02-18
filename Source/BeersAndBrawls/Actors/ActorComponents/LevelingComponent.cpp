@@ -26,6 +26,7 @@ void ULevelingComponent::AddExp(int AmountToAdd)
 	if (M_CurrentExp >= M_ExpRequiredPerLevel[M_CurrentLevel])
 	{
 		M_CurrentLevel++;
+		M_SkillPoints++;
 		OnLevelUpEvent.Broadcast();
 	}
 	

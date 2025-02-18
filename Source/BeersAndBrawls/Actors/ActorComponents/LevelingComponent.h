@@ -44,11 +44,11 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Levels")
 	int M_CurrentExp = 0;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Levels")
+	int M_SkillPoints = 0;
+
 	UFUNCTION(BlueprintCallable)
 	void AddExp(int AmountToAdd);
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TArray<UAbilityInfo*> M_LockedAbilities;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<UAbilityInfo*> M_UnlockedAbilities;
