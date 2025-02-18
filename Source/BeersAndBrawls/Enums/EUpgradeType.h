@@ -9,7 +9,7 @@ enum class EUpgradeType:uint8
 {
 	Blunt,
 	Chop,
-	Slash,
+	Cut,
 	Unarmed,
 	Damage,
 	Health,

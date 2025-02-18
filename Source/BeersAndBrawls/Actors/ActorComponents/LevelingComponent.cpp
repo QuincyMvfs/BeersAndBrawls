@@ -3,7 +3,12 @@
 
 #include "LevelingComponent.h"
 
+#include "InventoryComponent.h"
+#include "BeersAndBrawls/BeersAndBrawlsCharacter.h"
 #include "BeersAndBrawls/BeersAndBrawlsGameInstance.h"
+#include "BeersAndBrawls/DataAssets/AbilityInfo.h"
+#include "BeersAndBrawls/Items/Weapon.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
 ULevelingComponent::ULevelingComponent()
@@ -36,6 +41,43 @@ void ULevelingComponent::AddExp(int AmountToAdd)
 	{
 		GameInstanceRef->UpdatePlayerExp(M_CurrentExp);
 	}
+}
+
+void ULevelingComponent::SpendSkillPoints(int Amount)
+{
+	M_SkillPoints -= Amount;
+	OnSkillPointSpentEvent.Broadcast();
+}
+
+void ULevelingComponent::UpdateAllAbilities()
+{
+	if (!PlayerRef)
+	{
+		PlayerRef = Cast<ABeersAndBrawlsCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	}
+	
+	M_AllAbilities.Empty();
+
+	if (PlayerRef->InventoryComponent->M_SelectedWeapon)
+	{
+		if (PlayerRef->InventoryComponent->M_SelectedWeapon->Abilities.Num() > 0)
+		{
+			for (UAbilityInfo* Ability : PlayerRef->InventoryComponent->M_SelectedWeapon->Abilities)
+			{
+				M_AllAbilities.Add(Ability);
+			}
+		}
+	} 
+
+	if (M_UnlockedAbilities.Num() > 0)
+	{
+		for (UAbilityInfo* Ability : M_UnlockedAbilities)
+		{
+			M_AllAbilities.Add(Ability);
+		}
+	}
+
+	OnAbilitiesUpdatedEvent.Broadcast();
 }
 
 void ULevelingComponent::GetLevelInfo(int& OutCurrentXP, int& XPNeeded, int& OutCurrentLevel, float& OutCurrentRatio)

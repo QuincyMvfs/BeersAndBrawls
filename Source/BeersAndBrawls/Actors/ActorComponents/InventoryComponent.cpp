@@ -3,6 +3,7 @@
 
 #include "InventoryComponent.h"
 
+#include "LevelingComponent.h"
 #include "BeersAndBrawls/BeersAndBrawlsCharacter.h"
 #include "BeersAndBrawls/Enums/EItemType.h"
 #include "BeersAndBrawls/Enums/EPlayerInputState.h"
@@ -13,8 +14,7 @@
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
 {
-	M_SelectedWeapon = M_DefaultSelectedWeapon;
-	M_Items = M_DefaultItems;
+	
 }
 
 
@@ -23,14 +23,11 @@ void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	M_SelectedWeapon = M_DefaultSelectedWeapon;
-	for (UItem* Element : M_DefaultItems)
-	{
-		AddItem(Element);
-	}
-	AddItem(M_SelectedWeapon);
-	
 	PlayerRef = Cast<ABeersAndBrawlsCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	
+	for (UItem* Item : M_DefaultItems) { AddItem(Item); }
+	
+	EquipWeapon(M_DefaultSelectedWeapon);
 }
 
 void UInventoryComponent::EquipWeapon(UItem* ItemToEquip)
@@ -42,6 +39,7 @@ void UInventoryComponent::EquipWeapon(UItem* ItemToEquip)
 	if (PlayerRef)
 	{
 		OnNewItemEquippedEvent.Broadcast(ItemToEquip);
+		PlayerRef->LevelingComponent->UpdateAllAbilities();
 		PlayerRef->DisplayNewWeaponMesh(EPlayerInputState::World);
 	}
 }

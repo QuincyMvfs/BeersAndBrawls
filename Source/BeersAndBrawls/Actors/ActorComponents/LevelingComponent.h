@@ -7,11 +7,14 @@
 #include "LevelingComponent.generated.h"
 
 
+class ABeersAndBrawlsCharacter;
 class UBeersAndBrawlsGameInstance;
 class UAbilityInfo;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLevelUp);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnExperienceGained);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSkillPointSpent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAbilitiesUpdated);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BEERSANDBRAWLS_API ULevelingComponent : public UActorComponent
@@ -32,6 +35,12 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnExperienceGained OnExperienceGainedEvent;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnSkillPointSpent OnSkillPointSpentEvent;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnAbilitiesUpdated OnAbilitiesUpdatedEvent;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Levels")
 	TArray<int> M_ExpRequiredPerLevel = {
@@ -47,12 +56,19 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Levels")
 	int M_SkillPoints = 0;
 
-	UFUNCTION(BlueprintCallable)
-	void AddExp(int AmountToAdd);
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TArray<UAbilityInfo*> M_AllAbilities;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<UAbilityInfo*> M_UnlockedAbilities;
+	
+	UFUNCTION(BlueprintCallable)
+	void AddExp(int AmountToAdd);
 
+	void SpendSkillPoints(int Amount);
+
+	void UpdateAllAbilities();
+	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	void GetLevelInfo( UPARAM(DisplayName = "Current XP") int& OutCurrentXP,
 		UPARAM(DisplayName = "XP Needed To Level Up") int& XPNeeded,
@@ -61,4 +77,6 @@ public:
 		);
 
 	UBeersAndBrawlsGameInstance* GameInstanceRef;
+
+	ABeersAndBrawlsCharacter* PlayerRef;
 };
