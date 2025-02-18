@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "AbilityShop.generated.h"
 
+class ABeersAndBrawlsCharacter;
+enum class EUpgradeType : uint8;
 class UAbilityInfo;
 
 UCLASS()
@@ -37,6 +39,11 @@ public:
 	TArray<UAbilityInfo*> M_SlashAbilitiesToBuy;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int M_SlashAbilitiesIndex = 0;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TArray<UAbilityInfo*> M_UnarmedAbilitiesToBuy;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	int M_UnarmedAbilitiesIndex = 0;
 	
 	// Generic Abilities
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
@@ -58,5 +65,10 @@ public:
 	TArray<float> M_CounterUpgradesToBuy{ 0.9, 0.8, 0.7, 0.6, 0.5 };
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int M_CounterUpgradeIndex = 0;
+
+	ABeersAndBrawlsCharacter* PlayerRef;
+	
+	UFUNCTION(BlueprintCallable)
+	bool UpgradeAbility(EUpgradeType UpgradeType, int SkillPoints);
 	
 };

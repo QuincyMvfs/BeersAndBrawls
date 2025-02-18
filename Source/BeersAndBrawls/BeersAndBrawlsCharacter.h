@@ -100,5 +100,14 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool CanSelectAbility = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float M_DamageMultiplier = 1.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float M_CombatSpeedMultiplier = 1.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float M_CounterSpeedMultiplier = 1.0f;
 };
 

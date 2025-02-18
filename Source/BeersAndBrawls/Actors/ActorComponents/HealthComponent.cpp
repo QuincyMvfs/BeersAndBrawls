@@ -54,11 +54,20 @@ void UHealthComponent::SetCurrentHealth(float NewCurrentHealth)
 {
 	M_CurrentHealth = NewCurrentHealth;
 	FMath::Clamp(M_CurrentHealth, 0, M_MaxHealth);
+	OnHealEvent.Broadcast(M_CurrentHealth);
 }
 
 void UHealthComponent::SetMaxHealth(float NewMaxHealth)
 {
 	M_MaxHealth = NewMaxHealth;
 	M_CurrentHealth = M_MaxHealth;
+	OnHealEvent.Broadcast(M_CurrentHealth);
+}
+
+void UHealthComponent::LevelUpMaxHealth(float Multiplier)
+{
+	M_MaxHealth *= Multiplier;
+	M_CurrentHealth = M_MaxHealth;
+	OnHealEvent.Broadcast(M_CurrentHealth);
 }
 

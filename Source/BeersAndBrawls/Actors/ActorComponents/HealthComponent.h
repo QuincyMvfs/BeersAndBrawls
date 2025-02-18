@@ -46,6 +46,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetMaxHealth(float NewMaxHealth);
+
+	UFUNCTION(BlueprintCallable)
+	void LevelUpMaxHealth(float Multiplier);
 	
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Health)
