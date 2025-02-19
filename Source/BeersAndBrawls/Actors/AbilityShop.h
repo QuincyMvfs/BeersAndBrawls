@@ -69,6 +69,7 @@ public:
 	ABeersAndBrawlsCharacter* PlayerRef;
 	
 	UFUNCTION(BlueprintCallable)
-	bool UpgradeAbility(EUpgradeType UpgradeType, int SkillPoints);
+	bool UpgradeAbility(EUpgradeType UpgradeType, int SkillPoints,
+		UPARAM(DisplayName = "New Level") int& CurrentLevel);
 	
 };
