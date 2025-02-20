@@ -10,5 +10,6 @@ enum class EItemType:uint8
 	Blunt,
 	Chop,
 	Cut,
+	Unarmed,
 	Consumable
 };

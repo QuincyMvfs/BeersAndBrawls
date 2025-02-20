@@ -33,7 +33,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<UAbilityInfo*> M_ChopAbilitiesToBuy;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	int M_ChopAbilitiesIndex = 2;
+	int M_ChopAbilitiesIndex = 0;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<UAbilityInfo*> M_CutAbilitiesToBuy;
