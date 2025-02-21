@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "BarFightGenerator.generated.h"
 
+class ABeersAndBrawlsCharacter;
 struct FEnemyInfoStruct;
 class UEnemyInfo;
 class UWeapon;
@@ -90,6 +91,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enemy")
 	UEnemyInfo* TemplateEnemy;
 
+	ABeersAndBrawlsCharacter* PlayerRef;
+	
 public:
 	FString GenerateRandomName();
 	FString GenerateRandomDescription();

@@ -3,9 +3,11 @@
 
 #include "BarFightGenerator.h"
 
+#include "BeersAndBrawls/BeersAndBrawlsCharacter.h"
 #include "BeersAndBrawls/DataAssets/EnemyInfo.h"
 #include "BeersAndBrawls/Items/Weapon.h"
 #include "BeersAndBrawls/Structs/FEnemyInfoStruct.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ABarFightGenerator::ABarFightGenerator()
@@ -17,7 +19,7 @@ ABarFightGenerator::ABarFightGenerator()
 void ABarFightGenerator::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	PlayerRef = Cast<ABeersAndBrawlsCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 }
 
 // Name Generator
@@ -101,10 +103,14 @@ FEnemyInfoStruct ABarFightGenerator::GenerateEnemyInfo()
 	NewEnemy.EnemyDescription = FText::FromString(GenerateRandomDescription());
 	NewEnemy.EquippedWeapon = GenerateRandomWeapon();
 	
-	const float AttackSpeedMultiplier = FMath::TruncToFloat(FMath::RandRange(M_AttackSpeed_Minimum, M_AttackSpeed_Maximum) * 100) / 100;
+	float AttackSpeedMultiplier = FMath::TruncToFloat(FMath::RandRange(M_AttackSpeed_Minimum, M_AttackSpeed_Maximum) * 100) / 100;
+	AttackSpeedMultiplier *= PlayerRef->M_CombatSpeedMultiplier;
 	NewEnemy.AttackSpeedMultiplier = AttackSpeedMultiplier;
-	const float CounterSpeedMultiplier = FMath::TruncToFloat(FMath::RandRange(M_CounterSpeed_Minimum, M_CounterSpeed_Maximum) * 100) / 100;
+	
+	float CounterSpeedMultiplier = FMath::TruncToFloat(FMath::RandRange(M_CounterSpeed_Minimum, M_CounterSpeed_Maximum) * 100) / 100;
+	CounterSpeedMultiplier *= PlayerRef->M_CounterSpeedMultiplier;
 	NewEnemy.CounterSpeedMultiplier = CounterSpeedMultiplier;
+	
 	const int MaxHealth = FMath::RandRange(M_Health_Minimum, M_Health_Maximum);
 	NewEnemy.MaxHealth = MaxHealth;
 
