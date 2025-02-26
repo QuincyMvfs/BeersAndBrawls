@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BeersAndBrawls/Enums/EAbilitySpeeds.h"
 #include "GameFramework/Actor.h"
 #include "BarFightGenerator.generated.h"
 
@@ -48,46 +49,54 @@ public:
 		"The Shittiest Pisser in the room", "I will suck you off buddy", "Blah blah blah suck my cock pal", "kill yourself, NOW!" 
 	};
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats", meta = (ClampMin = "50", ClampMax = "200", UIMin = "50", UIMax = "200"))
-	int M_Health_Minimum = 50;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats| Health")
+	TArray<float> M_Health_Level_Multipliers = { 1, 1.2, 1.4, 2, 3, 4.5, 5};
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats| Health")
+	int M_Health_Minimum = 80;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats", meta = (ClampMin = "201", ClampMax = "50000", UIMin = "201", UIMax = "5000"))
-	int M_Health_Maximum = 500;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats| Health")
+	int M_Health_Maximum = 150;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats", meta = (ClampMin = "0.03", ClampMax = "0.4", UIMin = "0.1", UIMax = "0.4"))
-	float M_AttackSpeed_Minimum = 0.03;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats| Speeds")
+	TArray<float> M_Combat_Speeds = { 0.6, 0.45, 0.4, 0.35, 0.3, 0.25, 0.20, 0.15, 0.1 };
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats", meta = (ClampMin = "0.5", ClampMax = "1.1", UIMin = "0.5", UIMax = "1.1"))
-	float M_AttackSpeed_Maximum = 1.1;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats", meta = (ClampMin = "0.03", ClampMax = "0.4", UIMin = "0.1", UIMax = "0.4"))
-	float M_CounterSpeed_Minimum = 0.03;                                                                   
-                                                                   
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats", meta = (ClampMin = "0.5", ClampMax = "1.1", UIMin = "0.5", UIMax = "1.1"))
-	float M_CounterSpeed_Maximum = 1.1;
-
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats| Speeds")
+	TArray<float> M_Counter_Speeds = { 0.6, 0.45, 0.4, 0.35, 0.3, 0.25, 0.20, 0.15, 0.1 };
 	// BASIC INFO END
+
+	// REWARDS
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Rewards")
+	int M_Reward_MinimumCurrency;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Rewards")
+	int M_Reward_MaximumCurrency;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Rewards")
+	float M_Reward_MinimumExp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Rewards")
+	float M_Reward_MaximumExp;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Bar Fight Generator")
 	int M_FightsToGenerate = 4;
 
 	// WEAPONS
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Instanced, Category = "Weapons")
-	TArray<UWeapon*> M_AllPossibleWeapons;
+	TArray<UWeapon*> M_Level_01_To_02_PossibleWeapons;
 
-	// REWARDS
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Rewards", meta = (ClampMin = "10", ClampMax = "500", UIMin = "10", UIMax = "500"))
-	int M_Reward_MinimumCurrency;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Instanced, Category = "Weapons")
+	TArray<UWeapon*> M_Level_03_To_04_PossibleWeapons;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Rewards", meta = (ClampMin = "501", ClampMax = "2000", UIMin = "501", UIMax = "2000"))
-	int M_Reward_MaximumCurrency;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Instanced, Category = "Weapons")
+	TArray<UWeapon*> M_Level_05_To_06_PossibleWeapons;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Rewards", meta = (ClampMin = "10.0", ClampMax = "500.0", UIMin = "10.0", UIMax = "500.0"))
-	float M_Reward_MinimumExp;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Instanced, Category = "Weapons")
+	TArray<UWeapon*> M_Level_07_To_08_PossibleWeapons;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Rewards", meta = (ClampMin = "501.0", ClampMax = "2000.0", UIMin = "501.0", UIMax = "2000.0"))
-	float M_Reward_MaximumExp;
-
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Instanced, Category = "Weapons")
+	TArray<UWeapon*> M_Level_09_To_10_PossibleWeapons;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enemy")
 	UEnemyInfo* TemplateEnemy;
 
@@ -96,10 +105,11 @@ public:
 public:
 	FString GenerateRandomName();
 	FString GenerateRandomDescription();
-	UWeapon* GenerateRandomWeapon();
-	int CalculateBeerBuxReward(float CombatSpeed, float CounterSpeed, int MaxHealth);
-	int CalculateExpReward(float CombatSpeed, float CounterSpeed, int MaxHealth);
+	UWeapon* GenerateRandomWeapon(int Level);
+	int CalculateBeerBuxReward(int MaxHealth, int Level);
+	int CalculateExpReward(int MaxHealth, int Level);
+	EAbilitySpeeds GetSpeed(int Index);
 	
 	UFUNCTION(BlueprintCallable)
-	FEnemyInfoStruct GenerateEnemyInfo();
+	FEnemyInfoStruct GenerateEnemyInfo(int Level);
 };

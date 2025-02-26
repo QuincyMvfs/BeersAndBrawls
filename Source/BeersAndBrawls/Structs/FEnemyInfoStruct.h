@@ -19,6 +19,9 @@ struct FEnemyInfoStruct
 	FText EnemyDescription;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	int EnemyLevel;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float MaxHealth;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
@@ -27,6 +30,12 @@ struct FEnemyInfoStruct
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	int ExpReward;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	EAbilitySpeeds AttackSpeed;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	EAbilitySpeeds CounterSpeed;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float AttackSpeedMultiplier;
 

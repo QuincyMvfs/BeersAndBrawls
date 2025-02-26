@@ -48,10 +48,10 @@ public:
 	};
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Levels")
-	int M_CurrentLevel = 0;
+	int M_CurrentLevel = 1;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Levels")
-	int M_CurrentExp = 0;
+	int M_CurrentExp = 501;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Levels")
 	int M_SkillPoints = 0;
