@@ -22,7 +22,7 @@ bool UHealthComponent::TakeDamage(float Damage, AActor* Instigator, AActor* Vict
 	if (!Damage) return false;
 
 	M_CurrentHealth -= Damage;
-	FMath::Clamp(M_CurrentHealth, 0, M_MaxHealth);
+	M_CurrentHealth = FMath::Clamp(M_CurrentHealth, 0, M_MaxHealth);
 	
 	OnDamageTakenEvent.Broadcast(Damage);
 	if (M_CurrentHealth <= 0)
@@ -39,7 +39,7 @@ void UHealthComponent::Heal(float HealAmount, AActor* Instigator, AActor* Victim
 	if (!HealAmount) return;
 
 	M_CurrentHealth += HealAmount;
-	FMath::Clamp(M_CurrentHealth, 0, M_MaxHealth);
+	M_CurrentHealth = FMath::Clamp(M_CurrentHealth, 0, M_MaxHealth);
 
 	OnHealEvent.Broadcast(HealAmount);
 }
@@ -47,13 +47,12 @@ void UHealthComponent::Heal(float HealAmount, AActor* Instigator, AActor* Victim
 void UHealthComponent::ResetCurrentHealth()
 {
 	M_CurrentHealth = M_MaxHealth;
-	OnHealEvent.Broadcast(M_CurrentHealth);
 }
 
 void UHealthComponent::SetCurrentHealth(float NewCurrentHealth)
 {
 	M_CurrentHealth = NewCurrentHealth;
-	FMath::Clamp(M_CurrentHealth, 0, M_MaxHealth);
+	M_CurrentHealth = FMath::Clamp(M_CurrentHealth, 0, M_MaxHealth);
 	OnHealEvent.Broadcast(M_CurrentHealth);
 }
 
