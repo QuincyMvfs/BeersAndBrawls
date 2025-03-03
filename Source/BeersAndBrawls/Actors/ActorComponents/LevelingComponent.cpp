@@ -7,6 +7,7 @@
 #include "BeersAndBrawls/BeersAndBrawlsCharacter.h"
 #include "BeersAndBrawls/BeersAndBrawlsGameInstance.h"
 #include "BeersAndBrawls/DataAssets/AbilityInfo.h"
+#include "BeersAndBrawls/Items/Consumable.h"
 #include "BeersAndBrawls/Items/Weapon.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -69,6 +70,17 @@ void ULevelingComponent::UpdateAllAbilities()
 		}
 	} 
 
+	if (PlayerRef->InventoryComponent->M_SelectedConsumable)
+	{
+		if (PlayerRef->InventoryComponent->M_SelectedConsumable->Abilities.Num() > 0)
+		{
+			for (UAbilityInfo* Ability : PlayerRef->InventoryComponent->M_SelectedConsumable->Abilities)
+			{
+				M_AllAbilities.Add(Ability);
+			}
+		}
+	}
+	
 	if (M_UnlockedAbilities.Num() > 0)
 	{
 		for (UAbilityInfo* Ability : M_UnlockedAbilities)

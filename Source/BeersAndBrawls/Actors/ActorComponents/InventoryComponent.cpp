@@ -7,6 +7,7 @@
 #include "BeersAndBrawls/BeersAndBrawlsCharacter.h"
 #include "BeersAndBrawls/Enums/EItemType.h"
 #include "BeersAndBrawls/Enums/EPlayerInputState.h"
+#include "BeersAndBrawls/Items/Consumable.h"
 #include "BeersAndBrawls/Items/UItem.h"
 #include "BeersAndBrawls/Items/Weapon.h"
 #include "Kismet/GameplayStatics.h"
@@ -28,19 +29,34 @@ void UInventoryComponent::BeginPlay()
 	for (UItem* Item : M_DefaultItems) { AddItem(Item); }
 	
 	EquipWeapon(M_DefaultSelectedWeapon);
+
 }
 
-void UInventoryComponent::EquipWeapon(UItem* ItemToEquip)
+void UInventoryComponent::EquipWeapon(UItem* WeaponToEquip)
 {
-	M_SelectedWeapon = Cast<UWeapon>(ItemToEquip);
+	M_SelectedWeapon = Cast<UWeapon>(WeaponToEquip);
 	
-	if (!M_Items.Contains(ItemToEquip))	AddItem(ItemToEquip);
+	if (!M_Items.Contains(WeaponToEquip)) AddItem(WeaponToEquip);
 	
 	if (PlayerRef)
 	{
-		OnNewItemEquippedEvent.Broadcast(ItemToEquip);
+		OnNewItemEquippedEvent.Broadcast(WeaponToEquip);
 		PlayerRef->LevelingComponent->UpdateAllAbilities();
 		PlayerRef->DisplayNewWeaponMesh(EPlayerInputState::World);
+	}
+}
+
+void UInventoryComponent::EquipConsumable(UItem* ConsumableToEquip)
+{
+	M_SelectedConsumable = Cast<UConsumable>(ConsumableToEquip);
+	
+	if (!M_Items.Contains(ConsumableToEquip)) AddItem(ConsumableToEquip);
+	
+	if (PlayerRef)
+	{
+		OnNewItemEquippedEvent.Broadcast(ConsumableToEquip);
+		PlayerRef->LevelingComponent->UpdateAllAbilities();
+		PlayerRef->DisplayNewConsumableMesh();
 	}
 }
 
@@ -90,7 +106,23 @@ bool UInventoryComponent::CanPlayerSellWeapon()
 	}
 
 	if (TotalWeapons > 1) { return true; }
-	else { return false; }
+
+	return false;
+}
+
+bool UInventoryComponent::CanPlayerSellConsumable()
+{
+	int TotalConsumables = 0;
+	if (M_Items.Num() <= 0) return false;
+	
+	for (const UItem* Item : M_Items)
+	{
+		if (Item->ItemType == EItemType::Consumable) TotalConsumables++;
+	}
+
+	if (TotalConsumables > 1) { return true; }
+
+	return false;
 }
 
 

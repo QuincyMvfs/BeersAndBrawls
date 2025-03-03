@@ -6,7 +6,9 @@
 #include "ActorComponents/CurrencyComponent.h"
 #include "ActorComponents/InventoryComponent.h"
 #include "BeersAndBrawls/BeersAndBrawlsCharacter.h"
+#include "BeersAndBrawls/Enums/EItemType.h"
 #include "BeersAndBrawls/Enums/EPlayerInputState.h"
+#include "BeersAndBrawls/Items/Consumable.h"
 #include "BeersAndBrawls/Items/UItem.h"
 #include "BeersAndBrawls/Items/Weapon.h"
 #include "Kismet/GameplayStatics.h"
@@ -32,7 +34,14 @@ bool AShop::BuyItem(UItem* ItemToBuy)
 		if (CanBuyItem(ItemToBuy))
 		{
 			PlayerRef->CurrencyComponent->RemoveBeerBux(ItemToBuy->Cost);
-			PlayerRef->InventoryComponent->EquipWeapon(ItemToBuy);
+			if (ItemToBuy->ItemType == EItemType::Consumable)
+			{
+				PlayerRef->InventoryComponent->EquipConsumable(ItemToBuy);
+			}
+			else
+			{
+				PlayerRef->InventoryComponent->EquipWeapon(ItemToBuy);
+			}
 			return true;
 		}
 	}
@@ -63,9 +72,20 @@ bool AShop::CanBuyItem(UItem* ItemToBuy)
 
 bool AShop::CanSellItem(UItem* ItemToSell)
 {
-	if (PlayerRef->InventoryComponent->DoesPlayerHaveItem(ItemToSell) &&
-		PlayerRef->InventoryComponent->CanPlayerSellWeapon() &&
-		ItemToSell != PlayerRef->InventoryComponent->M_SelectedWeapon) { return true; }
+	if (PlayerRef->InventoryComponent->DoesPlayerHaveItem(ItemToSell))
+	{
+		if (ItemToSell->ItemType == EItemType::Consumable)
+		{
+			UConsumable* ConsumableToSell = Cast<UConsumable>(ItemToSell);
+			if (PlayerRef->InventoryComponent->CanPlayerSellConsumable() &&
+			ConsumableToSell != PlayerRef->InventoryComponent->M_SelectedConsumable) { return true; }
+		}
+		else
+		{
+			if (PlayerRef->InventoryComponent->CanPlayerSellWeapon() &&
+			ItemToSell != PlayerRef->InventoryComponent->M_SelectedWeapon) { return true; }
+		}
+	}
 
 	return false;
 }

@@ -60,10 +60,13 @@ public:
 
 	// Weapon Mesh Slots
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent* EquippedStaticMeshComponent;
+	UStaticMeshComponent* WeaponEquippedStaticMeshComponent;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent* BackSlotStaticMeshComponent;
+	UStaticMeshComponent* WeaponBackSlotStaticMeshComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
+	UStaticMeshComponent* ConsumableSlotStaticMeshComponent;
 
 	UPROPERTY(BlueprintAssignable)
 	FOnTurnChanged OnTurnChangedEvent;
@@ -80,6 +83,8 @@ public:
 	void TryInteract();
 	
 	void DisplayNewWeaponMesh(EPlayerInputState NewState);
+
+	void DisplayNewConsumableMesh();
 
 	void SwapCameras(int Index);
 

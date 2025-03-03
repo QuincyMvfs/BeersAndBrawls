@@ -7,6 +7,7 @@
 #include "InventoryComponent.generated.h"
 
 
+class UConsumable;
 class ABeersAndBrawlsCharacter;
 class UWeapon;
 class UItem;
@@ -42,6 +43,9 @@ public:
 	UWeapon* M_SelectedWeapon;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UConsumable* M_SelectedConsumable;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<UItem*> M_Items;
 
 	UPROPERTY(EditDefaultsOnly, Instanced)
@@ -51,7 +55,10 @@ public:
 	TArray<UItem*> M_DefaultItems;
 
 	UFUNCTION(BlueprintCallable)
-	void EquipWeapon(UItem* ItemToEquip);
+	void EquipWeapon(UItem* WeaponToEquip);
+
+	UFUNCTION(BlueprintCallable)
+	void EquipConsumable(UItem* ConsumableToEquip);
 
 	UFUNCTION(BlueprintCallable)
 	void AddItem(UItem* ItemToAdd);
@@ -63,6 +70,8 @@ public:
 	bool DoesPlayerHaveItem(UItem* ItemToCheck);
 
 	bool CanPlayerSellWeapon();
+
+	bool CanPlayerSellConsumable();
 
 	ABeersAndBrawlsCharacter* PlayerRef;
 		

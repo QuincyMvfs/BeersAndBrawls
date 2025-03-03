@@ -17,6 +17,7 @@
 #include "Actors/ActorComponents/LevelingComponent.h"
 #include "Enums/EPlayerInputState.h"
 #include "Interface/Interactable.h"
+#include "Items/Consumable.h"
 #include "Items/Weapon.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -33,11 +34,15 @@ ABeersAndBrawlsCharacter::ABeersAndBrawlsCharacter()
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
 	LevelingComponent = CreateDefaultSubobject<ULevelingComponent>(TEXT("LevelingComponent"));
-	EquippedStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponMeshSlot"));
-	EquippedStaticMeshComponent->SetupAttachment(GetMesh(), "WeaponSocket");
+	WeaponEquippedStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponMeshSlot"));
+	WeaponEquippedStaticMeshComponent->SetupAttachment(GetMesh(), "WeaponSocket");
 
-	BackSlotStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HolsteredMeshSlot"));
-	BackSlotStaticMeshComponent->SetupAttachment(GetMesh(), "HolsterSocket");
+	WeaponBackSlotStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HolsteredMeshSlot"));
+	WeaponBackSlotStaticMeshComponent->SetupAttachment(GetMesh(), "HolsterSocket");
+	
+	ConsumableSlotStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ConsumableSocket"));
+	ConsumableSlotStaticMeshComponent->SetupAttachment(GetMesh(), "ConsumableSocket");
+	
 	
 	CombatCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CombatCamera"));
 	CombatCamera->SetupAttachment(GetCapsuleComponent());
@@ -153,21 +158,29 @@ void ABeersAndBrawlsCharacter::DisplayNewWeaponMesh(EPlayerInputState NewState)
 	switch (NewState)
 	{
 		case EPlayerInputState::Combat:
-			if (InventoryComponent->M_SelectedWeapon) EquippedStaticMeshComponent->SetStaticMesh(InventoryComponent->M_SelectedWeapon->ItemMesh);
-			else { EquippedStaticMeshComponent->SetStaticMesh(InventoryComponent->M_DefaultSelectedWeapon->ItemMesh); }
-			BackSlotStaticMeshComponent->SetStaticMesh(nullptr);
+			if (InventoryComponent->M_SelectedWeapon) WeaponEquippedStaticMeshComponent->SetStaticMesh(InventoryComponent->M_SelectedWeapon->ItemMesh);
+			else { WeaponEquippedStaticMeshComponent->SetStaticMesh(InventoryComponent->M_DefaultSelectedWeapon->ItemMesh); }
+			WeaponBackSlotStaticMeshComponent->SetStaticMesh(nullptr);
 			return;
 		case EPlayerInputState::World:
-			EquippedStaticMeshComponent->SetStaticMesh(nullptr);
-		if (InventoryComponent->M_SelectedWeapon) BackSlotStaticMeshComponent->SetStaticMesh(InventoryComponent->M_SelectedWeapon->ItemMesh);
-		else { BackSlotStaticMeshComponent->SetStaticMesh(InventoryComponent->M_DefaultSelectedWeapon->ItemMesh); }
+			WeaponEquippedStaticMeshComponent->SetStaticMesh(nullptr);
+		if (InventoryComponent->M_SelectedWeapon) WeaponBackSlotStaticMeshComponent->SetStaticMesh(InventoryComponent->M_SelectedWeapon->ItemMesh);
+		else { WeaponBackSlotStaticMeshComponent->SetStaticMesh(InventoryComponent->M_DefaultSelectedWeapon->ItemMesh); }
 			return;
 		case EPlayerInputState::Shopping:
-			EquippedStaticMeshComponent->SetStaticMesh(nullptr);
-		if (InventoryComponent->M_SelectedWeapon) BackSlotStaticMeshComponent->SetStaticMesh(InventoryComponent->M_SelectedWeapon->ItemMesh);
-		else { BackSlotStaticMeshComponent->SetStaticMesh(InventoryComponent->M_DefaultSelectedWeapon->ItemMesh); }
+			WeaponEquippedStaticMeshComponent->SetStaticMesh(nullptr);
+		if (InventoryComponent->M_SelectedWeapon) WeaponBackSlotStaticMeshComponent->SetStaticMesh(InventoryComponent->M_SelectedWeapon->ItemMesh);
+		else { WeaponBackSlotStaticMeshComponent->SetStaticMesh(InventoryComponent->M_DefaultSelectedWeapon->ItemMesh); }
 			return;
 		
+	}
+}
+
+void ABeersAndBrawlsCharacter::DisplayNewConsumableMesh()
+{
+	if (InventoryComponent->M_SelectedConsumable)
+	{
+		ConsumableSlotStaticMeshComponent->SetStaticMesh(InventoryComponent->M_SelectedConsumable->ItemMesh);
 	}
 }
 
