@@ -38,5 +38,7 @@ bool UStatusEffectComponent::TriggerStatusEffect(TArray<EStatusEffectTypes> Stat
 				break;
 		}
 	}
+
+	return false;
 }
 
