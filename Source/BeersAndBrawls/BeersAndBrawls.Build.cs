@@ -6,7 +6,7 @@ public class BeersAndBrawls : ModuleRules
 {
 	public BeersAndBrawls(ReadOnlyTargetRules Target) : base(Target)
 	{
-		PrivateDependencyModuleNames.AddRange(new string[] { "UMGEditor", "UMGEditor", "UMGEditor" });
+		// PrivateDependencyModuleNames.AddRange(new string[] { });
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" });
