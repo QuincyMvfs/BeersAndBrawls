@@ -66,7 +66,7 @@ void UHealthComponent::SetMaxHealth(float NewMaxHealth)
 void UHealthComponent::LevelUpMaxHealth(float Multiplier)
 {
 	M_MaxHealth *= Multiplier;
-	M_MaxHealth = FMathf::Round(M_MaxHealth);
+	M_MaxHealth = FMath::RoundToInt(M_MaxHealth);
 	M_CurrentHealth = M_MaxHealth;
 	OnHealEvent.Broadcast(M_CurrentHealth);
 }
