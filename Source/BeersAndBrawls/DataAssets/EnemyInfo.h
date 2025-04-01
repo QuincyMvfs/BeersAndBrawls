@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BeersAndBrawls/Structs/FEnemyInfoStruct.h"
 #include "Engine/DataAsset.h"
 #include "EnemyInfo.generated.h"
 
@@ -18,5 +19,6 @@ class BEERSANDBRAWLS_API UEnemyInfo : public UDataAsset
 	GENERATED_BODY()
 	
 public:
-	FEnemyInfoStruct* EnemyInfoStruct;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FEnemyInfoStruct EnemyInfoStruct;
 };

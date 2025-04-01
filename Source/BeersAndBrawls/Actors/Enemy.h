@@ -9,6 +9,7 @@
 #include "GameFramework/Character.h"
 #include "Enemy.generated.h"
 
+class UStatusEffectComponent;
 class UAbilityInfo;
 struct FEnemyInfoStruct;
 class UInventoryComponent;
@@ -33,6 +34,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
 	UInventoryComponent* InventoryComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
+	UStatusEffectComponent* StatusEffectComponent;
 
 	// Mesh Slots
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Meshs", meta = (AllowPrivateAccess = "true"))

@@ -15,6 +15,7 @@
 #include "Actors/ActorComponents/HealthComponent.h"
 #include "Actors/ActorComponents/InventoryComponent.h"
 #include "Actors/ActorComponents/LevelingComponent.h"
+#include "Actors/ActorComponents/StatusEffectComponent.h"
 #include "Enums/EPlayerInputState.h"
 #include "Interface/Interactable.h"
 #include "Items/Consumable.h"
@@ -34,6 +35,8 @@ ABeersAndBrawlsCharacter::ABeersAndBrawlsCharacter()
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
 	LevelingComponent = CreateDefaultSubobject<ULevelingComponent>(TEXT("LevelingComponent"));
+	
+	StatusEffectComponent = CreateDefaultSubobject<UStatusEffectComponent>(TEXT("StatusEffectComponent"));
 	WeaponEquippedStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponMeshSlot"));
 	WeaponEquippedStaticMeshComponent->SetupAttachment(GetMesh(), "WeaponSocket");
 

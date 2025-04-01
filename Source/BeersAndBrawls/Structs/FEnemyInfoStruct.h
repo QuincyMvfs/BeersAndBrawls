@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BeersAndBrawls/Enums/EAbilitySpeeds.h"
 #include "FEnemyInfoStruct.generated.h"
 
 class UWeapon;

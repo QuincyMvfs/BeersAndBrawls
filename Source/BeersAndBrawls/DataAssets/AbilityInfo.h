@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "BeersAndBrawls/Enums/EAbilitySpeeds.h"
 #include "BeersAndBrawls/Enums/EComboComplexity.h"
+#include "BeersAndBrawls/Structs/FStatusEffect.h"
 #include "Engine/DataAsset.h"
 #include "AbilityInfo.generated.h"
 
@@ -22,6 +23,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FText M_AbilityDescription;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TArray<FStatusEffect> StatusEffects;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float M_StatMultiplier = 1.0;
 

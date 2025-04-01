@@ -6,6 +6,7 @@
 #include "ActorComponents/CombatComponent.h"
 #include "ActorComponents/HealthComponent.h"
 #include "ActorComponents/InventoryComponent.h"
+#include "ActorComponents/StatusEffectComponent.h"
 #include "BeersAndBrawls/DataAssets/AbilityInfo.h"
 #include "BeersAndBrawls/DataAssets/AbilityPattern.h"
 #include "BeersAndBrawls/Items/Weapon.h"
@@ -16,6 +17,7 @@ AEnemy::AEnemy()
 	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
+	StatusEffectComponent = CreateDefaultSubobject<UStatusEffectComponent>(TEXT("StatusEffectComponent"));
 	EquippedWeaponComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TheWeaponSocket"));
 	EquippedWeaponComponent->SetupAttachment(GetMesh(), "WeaponSocket");
 }
