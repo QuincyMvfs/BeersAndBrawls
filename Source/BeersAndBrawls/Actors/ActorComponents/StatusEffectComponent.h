@@ -6,12 +6,18 @@
 #include "BeersAndBrawls/Enums/EActiveUser.h"
 #include "BeersAndBrawls/Enums/EStatusEffectTypes.h"
 #include "BeersAndBrawls/Structs/FStatusEffect.h"
+#include "BeersAndBrawls/Structs/FStatusEffectWithCounter.h"
 #include "Components/ActorComponent.h"
 #include "StatusEffectComponent.generated.h"
 
-
+class UCombatComponent;
+class UHealthComponent;
 struct FStatusEffectWithCounter;
 struct FStatusEffect;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEffectTriggered, FStatusEffectWithCounter, TriggeredEffect);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEffectUsed, FStatusEffectWithCounter, UsedEffect);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEffectEnded, FStatusEffectWithCounter, EndedEffect);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BEERSANDBRAWLS_API UStatusEffectComponent : public UActorComponent
@@ -23,13 +29,24 @@ public:
 	UStatusEffectComponent();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (Category = "Getters"))
-	TArray<FStatusEffectWithCounter> ActiveStatusEffects;
-	
+	TArray<FStatusEffectWithCounter> ActiveStatusEffectsWithCounter;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 public:
+	//* Events
+	UPROPERTY(BlueprintAssignable)
+	FOnEffectTriggered OnEffectTriggeredEvent;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnEffectUsed OnEffectUsedEvent;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnEffectEnded OnEffectEndedEvent;
+	//*
+	
 	//* Variables
 	/// Dazed Variables
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (Category = "Status Effect Variables|Dazed Variables"))
@@ -58,6 +75,10 @@ public:
 	TArray<float> Electrocuted_ChanceToTrigger {
 		0.1f, 0.2f, 0.25f, 0.35f, 0.45f, 0.65f
 	};
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (Category = "Status Effect Variables|Electrocuted Variables"))
+	TArray<int> Electrocuted_EffectDuration {
+		1, 1, 1, 1, 1, 1
+	};
 
 	/// Inflamed Variables
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (Category = "Status Effect Variables|Inflamed Variables"))
@@ -70,7 +91,7 @@ public:
 	};
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (Category = "Status Effect Variables|Inflamed Variables"))
 	TArray<float> Inflamed_ChanceToTrigger {
-		0.1f, 0.2f, 0.25f, 0.3f, 0.4f, 0.45f
+		0.1f, 0.2f, 0.25f, 0.3f, 0.4f, 0.95f
 	};
 
 	/// Frozen Variables
@@ -102,6 +123,10 @@ public:
 	TArray<int> Weakened_EffectDuration {
 		1, 1, 2, 2, 2, 3
 	};
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (Category = "Status Effect Variables|Weakened Variables"))
+	TArray<float> Weakened_ChanceToTrigger {
+		0.1f, 0.2f, 0.30f, 0.30f, 0.55f, 0.75f
+	};
 
 	/// Invigorated Variables
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (Category = "Status Effect Variables|Invigorated Variables"))
@@ -117,10 +142,15 @@ public:
 	//* Functions
 	// Trigger Status Effect Functions
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Trigger Status Effect", Tooptip = "Triggers a Status Effect", Category = "StatusEffects"))
-	bool TriggerStatusEffect(TArray<FStatusEffect> StatusEffects,
+	void TriggerStatusEffect(TArray<FStatusEffect> StatusEffects,
 	UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim);
 
+	UFUNCTION(BlueprintCallable)
+	void ActivateStatusEffects();
 
+	UFUNCTION(BlueprintPure, BlueprintCallable)
+	bool DoesEffectLand(FStatusEffect StatusEffect);
+	
 	// Status Effect Functions
 	UFUNCTION(BlueprintCallable, meta = (Category = "StatusEffects"))
 	bool Trigger_Daze(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim);
@@ -142,4 +172,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta = (Category = "StatusEffects"))
 	bool Trigger_Invigorated(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim);
+
+	UHealthComponent* ParentHealthComponent;
+	UCombatComponent* ParentCombatComponent;
 };
