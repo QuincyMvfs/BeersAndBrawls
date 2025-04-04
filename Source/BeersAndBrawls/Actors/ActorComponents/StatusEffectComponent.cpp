@@ -37,17 +37,15 @@ void UStatusEffectComponent::TriggerStatusEffect(TArray<FStatusEffect> StatusEff
 	UE_LOG(LogTemp, Warning, TEXT("%d Status Effects"), StatusEffects.Num());
 	if (StatusEffects.Num() == 0) return;
 
-	for (FStatusEffectWithCounter M_Effect : ActiveStatusEffectsWithCounter)
+	for (int i = 0; i < ActiveStatusEffectsWithCounter.Num(); i++)
 	{
-		for (int i = 0; i < StatusEffects.Num(); i++)
+		for (int j = 0; j < StatusEffects.Num(); j++)
 		{
-			// int M_Effect_Int = static_cast<int>(M_Effect.StatusEffect.EffectTier);
-			// int Effect_Int = static_cast<int>(StatusEffects[i].EffectTier);
-			
-			if (M_Effect.StatusEffect.EffectTier == StatusEffects[i].EffectTier)
+			if (ActiveStatusEffectsWithCounter[i].StatusEffect.EffectTier == StatusEffects[j].EffectTier)
 			{
-				StatusEffects.RemoveAt(i);
-				break;
+				ActiveStatusEffectsWithCounter[i].Counter = GetEffectDuration(StatusEffects[j]);
+				OnEffectUsedEvent.Broadcast(ActiveStatusEffectsWithCounter[i]);
+				StatusEffects.RemoveAt(j);
 			}
 		}
 	}
@@ -180,7 +178,7 @@ bool UStatusEffectComponent::DoesEffectLand(FStatusEffect StatusEffect)
 	if (ChanceToTrigger >= 1.0f)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("ChanceToTrigger is 100"));
-		return false;
+		return true;
 	}
 
 	// If the value rolled if higher than the chance to trigger, then the effect failed
@@ -199,6 +197,113 @@ bool UStatusEffectComponent::DoesEffectLand(FStatusEffect StatusEffect)
 
 }
 
+int UStatusEffectComponent::GetEffectDuration(FStatusEffect StatusEffect)
+{
+	int Counter = 0;
+	int EffectTier = StatusEffect.EffectTier-1;
+
+	switch (StatusEffect.EffectType)
+	{
+		case EStatusEffectTypes::Dazed:
+			Counter = Dazed_EffectDuration[EffectTier];
+			break;
+		case EStatusEffectTypes::Electrocuted:
+			Counter = Electrocuted_EffectDuration[EffectTier];
+			break;
+		case EStatusEffectTypes::Frozen:
+			Counter = Frozen_EffectDuration[EffectTier];
+			break;
+		case EStatusEffectTypes::Inflamed:
+			Counter = Inflamed_EffectDuration[EffectTier];
+			break;
+		case EStatusEffectTypes::Intoxicated:
+			Counter = Intoxicated_EffectDuration[EffectTier];
+			break;
+		case EStatusEffectTypes::Invigorated:
+			Counter = Invigorated_EffectDuration[EffectTier];
+			break;
+		case EStatusEffectTypes::Weakened:
+			Counter = Weakened_EffectDuration[EffectTier];
+			break;
+	}
+
+	return Counter;
+}
+
+void UStatusEffectComponent::GetEffectDescriptions(FStatusEffect StatusEffect, FText& Desc1,
+	FText& EffectDuration, FText& ChanceToTrigger)
+{
+	FText desc1, effectDuration, chanceToTrigger;
+	int EffectTier = StatusEffect.EffectTier-1;
+	
+	switch (StatusEffect.EffectType)
+	{
+		// DAZED
+		case EStatusEffectTypes::Dazed:
+			desc1 = FText::Format(FText::FromString(TEXT("Increase the amount of inputs this Brawler needs to hit by {0}%")),
+				Dazed_InputsIncreasePercent[EffectTier] * 100);
+			effectDuration = FText::Format(FText::FromString(TEXT("This effect lasts for {0} turns")),
+					Dazed_EffectDuration[EffectTier]);
+			chanceToTrigger = FText::Format(FText::FromString(TEXT("This effect has a {0}% chance to trigger")),
+						Dazed_ChanceToTrigger[EffectTier] * 100);
+			break;
+		// ELECTROCUTED
+		case EStatusEffectTypes::Electrocuted:
+			desc1 = FText::Format(FText::FromString(TEXT("The Brawlers inputs will be interrupted every {0} seconds for {1} seconds.")),
+				Electrocuted_InterruptionDelayGap[EffectTier], Electrocuted_InterruptionDelay[EffectTier]);
+			effectDuration = FText::Format(FText::FromString(TEXT("This effect lasts for {0} turns")),
+				Electrocuted_EffectDuration[EffectTier]);
+			chanceToTrigger = FText::Format(FText::FromString(TEXT("This effect has a {0}% chance to trigger")),
+				Electrocuted_ChanceToTrigger[EffectTier] * 100);
+			break;
+		// FROZEN
+		case EStatusEffectTypes::Frozen:
+			desc1 = FText::Format(FText::FromString(TEXT("This Brawlers combat turn is skipped for the next {0} turns")),
+				Frozen_EffectDuration[EffectTier]);
+			effectDuration = FText::FromString("");
+			chanceToTrigger = FText::Format(FText::FromString(TEXT("This effect has a {0}% chance to trigger")),
+				Frozen_ChanceToTrigger[EffectTier] * 100);
+			break;
+		// INFLAMED
+		case EStatusEffectTypes::Inflamed:
+			desc1 = FText::Format(FText::FromString(TEXT("This Brawler will take {0}% of Max Health damage at the start of their turn")),
+				Inflamed_DamagePercent[EffectTier] * 100);
+			effectDuration = FText::Format(FText::FromString(TEXT("This effect lasts for {0} turns")),
+				Inflamed_EffectDuration[EffectTier]);
+			chanceToTrigger = FText::Format(FText::FromString(TEXT("This effect has a {0}% chance to trigger")),
+				Inflamed_ChanceToTrigger[EffectTier] * 100);
+			break;
+		// INTOXICATED
+		case EStatusEffectTypes::Intoxicated:
+			desc1 = FText::Format(FText::FromString(TEXT("This Brawler needs to hit {0}% less inputs, also but deals {0}% less damage")),
+				Intoxicated_ModifierEffect[EffectTier] * 100);
+			effectDuration = FText::Format(FText::FromString(TEXT("This effect lasts for {0} turns")),
+				Intoxicated_EffectDuration[EffectTier]);
+			chanceToTrigger = FText::FromString(TEXT("This effect has a 100% chance to trigger"));
+			break;
+		// INVIGORATED
+		case EStatusEffectTypes::Invigorated:
+			desc1 = FText::Format(FText::FromString(TEXT("This Brawler receives {0}% less damage from all sources")),
+				Invigorated_EffectModifier[EffectTier] * 100);
+			effectDuration = FText::Format(FText::FromString(TEXT("This effect lasts for {0} turns")),
+				Invigorated_EffectDuration[EffectTier]);
+			chanceToTrigger = FText::FromString(TEXT("This effect has a 100% chance to trigger"));
+			break;
+		// WEAKENED
+		case EStatusEffectTypes::Weakened:
+			desc1 = FText::Format(FText::FromString(TEXT("This Brawlers damage direct damage is reduced by {0}%")),
+				Weakened_EffectModifier[EffectTier] * 100);
+			effectDuration = FText::Format(FText::FromString(TEXT("This effect lasts for {0} turns")),
+				Weakened_EffectDuration[EffectTier]);
+			chanceToTrigger = FText::Format(FText::FromString(TEXT("This effect has a {0}% chance to trigger")),
+				Weakened_ChanceToTrigger[EffectTier] * 100);
+			break;
+	}
+
+	Desc1 = desc1;
+	EffectDuration = effectDuration;
+	ChanceToTrigger = chanceToTrigger;
+}
 
 bool UStatusEffectComponent::Trigger_Daze(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim)
 {
@@ -216,8 +321,9 @@ bool UStatusEffectComponent::Trigger_Inflamed(int EffectTier, UStatusEffectCompo
 {
 	if (ParentHealthComponent)
 	{
+		AActor* Owner = this->GetOwner();
 		float DamageToDeal = ParentHealthComponent->M_MaxHealth * Inflamed_DamagePercent[EffectTier-1];
-		ParentHealthComponent->TakeDamage(DamageToDeal, this->GetOwner(), this->GetOwner());
+		ParentHealthComponent->TakeDamage(DamageToDeal, Owner, Owner);
 	}
 	
 	UE_LOG(LogTemp, Display, TEXT("Trigger_Inflamed"));

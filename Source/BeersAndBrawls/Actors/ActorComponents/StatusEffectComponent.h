@@ -150,6 +150,12 @@ public:
 
 	UFUNCTION(BlueprintPure, BlueprintCallable)
 	bool DoesEffectLand(FStatusEffect StatusEffect);
+
+	UFUNCTION(BlueprintPure, BlueprintCallable)
+	int GetEffectDuration(FStatusEffect StatusEffect);
+
+	UFUNCTION(BlueprintPure, BlueprintCallable)
+	void GetEffectDescriptions(FStatusEffect StatusEffect, FText& Desc1, FText& EffectDuration, FText& ChanceToTrigger);
 	
 	// Status Effect Functions
 	UFUNCTION(BlueprintCallable, meta = (Category = "StatusEffects"))
