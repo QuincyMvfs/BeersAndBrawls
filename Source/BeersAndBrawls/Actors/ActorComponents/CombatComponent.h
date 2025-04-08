@@ -8,6 +8,7 @@
 #include "CombatComponent.generated.h"
 
 
+class UStatusEffectComponent;
 class UAbilityInfo;
 struct FCombatPatterns;
 enum class ECombatKey : uint8;
@@ -31,9 +32,9 @@ protected:
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void GenerateRandomPatterns(UAbilityInfo* Ability);
+	void GenerateRandomPatterns(UAbilityInfo* Ability, UCombatComponent* Victim);
 	FCombatPatterns GenerateRandomCombatPattern(UAbilityInfo* Ability);
-	FCombatPatterns GenerateRandomCounterPattern(UAbilityInfo* Ability);
+	FCombatPatterns GenerateRandomCounterPattern(UAbilityInfo* Ability, UCombatComponent* Victim);
 	
 	UFUNCTION(BlueprintCallable)
 	void SetCombatPattern(FCombatPatterns NewCombatPattern);
@@ -43,6 +44,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void StopInputs();
+
+	FCombatPatterns FactorInDazedModifier(FCombatPatterns Pattern, float Modifier);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FCombatPatterns M_SelectedCombatPattern;
@@ -57,6 +60,9 @@ public:
 	bool M_CanReceiveInputs = false;
 
 	TArray<ECombatKey> M_RemainingInputs;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float M_Dazed_Modifier = 1.0f;
 	
 	UPROPERTY(BlueprintAssignable)
 	FOnCombatPatternReceived OnCombatPatternReceived;

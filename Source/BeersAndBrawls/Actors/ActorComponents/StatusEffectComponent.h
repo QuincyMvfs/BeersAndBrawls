@@ -59,7 +59,7 @@ public:
 	};
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta = (Category = "Status Effect Variables|Dazed Variables"))
 	TArray<float> Dazed_ChanceToTrigger {
-		0.1f, 0.2f, 0.25f, 0.35f, 0.45f, 0.65f
+		1.1f, 1.2f, 1.25f, 1.35f, 1.45f, 1.65f
 	};
 
 	/// Electrocuted Variables
@@ -159,7 +159,9 @@ public:
 	
 	// Status Effect Functions
 	UFUNCTION(BlueprintCallable, meta = (Category = "StatusEffects"))
-	bool Trigger_Daze(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim);
+	bool Trigger_Daze(int EffectTier, bool IsLastTurn);
+
+	void Reset_Daze();
 
 	UFUNCTION(BlueprintCallable, meta = (Category = "StatusEffects"))
 	bool Trigger_Electrocute(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim);

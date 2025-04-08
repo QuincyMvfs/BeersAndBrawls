@@ -9,6 +9,7 @@
 #include "GameFramework/Character.h"
 #include "Enemy.generated.h"
 
+class ABeersAndBrawlsCharacter;
 class UStatusEffectComponent;
 class UAbilityInfo;
 struct FEnemyInfoStruct;
@@ -65,5 +66,7 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ExposeOnSpawn = "true"))
 	FEnemyInfoStruct EnemyInfo;
+
+	ABeersAndBrawlsCharacter* PlayerRef;
 
 };

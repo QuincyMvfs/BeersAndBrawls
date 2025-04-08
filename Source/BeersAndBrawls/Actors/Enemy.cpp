@@ -7,9 +7,11 @@
 #include "ActorComponents/HealthComponent.h"
 #include "ActorComponents/InventoryComponent.h"
 #include "ActorComponents/StatusEffectComponent.h"
+#include "BeersAndBrawls/BeersAndBrawlsCharacter.h"
 #include "BeersAndBrawls/DataAssets/AbilityInfo.h"
 #include "BeersAndBrawls/DataAssets/AbilityPattern.h"
 #include "BeersAndBrawls/Items/Weapon.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -31,6 +33,7 @@ void AEnemy::BeginPlay()
 void AEnemy::InitializeEnemy(FEnemyInfoStruct NewEnemyInfo)
 {
 	EnemyInfo = NewEnemyInfo;
+	PlayerRef = Cast<ABeersAndBrawlsCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	InventoryComponent->M_SelectedWeapon = EnemyInfo.EquippedWeapon;
 	HealthComponent->SetMaxHealth(EnemyInfo.MaxHealth);
 	EquippedWeaponComponent->SetStaticMesh(InventoryComponent->M_SelectedWeapon->ItemMesh);
@@ -49,13 +52,15 @@ void AEnemy::StartSendingCombatInputs(FCombatPatterns Pattern, bool IsDefending)
 
 	if (IsDefending)
 	{
+		float AttackSpeed = EnemyInfo.CounterSpeedMultiplier;
 		GetWorld()->GetTimerManager().SetTimer(
-			AttackLoop, this, &AEnemy::SendInput, EnemyInfo.CounterSpeedMultiplier, true);
+			AttackLoop, this, &AEnemy::SendInput, AttackSpeed, true);
 	}
 	else
 	{
+		float AttackSpeed = EnemyInfo.AttackSpeedMultiplier;
 		GetWorld()->GetTimerManager().SetTimer(
-			AttackLoop, this, &AEnemy::SendInput, EnemyInfo.AttackSpeedMultiplier, true);
+			AttackLoop, this, &AEnemy::SendInput, AttackSpeed, true);
 	}
 }
 

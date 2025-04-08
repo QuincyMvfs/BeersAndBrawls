@@ -3,6 +3,7 @@
 
 #include "StatusEffectComponent.h"
 
+#include "CombatComponent.h"
 #include "HealthComponent.h"
 #include "BeersAndBrawls/BeersAndBrawlsCharacter.h"
 #include "BeersAndBrawls/Actors/Enemy.h"
@@ -103,7 +104,8 @@ void UStatusEffectComponent::ActivateStatusEffects()
 		switch (ActiveStatusEffectsWithCounter[i].StatusEffect.EffectType)
 		{
 			case EStatusEffectTypes::Dazed:
-				Trigger_Daze(EffectTier, this, this);
+				if (ActiveStatusEffectsWithCounter[i].Counter <= 1) Trigger_Daze(EffectTier, true);
+				else Trigger_Daze(EffectTier, false);
 				break;
 			case EStatusEffectTypes::Electrocuted:
 				Trigger_Electrocute(EffectTier, this, this);
@@ -305,10 +307,32 @@ void UStatusEffectComponent::GetEffectDescriptions(FStatusEffect StatusEffect, F
 	ChanceToTrigger = chanceToTrigger;
 }
 
-bool UStatusEffectComponent::Trigger_Daze(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim)
+// Increases how many inputs you have to hit in order to win a duel
+bool UStatusEffectComponent::Trigger_Daze(int EffectTier, bool IsLastTurn)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Trigger_Daze"));
+
+	if (ParentCombatComponent)
+	{
+		ParentCombatComponent->M_Dazed_Modifier = Dazed_InputsIncreasePercent[EffectTier-1] + 1.0f;
+	}
+
+	if (IsLastTurn)
+	{
+		FTimerHandle DazeResetTimer;
+		GetWorld()->GetTimerManager().SetTimer(
+			DazeResetTimer, this, &UStatusEffectComponent::Reset_Daze, 5.0f, true);
+	}
+	
 	return false;
+}
+
+void UStatusEffectComponent::Reset_Daze()
+{
+	if (ParentCombatComponent)
+	{
+		ParentCombatComponent->M_Dazed_Modifier = 1.0f;
+	}
 }
 
 bool UStatusEffectComponent::Trigger_Electrocute(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim)
@@ -317,8 +341,11 @@ bool UStatusEffectComponent::Trigger_Electrocute(int EffectTier, UStatusEffectCo
 	return false;
 }
 
+// Inflamed damages player at the start of each turn, based off their max hp
 bool UStatusEffectComponent::Trigger_Inflamed(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim)
 {
+	UE_LOG(LogTemp, Display, TEXT("Trigger_Inflamed"));
+	
 	if (ParentHealthComponent)
 	{
 		AActor* Owner = this->GetOwner();
@@ -326,7 +353,6 @@ bool UStatusEffectComponent::Trigger_Inflamed(int EffectTier, UStatusEffectCompo
 		ParentHealthComponent->TakeDamage(DamageToDeal, Owner, Owner);
 	}
 	
-	UE_LOG(LogTemp, Display, TEXT("Trigger_Inflamed"));
 	return false;
 }
 

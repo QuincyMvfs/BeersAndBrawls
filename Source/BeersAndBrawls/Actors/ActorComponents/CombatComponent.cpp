@@ -3,6 +3,7 @@
 
 #include "CombatComponent.h"
 
+#include "StatusEffectComponent.h"
 #include "BeersAndBrawls/DataAssets/AbilityInfo.h"
 #include "BeersAndBrawls/DataAssets/AbilityPattern.h"
 
@@ -19,10 +20,10 @@ void UCombatComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
-void UCombatComponent::GenerateRandomPatterns(UAbilityInfo* Ability)
+void UCombatComponent::GenerateRandomPatterns(UAbilityInfo* Ability, UCombatComponent* Victim)
 {
 	FCombatPatterns NewCombatPattern = GenerateRandomCombatPattern(Ability);
-	FCombatPatterns NewCounterPattern = GenerateRandomCounterPattern(Ability);
+	FCombatPatterns NewCounterPattern = GenerateRandomCounterPattern(Ability, Victim);
 	
 	M_SelectedCombatPattern = NewCombatPattern;
 	M_SelectedCounterPattern = NewCounterPattern;
@@ -31,13 +32,17 @@ void UCombatComponent::GenerateRandomPatterns(UAbilityInfo* Ability)
 FCombatPatterns UCombatComponent::GenerateRandomCombatPattern(UAbilityInfo* Ability)
 {
 	int RandInt = Ability->M_ItemPatterns->CombatPatterns.Num() - 1;
-	return Ability->M_ItemPatterns->CombatPatterns[RandInt];
+	FCombatPatterns Pattern = FactorInDazedModifier(Ability->M_ItemPatterns->CombatPatterns[RandInt], M_Dazed_Modifier);
+	
+	return Pattern;
 }
 
-FCombatPatterns UCombatComponent::GenerateRandomCounterPattern(UAbilityInfo* Ability)
+FCombatPatterns UCombatComponent::GenerateRandomCounterPattern(UAbilityInfo* Ability, UCombatComponent* Victim)
 {
 	int RandInt = Ability->M_ItemPatterns->CounterPatterns.Num() - 1;
-	return Ability->M_ItemPatterns->CounterPatterns[RandInt];
+	FCombatPatterns Pattern = FactorInDazedModifier(Ability->M_ItemPatterns->CounterPatterns[RandInt], Victim->M_Dazed_Modifier);
+	
+	return Pattern;
 }
 
 void UCombatComponent::SetCombatPattern(FCombatPatterns NewCombatPattern)
@@ -72,4 +77,31 @@ void UCombatComponent::ReceiveInput(ECombatKey InputKey)
 void UCombatComponent::StopInputs()
 {
 	M_CanReceiveInputs = false;
+}
+
+FCombatPatterns UCombatComponent::FactorInDazedModifier(FCombatPatterns Pattern, float Modifier)
+{
+	FCombatPatterns NewCombatPattern = Pattern;
+	TArray<ECombatKey> TempKeys = Pattern.KeyInputs;
+	int InputsToAdd = FMath::RoundToInt(NewCombatPattern.KeyInputs.Num() * Modifier);
+	if (InputsToAdd > NewCombatPattern.KeyInputs.Num())
+	{
+		InputsToAdd = InputsToAdd - NewCombatPattern.KeyInputs.Num();
+		if (InputsToAdd > 0)
+		{
+			int j = 0;
+			for (int i = 0; i < InputsToAdd; i++)
+			{
+				if (!TempKeys.IsValidIndex(i))
+				{
+					TempKeys.Add(NewCombatPattern.KeyInputs[j]);
+					j++;
+				}
+				
+				NewCombatPattern.KeyInputs.Add(TempKeys[i]);
+			}
+		}
+	}
+
+	return NewCombatPattern;
 }
