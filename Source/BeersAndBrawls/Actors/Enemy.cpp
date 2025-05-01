@@ -49,7 +49,8 @@ void AEnemy::StartSendingCombatInputs(FCombatPatterns Pattern, bool IsDefending)
 	
 	CombatComponent->M_SelectedCombatPattern = Pattern;
 	CombatComponent->SetCombatPattern(Pattern);
-
+	InputIndex = 0;
+	
 	if (IsDefending)
 	{
 		float AttackSpeed = EnemyInfo.CounterSpeedMultiplier;
