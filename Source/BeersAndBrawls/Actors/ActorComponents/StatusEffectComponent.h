@@ -19,6 +19,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEffectTriggered, FStatusEffectWit
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEffectUsed, FStatusEffectWithCounter, UsedEffect);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEffectEnded, FStatusEffectWithCounter, EndedEffect);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFrozen);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BEERSANDBRAWLS_API UStatusEffectComponent : public UActorComponent
 {
@@ -37,6 +39,9 @@ protected:
 
 public:
 	//* Events
+	UPROPERTY(BlueprintAssignable)
+	FOnFrozen OnFrozenEvent;
+	
 	UPROPERTY(BlueprintAssignable)
 	FOnEffectTriggered OnEffectTriggeredEvent;
 
@@ -156,7 +161,9 @@ public:
 
 	UFUNCTION(BlueprintPure, BlueprintCallable)
 	void GetEffectDescriptions(FStatusEffect StatusEffect, FText& Desc1, FText& EffectDuration, FText& ChanceToTrigger);
-	
+
+	UFUNCTION(BlueprintPure, BlueprintCallable)
+	bool GetIsFrozen();
 	// Status Effect Functions
 	UFUNCTION(BlueprintCallable, meta = (Category = "StatusEffects"))
 	bool Trigger_Daze(int EffectTier, bool IsLastTurn);

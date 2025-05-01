@@ -63,6 +63,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float M_Dazed_Modifier = 1.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool M_IsActiveUser = false;
 	
 	UPROPERTY(BlueprintAssignable)
 	FOnCombatPatternReceived OnCombatPatternReceived;

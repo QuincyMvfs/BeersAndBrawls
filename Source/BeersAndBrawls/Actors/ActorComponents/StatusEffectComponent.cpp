@@ -307,6 +307,16 @@ void UStatusEffectComponent::GetEffectDescriptions(FStatusEffect StatusEffect, F
 	ChanceToTrigger = chanceToTrigger;
 }
 
+bool UStatusEffectComponent::GetIsFrozen()
+{
+	for (FStatusEffectWithCounter StatusEffectWithCounter : ActiveStatusEffectsWithCounter)
+	{
+		if (StatusEffectWithCounter.StatusEffect.EffectType == EStatusEffectTypes::Frozen) return true;
+	}
+
+	return false;
+}
+
 // Increases how many inputs you have to hit in order to win a duel
 bool UStatusEffectComponent::Trigger_Daze(int EffectTier, bool IsLastTurn)
 {
@@ -359,6 +369,9 @@ bool UStatusEffectComponent::Trigger_Inflamed(int EffectTier, UStatusEffectCompo
 bool UStatusEffectComponent::Trigger_Frozen(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Trigger_Frozen"));
+
+	if (ParentCombatComponent->M_IsActiveUser) OnFrozenEvent.Broadcast();
+	
 	return false;
 }
 
