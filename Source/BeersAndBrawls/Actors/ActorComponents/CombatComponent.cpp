@@ -51,6 +51,8 @@ void UCombatComponent::SetCombatPattern(FCombatPatterns NewCombatPattern)
 	M_RemainingInputs = M_SelectedCombatPattern.KeyInputs;
 	M_CanReceiveInputs = true;
 	OnCombatPatternReceived.Broadcast(M_SelectedCombatPattern);
+
+	if (M_IsElectrocuted) StartElectrocuting();
 }
 
 void UCombatComponent::ReceiveInput(ECombatKey InputKey)
@@ -76,7 +78,22 @@ void UCombatComponent::ReceiveInput(ECombatKey InputKey)
 
 void UCombatComponent::StopInputs()
 {
+	if (M_IsElectrocuted)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(M_ElectrocuteLoopTimer);
+		M_ElectrocuteLoopTimer.Invalidate();
+
+		GetWorld()->GetTimerManager().ClearTimer(M_ElectrocuteTimer);
+		M_ElectrocuteTimer.Invalidate();
+		
+		StopElectrocuting();
+
+		M_IsElectrocuted = false;
+	}
+
+	M_Dazed_Modifier = 1.0f;
 	M_CanReceiveInputs = false;
+	
 }
 
 FCombatPatterns UCombatComponent::FactorInDazedModifier(FCombatPatterns Pattern, float Modifier)
@@ -104,4 +121,39 @@ FCombatPatterns UCombatComponent::FactorInDazedModifier(FCombatPatterns Pattern,
 	}
 
 	return NewCombatPattern;
+}
+
+void UCombatComponent::SetElectrocutionVariables(float InterruptionGap, float InterruptionTime, int EffectTier)
+{
+	M_IsElectrocuted = true;
+	M_InterruptionGap = InterruptionGap;
+	M_InterruptionDelay= InterruptionTime;
+	M_ElectrocutionTier = EffectTier;
+}
+
+void UCombatComponent::StartElectrocuting()
+{
+	GetWorld()->GetTimerManager().ClearTimer(M_ElectrocuteLoopTimer);
+	M_ElectrocuteLoopTimer.Invalidate();
+	
+	GetWorld()->GetTimerManager().SetTimer(M_ElectrocuteLoopTimer, this, &UCombatComponent::ElectrocutingLoop,
+		M_InterruptionGap + M_InterruptionDelay, true );
+}
+
+void UCombatComponent::ElectrocutingLoop()
+{
+	GetWorld()->GetTimerManager().ClearTimer(M_ElectrocuteTimer);
+	M_ElectrocuteTimer.Invalidate();
+	
+	OnElectrocutedEvent.Broadcast();
+	M_CanReceiveInputs = false;
+	
+	GetWorld()->GetTimerManager().SetTimer(M_ElectrocuteTimer, this, &UCombatComponent::StopElectrocuting,
+		M_InterruptionDelay, false);
+}
+
+void UCombatComponent::StopElectrocuting()
+{
+	M_CanReceiveInputs = true;
+	OnElectrocuteEndedEvent.Broadcast();
 }

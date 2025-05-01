@@ -88,7 +88,11 @@ void AEnemy::SendInput()
 	}
 	
 	ECombatKey Input = CombatComponent->M_SelectedCombatPattern.KeyInputs[InputIndex];
-	CombatComponent->ReceiveInput(Input);
-	InputIndex++;
+	
+	if (CombatComponent->M_CanReceiveInputs)
+	{
+		CombatComponent->ReceiveInput(Input);
+		InputIndex++;
+	}
 }
 

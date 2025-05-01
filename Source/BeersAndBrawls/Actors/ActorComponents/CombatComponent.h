@@ -17,6 +17,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCombatPatternReceived, FCombatPat
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCombatPatternCompleted);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCorrectInputGiven, ECombatKey, InputKey);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnFailInputGiven, ECombatKey, InputKey);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnElectrocuted);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnElectrocuteEnded);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BEERSANDBRAWLS_API UCombatComponent : public UActorComponent
 {
@@ -31,10 +34,44 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	UPROPERTY(BlueprintAssignable)
+	FOnCombatPatternReceived OnCombatPatternReceived;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnCombatPatternCompleted OnCombatPatternCompleted;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnCorrectInputGiven OnCorrectInputGiven;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnFailInputGiven OnFailInputGiven;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnElectrocuted OnElectrocutedEvent;
+    	
+	UPROPERTY(BlueprintAssignable)
+	FOnElectrocuteEnded OnElectrocuteEndedEvent;
+	
 	UFUNCTION(BlueprintCallable)
 	void GenerateRandomPatterns(UAbilityInfo* Ability, UCombatComponent* Victim);
 	FCombatPatterns GenerateRandomCombatPattern(UAbilityInfo* Ability);
 	FCombatPatterns GenerateRandomCounterPattern(UAbilityInfo* Ability, UCombatComponent* Victim);
+
+	// ELECTROCUTION
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool M_IsElectrocuted = false;
+	
+	float M_InterruptionGap;
+	float M_InterruptionDelay;
+	int M_ElectrocutionTier;
+	FTimerHandle M_ElectrocuteLoopTimer;
+	FTimerHandle M_ElectrocuteTimer;
+	
+	void SetElectrocutionVariables(float InterruptionGap, float InterruptionTime, int EffectTier);
+	void StartElectrocuting();
+	void ElectrocutingLoop();
+	void StopElectrocuting();
+	//
 	
 	UFUNCTION(BlueprintCallable)
 	void SetCombatPattern(FCombatPatterns NewCombatPattern);
@@ -67,16 +104,5 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool M_IsActiveUser = false;
 	
-	UPROPERTY(BlueprintAssignable)
-	FOnCombatPatternReceived OnCombatPatternReceived;
-
-	UPROPERTY(BlueprintAssignable)
-	FOnCombatPatternCompleted OnCombatPatternCompleted;
-	
-	UPROPERTY(BlueprintAssignable)
-	FOnCorrectInputGiven OnCorrectInputGiven;
-	
-	UPROPERTY(BlueprintAssignable)
-	FOnFailInputGiven OnFailInputGiven;
 
 };

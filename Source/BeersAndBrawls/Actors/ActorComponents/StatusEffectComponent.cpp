@@ -35,18 +35,22 @@ void UStatusEffectComponent::BeginPlay()
 void UStatusEffectComponent::TriggerStatusEffect(TArray<FStatusEffect> StatusEffects,
 	UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%d Status Effects"), StatusEffects.Num());
+	//UE_LOG(LogTemp, Warning, TEXT("%d Status Effects"), StatusEffects.Num());
+	
 	if (StatusEffects.Num() == 0) return;
 
-	for (int i = 0; i < ActiveStatusEffectsWithCounter.Num(); i++)
+	if (ActiveStatusEffectsWithCounter.Num() > 0)
 	{
-		for (int j = 0; j < StatusEffects.Num(); j++)
+		for (int i = 0; i < ActiveStatusEffectsWithCounter.Num(); i++)
 		{
-			if (ActiveStatusEffectsWithCounter[i].StatusEffect.EffectTier == StatusEffects[j].EffectTier)
+			for (int j = 0; j < StatusEffects.Num(); j++)
 			{
-				ActiveStatusEffectsWithCounter[i].Counter = GetEffectDuration(StatusEffects[j]);
-				OnEffectUsedEvent.Broadcast(ActiveStatusEffectsWithCounter[i]);
-				StatusEffects.RemoveAt(j);
+				if (ActiveStatusEffectsWithCounter[i].StatusEffect.EffectType == StatusEffects[j].EffectType)
+				{
+					ActiveStatusEffectsWithCounter[i].Counter = GetEffectDuration(StatusEffects[j]);
+					OnEffectUsedEvent.Broadcast(ActiveStatusEffectsWithCounter[i]);
+					StatusEffects.RemoveAt(j);
+				}
 			}
 		}
 	}
@@ -88,6 +92,7 @@ void UStatusEffectComponent::TriggerStatusEffect(TArray<FStatusEffect> StatusEff
 			}
 
 			ActiveStatusEffectsWithCounter.Add(StatusEffectWithCounter);
+			UE_LOG(LogTemp, Warning, TEXT("StatusEffectWithCounter Added %d"), ActiveStatusEffectsWithCounter.Last().StatusEffect.EffectType);
 			
 			OnEffectTriggeredEvent.Broadcast(StatusEffectWithCounter);
 		}
@@ -97,15 +102,16 @@ void UStatusEffectComponent::TriggerStatusEffect(TArray<FStatusEffect> StatusEff
 void UStatusEffectComponent::ActivateStatusEffects()
 {
 	if (ActiveStatusEffectsWithCounter.Num() == 0) return;
-
-	for (int i = 0; i < ActiveStatusEffectsWithCounter.Num(); i++)
+	
+	int TotalStatusEffects = ActiveStatusEffectsWithCounter.Num();
+	
+	for (int i = 0; i < TotalStatusEffects; i++)
 	{
 		int EffectTier = ActiveStatusEffectsWithCounter[i].StatusEffect.EffectTier;
 		switch (ActiveStatusEffectsWithCounter[i].StatusEffect.EffectType)
 		{
 			case EStatusEffectTypes::Dazed:
-				if (ActiveStatusEffectsWithCounter[i].Counter <= 1) Trigger_Daze(EffectTier, true);
-				else Trigger_Daze(EffectTier, false);
+				Trigger_Daze(EffectTier);
 				break;
 			case EStatusEffectTypes::Electrocuted:
 				Trigger_Electrocute(EffectTier, this, this);
@@ -129,14 +135,18 @@ void UStatusEffectComponent::ActivateStatusEffects()
 
 		ActiveStatusEffectsWithCounter[i].Counter--;
 		OnEffectUsedEvent.Broadcast(ActiveStatusEffectsWithCounter[i]);
+	}
 
-		if (ActiveStatusEffectsWithCounter[i].Counter <= 0)
+	for (int j = 0; j < TotalStatusEffects; j++)
+	{
+		if (ActiveStatusEffectsWithCounter[j].Counter <= 0)
 		{
-			OnEffectEndedEvent.Broadcast(ActiveStatusEffectsWithCounter[i]);
-			ActiveStatusEffectsWithCounter.RemoveAt(i);
-			return;
+			OnEffectEndedEvent.Broadcast(ActiveStatusEffectsWithCounter[j]);
+			ActiveStatusEffectsWithCounter.RemoveAt(j);
+			TotalStatusEffects--;
 		}
 	}
+	
 }
 
 bool UStatusEffectComponent::DoesEffectLand(FStatusEffect StatusEffect)
@@ -307,18 +317,9 @@ void UStatusEffectComponent::GetEffectDescriptions(FStatusEffect StatusEffect, F
 	ChanceToTrigger = chanceToTrigger;
 }
 
-bool UStatusEffectComponent::GetIsFrozen()
-{
-	for (FStatusEffectWithCounter StatusEffectWithCounter : ActiveStatusEffectsWithCounter)
-	{
-		if (StatusEffectWithCounter.StatusEffect.EffectType == EStatusEffectTypes::Frozen) return true;
-	}
-
-	return false;
-}
 
 // Increases how many inputs you have to hit in order to win a duel
-bool UStatusEffectComponent::Trigger_Daze(int EffectTier, bool IsLastTurn)
+bool UStatusEffectComponent::Trigger_Daze(int EffectTier)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Trigger_Daze"));
 
@@ -326,28 +327,17 @@ bool UStatusEffectComponent::Trigger_Daze(int EffectTier, bool IsLastTurn)
 	{
 		ParentCombatComponent->M_Dazed_Modifier = Dazed_InputsIncreasePercent[EffectTier-1] + 1.0f;
 	}
-
-	if (IsLastTurn)
-	{
-		FTimerHandle DazeResetTimer;
-		GetWorld()->GetTimerManager().SetTimer(
-			DazeResetTimer, this, &UStatusEffectComponent::Reset_Daze, 5.0f, true);
-	}
 	
 	return false;
-}
-
-void UStatusEffectComponent::Reset_Daze()
-{
-	if (ParentCombatComponent)
-	{
-		ParentCombatComponent->M_Dazed_Modifier = 1.0f;
-	}
 }
 
 bool UStatusEffectComponent::Trigger_Electrocute(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Trigger_Electrocute"));
+
+	if (ParentCombatComponent) ParentCombatComponent->SetElectrocutionVariables(
+		Electrocuted_InterruptionDelayGap[EffectTier-1], Electrocuted_InterruptionDelay[EffectTier-1], EffectTier);
+	
 	return false;
 }
 
@@ -372,6 +362,16 @@ bool UStatusEffectComponent::Trigger_Frozen(int EffectTier, UStatusEffectCompone
 
 	if (ParentCombatComponent->M_IsActiveUser) OnFrozenEvent.Broadcast();
 	
+	return false;
+}
+
+bool UStatusEffectComponent::GetIsFrozen()
+{
+	for (FStatusEffectWithCounter StatusEffectWithCounter : ActiveStatusEffectsWithCounter)
+	{
+		if (StatusEffectWithCounter.StatusEffect.EffectType == EStatusEffectTypes::Frozen) return true;
+	}
+
 	return false;
 }
 
