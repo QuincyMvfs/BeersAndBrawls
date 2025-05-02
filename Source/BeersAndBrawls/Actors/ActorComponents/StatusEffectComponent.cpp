@@ -316,7 +316,7 @@ void UStatusEffectComponent::GetEffectDescriptions(FStatusEffect StatusEffect, F
 			break;
 		// INVIGORATED
 		case EStatusEffectTypes::Invigorated:
-			desc1 = FText::Format(FText::FromString(TEXT("This Brawler receives {0}% less damage from all sources")),
+			desc1 = FText::Format(FText::FromString(TEXT("This Brawler receives {0}% less damage from all sources, and deals {0}% more damage")),
 				Invigorated_EffectModifier[EffectTier] * 100);
 			effectDuration = FText::Format(FText::FromString(TEXT("This effect lasts for {0} turns")),
 				Invigorated_EffectDuration[EffectTier]);
@@ -338,7 +338,7 @@ void UStatusEffectComponent::GetEffectDescriptions(FStatusEffect StatusEffect, F
 	ChanceToTrigger = chanceToTrigger;
 }
 
-
+// DAZED
 // Increases how many inputs you have to hit in order to win a duel
 bool UStatusEffectComponent::Trigger_Daze(int EffectTier)
 {
@@ -354,6 +354,7 @@ bool UStatusEffectComponent::Trigger_Daze(int EffectTier)
 //
 
 // ELECTROCUTE
+// Causes the Brawlers inputs to be interrupted, making them incapable of giving inputs for a period every x seconds
 bool UStatusEffectComponent::Trigger_Electrocute(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Trigger_Electrocute"));
@@ -383,6 +384,7 @@ bool UStatusEffectComponent::Trigger_Inflamed(int EffectTier, UStatusEffectCompo
 //
 
 // FROZEN
+// Skips the Brawlers Combat Turn
 bool UStatusEffectComponent::Trigger_Frozen(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Trigger_Frozen"));
@@ -392,6 +394,7 @@ bool UStatusEffectComponent::Trigger_Frozen(int EffectTier, UStatusEffectCompone
 	return false;
 }
 
+// Checks if the brawler is frozen
 bool UStatusEffectComponent::GetIsFrozen()
 {
 	for (FStatusEffectWithCounter StatusEffectWithCounter : ActiveStatusEffectsWithCounter)
@@ -404,6 +407,7 @@ bool UStatusEffectComponent::GetIsFrozen()
 //
 
 // INTOXICATED
+// Reduces amount of inputs needed to succeed, while decreasing outgoing damage
 bool UStatusEffectComponent::Trigger_Intoxicated(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Trigger_Intoxicated"));
@@ -418,6 +422,8 @@ bool UStatusEffectComponent::Trigger_Intoxicated(int EffectTier, UStatusEffectCo
 }
 //
 
+// WEAKEN
+// Reduces the damage the Brawler deals to enemies
 bool UStatusEffectComponent::Trigger_Weaken(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Trigger_Weaken"));
@@ -429,7 +435,10 @@ bool UStatusEffectComponent::Trigger_Weaken(int EffectTier, UStatusEffectCompone
 	
 	return false;
 }
+//
 
+// INVIGORATED
+// Reduces incoming damage, while increase outgoing damage
 bool UStatusEffectComponent::Trigger_Invigorated(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Trigger_Invigorated"));
@@ -442,4 +451,5 @@ bool UStatusEffectComponent::Trigger_Invigorated(int EffectTier, UStatusEffectCo
 	
 	return false;
 }
+//
 

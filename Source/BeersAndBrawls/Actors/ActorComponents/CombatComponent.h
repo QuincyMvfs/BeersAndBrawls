@@ -98,14 +98,15 @@ public:
 
 	TArray<ECombatKey> M_RemainingInputs;
 
-	void AdjustDazedModifier(float Amount);
-	void AdjustDamageModifier(float Amount);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(HideInDetailPanel))
 	float M_Dazed_Modifier = 1.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(HideInDetailPanel))
 	float M_Damage_Multiplier = 1.0f;
+	
+	void AdjustDazedModifier(float Amount);
+	void AdjustDamageModifier(float Amount);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(HideInDetailPanel))
 	bool M_IsActiveUser = false;
