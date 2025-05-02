@@ -25,20 +25,17 @@ UStatusEffectComponent::UStatusEffectComponent()
 	}
 }
 
-
 // Called when the game starts
-void UStatusEffectComponent::BeginPlay()
-{
-	Super::BeginPlay();
-}
+void UStatusEffectComponent::BeginPlay() { Super::BeginPlay(); }
 
+// Gives the Brawler the given status effects. This is given from being attacked or self-inflicted (beer)
 void UStatusEffectComponent::TriggerStatusEffect(TArray<FStatusEffect> StatusEffects,
 	UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("%d Status Effects"), StatusEffects.Num());
-	
 	if (StatusEffects.Num() == 0) return;
 
+	// If there are already active status effects, check if the given status effect is already in effect
+	// on the Brawler, if it is, update the counter and change the tier to whichever is higher
 	if (ActiveStatusEffectsWithCounter.Num() > 0)
 	{
 		for (int i = 0; i < ActiveStatusEffectsWithCounter.Num(); i++)
@@ -47,7 +44,13 @@ void UStatusEffectComponent::TriggerStatusEffect(TArray<FStatusEffect> StatusEff
 			{
 				if (ActiveStatusEffectsWithCounter[i].StatusEffect.EffectType == StatusEffects[j].EffectType)
 				{
-					ActiveStatusEffectsWithCounter[i].Counter = GetEffectDuration(StatusEffects[j]);
+					// If the effect tier is greater or equal, reset the counter and update the effect tier
+					if (StatusEffects[j].EffectTier >= ActiveStatusEffectsWithCounter[i].StatusEffect.EffectTier)
+					{
+						ActiveStatusEffectsWithCounter[i].StatusEffect.EffectTier = StatusEffects[j].EffectTier;
+						ActiveStatusEffectsWithCounter[i].Counter = GetEffectDuration(StatusEffects[j]);
+					}
+					
 					OnEffectUsedEvent.Broadcast(ActiveStatusEffectsWithCounter[i]);
 					StatusEffects.RemoveAt(j);
 				}
@@ -92,19 +95,47 @@ void UStatusEffectComponent::TriggerStatusEffect(TArray<FStatusEffect> StatusEff
 			}
 
 			ActiveStatusEffectsWithCounter.Add(StatusEffectWithCounter);
-			UE_LOG(LogTemp, Warning, TEXT("StatusEffectWithCounter Added %d"), ActiveStatusEffectsWithCounter.Last().StatusEffect.EffectType);
-			
 			OnEffectTriggeredEvent.Broadcast(StatusEffectWithCounter);
 		}
 	}
 }
 
+// Decrements how many turns all status effects are active for, if its 0, remove the status effect
+void UStatusEffectComponent::DecrementStatusEffectCounter()
+{
+	if (ActiveStatusEffectsWithCounter.Num() < 0) return;
+
+	int TotalStatusEffects = ActiveStatusEffectsWithCounter.Num();
+	for (int i = 0; i < TotalStatusEffects; i++)
+	{
+		ActiveStatusEffectsWithCounter[i].Counter--;
+		OnEffectUsedEvent.Broadcast(ActiveStatusEffectsWithCounter[i]);
+	}
+
+	for (int j = 0; j < TotalStatusEffects; j++)
+	{
+		if (ActiveStatusEffectsWithCounter[j].Counter <= 0)
+		{
+			OnEffectEndedEvent.Broadcast(ActiveStatusEffectsWithCounter[j]);
+			ActiveStatusEffectsWithCounter.RemoveAt(j);
+			TotalStatusEffects--;
+		}
+	}
+}
+
+// Triggers the effect of all active status effects.
 void UStatusEffectComponent::ActivateStatusEffects()
 {
 	if (ActiveStatusEffectsWithCounter.Num() == 0) return;
 	
-	int TotalStatusEffects = ActiveStatusEffectsWithCounter.Num();
+	if (ParentCombatComponent)
+	{
+		ParentCombatComponent->M_Damage_Multiplier = 1.0f;
+		ParentCombatComponent->M_Dazed_Modifier = 1.0f;
+		ParentHealthComponent->M_DamageResistance = 1.0f;
+	}
 	
+	int TotalStatusEffects = ActiveStatusEffectsWithCounter.Num();
 	for (int i = 0; i < TotalStatusEffects; i++)
 	{
 		int EffectTier = ActiveStatusEffectsWithCounter[i].StatusEffect.EffectTier;
@@ -132,23 +163,10 @@ void UStatusEffectComponent::ActivateStatusEffects()
 				Trigger_Weaken(EffectTier, this, this);
 				break;
 		}
-
-		ActiveStatusEffectsWithCounter[i].Counter--;
-		OnEffectUsedEvent.Broadcast(ActiveStatusEffectsWithCounter[i]);
 	}
-
-	for (int j = 0; j < TotalStatusEffects; j++)
-	{
-		if (ActiveStatusEffectsWithCounter[j].Counter <= 0)
-		{
-			OnEffectEndedEvent.Broadcast(ActiveStatusEffectsWithCounter[j]);
-			ActiveStatusEffectsWithCounter.RemoveAt(j);
-			TotalStatusEffects--;
-		}
-	}
-	
 }
 
+// Checks if the effect lands based on the effects tier's chance to trigger
 bool UStatusEffectComponent::DoesEffectLand(FStatusEffect StatusEffect)
 {
 	float ChanceToTrigger = 0.0f;
@@ -198,17 +216,20 @@ bool UStatusEffectComponent::DoesEffectLand(FStatusEffect StatusEffect)
 	int RandFloat = FMath::RandRange(0, 100);
 	if (RandFloat > ChanceToTrigger)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("SE FAILED | Needed below %f / Had %d"), ChanceToTrigger, RandFloat);
+		UE_LOG(LogTemp, Warning, TEXT("STATUS EFFECT FAILED | Needed below %f / Had %d"),
+			ChanceToTrigger, RandFloat);
 		return false;
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("SE SUCCEEDED | Needed below %f / Had %d"), ChanceToTrigger, RandFloat);
+		UE_LOG(LogTemp, Warning, TEXT("STATUS EFFECT SUCCEEDED | Needed below %f / Had %d"),
+			ChanceToTrigger, RandFloat);
 		return true;
 	}
 
 }
 
+// Gets how many turns the effect will last
 int UStatusEffectComponent::GetEffectDuration(FStatusEffect StatusEffect)
 {
 	int Counter = 0;
@@ -325,12 +346,14 @@ bool UStatusEffectComponent::Trigger_Daze(int EffectTier)
 
 	if (ParentCombatComponent)
 	{
-		ParentCombatComponent->M_Dazed_Modifier = Dazed_InputsIncreasePercent[EffectTier-1] + 1.0f;
+		ParentCombatComponent->AdjustDazedModifier(Dazed_InputsIncreasePercent[EffectTier-1]);
 	}
 	
 	return false;
 }
+//
 
+// ELECTROCUTE
 bool UStatusEffectComponent::Trigger_Electrocute(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Trigger_Electrocute"));
@@ -340,8 +363,10 @@ bool UStatusEffectComponent::Trigger_Electrocute(int EffectTier, UStatusEffectCo
 	
 	return false;
 }
+//
 
-// Inflamed damages player at the start of each turn, based off their max hp
+// INFLAMED
+// damages player at the start of each turn, based off their max hp
 bool UStatusEffectComponent::Trigger_Inflamed(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim)
 {
 	UE_LOG(LogTemp, Display, TEXT("Trigger_Inflamed"));
@@ -355,7 +380,9 @@ bool UStatusEffectComponent::Trigger_Inflamed(int EffectTier, UStatusEffectCompo
 	
 	return false;
 }
+//
 
+// FROZEN
 bool UStatusEffectComponent::Trigger_Frozen(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Trigger_Frozen"));
@@ -374,22 +401,45 @@ bool UStatusEffectComponent::GetIsFrozen()
 
 	return false;
 }
+//
 
+// INTOXICATED
 bool UStatusEffectComponent::Trigger_Intoxicated(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Trigger_Intoxicated"));
+
+	if (ParentCombatComponent)
+	{
+		ParentCombatComponent->AdjustDamageModifier(Intoxicated_ModifierEffect[EffectTier-1] * -1);
+		ParentCombatComponent->AdjustDazedModifier(Intoxicated_ModifierEffect[EffectTier-1] * -1);
+	}
+	
 	return false;
 }
+//
 
 bool UStatusEffectComponent::Trigger_Weaken(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Trigger_Weaken"));
+
+	if (ParentCombatComponent)
+	{
+		ParentCombatComponent->AdjustDamageModifier(Weakened_EffectModifier[EffectTier-1] * -1);
+	}
+	
 	return false;
 }
 
 bool UStatusEffectComponent::Trigger_Invigorated(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Trigger_Invigorated"));
+
+	if (ParentCombatComponent)
+	{
+		ParentCombatComponent->AdjustDamageModifier(Invigorated_EffectModifier[EffectTier-1]);
+		ParentHealthComponent->AdjustDamageResistance(Invigorated_EffectModifier[EffectTier-1] *-1);
+	}
+	
 	return false;
 }
 

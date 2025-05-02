@@ -71,3 +71,9 @@ void UHealthComponent::LevelUpMaxHealth(float Multiplier)
 	OnHealEvent.Broadcast(M_CurrentHealth);
 }
 
+void UHealthComponent::AdjustDamageResistance(float Amount)
+{
+	float NewModifier = M_DamageResistance += Amount;
+	M_DamageResistance = FMath::Clamp(NewModifier, 0.1f, 3.0f);
+}
+

@@ -119,8 +119,27 @@ FCombatPatterns UCombatComponent::FactorInDazedModifier(FCombatPatterns Pattern,
 			}
 		}
 	}
+	else if (InputsToAdd < NewCombatPattern.KeyInputs.Num())
+	{
+		for (int i = InputsToAdd; i > 0; i--)
+		{
+			NewCombatPattern.KeyInputs.RemoveAt(i);
+		}
+	}
 
 	return NewCombatPattern;
+}
+
+void UCombatComponent::AdjustDazedModifier(float Amount)
+{
+	float NewModifier = M_Dazed_Modifier += Amount;
+	M_Dazed_Modifier = FMath::Clamp(NewModifier, 0.1f, 3.0f);
+}
+
+void UCombatComponent::AdjustDamageModifier(float Amount)
+{
+	float NewModifier = M_Damage_Multiplier += Amount;
+	M_Damage_Multiplier = FMath::Clamp(NewModifier, 0.1f, 3.0f);
 }
 
 void UCombatComponent::SetElectrocutionVariables(float InterruptionGap, float InterruptionTime, int EffectTier)

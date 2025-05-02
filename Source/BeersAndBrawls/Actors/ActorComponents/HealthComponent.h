@@ -51,10 +51,16 @@ public:
 	void LevelUpMaxHealth(float Multiplier);
 	
 public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Health)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Health, meta = (HideInDetailPanel))
 	float M_CurrentHealth;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Health, meta = (UIMin = "0.0", UIMax = "500.0"))
 	float M_MaxHealth = 100;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Health, meta = (HideInDetailPanel))
+	float M_DamageResistance = 1.0f;
+
+	void AdjustDamageResistance(float Amount);
+
 		
 };

@@ -58,7 +58,7 @@ public:
 	FCombatPatterns GenerateRandomCounterPattern(UAbilityInfo* Ability, UCombatComponent* Victim);
 
 	// ELECTROCUTION
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(HideInDetailPanel))
 	bool M_IsElectrocuted = false;
 	
 	float M_InterruptionGap;
@@ -84,24 +84,30 @@ public:
 
 	FCombatPatterns FactorInDazedModifier(FCombatPatterns Pattern, float Modifier);
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(HideInDetailPanel))
 	FCombatPatterns M_SelectedCombatPattern;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(HideInDetailPanel))
 	FCombatPatterns M_SelectedCounterPattern;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(HideInDetailPanel))
 	UAbilityInfo* SelectedAbility;
 	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(HideInDetailPanel))
 	bool M_CanReceiveInputs = false;
 
 	TArray<ECombatKey> M_RemainingInputs;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	void AdjustDazedModifier(float Amount);
+	void AdjustDamageModifier(float Amount);
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(HideInDetailPanel))
 	float M_Dazed_Modifier = 1.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(HideInDetailPanel))
+	float M_Damage_Multiplier = 1.0f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(HideInDetailPanel))
 	bool M_IsActiveUser = false;
 	
 

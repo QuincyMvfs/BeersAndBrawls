@@ -147,9 +147,11 @@ public:
 	//* Functions
 	// Trigger Status Effect Functions
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Trigger Status Effect", Tooptip = "Triggers a Status Effect", Category = "StatusEffects"))
-	void TriggerStatusEffect(TArray<FStatusEffect> StatusEffects,
-	UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim);
+	void TriggerStatusEffect(TArray<FStatusEffect> StatusEffects, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim);
 
+	UFUNCTION(BlueprintCallable)
+	void DecrementStatusEffectCounter();
+	
 	UFUNCTION(BlueprintCallable)
 	void ActivateStatusEffects();
 
@@ -162,9 +164,8 @@ public:
 	UFUNCTION(BlueprintPure, BlueprintCallable)
 	void GetEffectDescriptions(FStatusEffect StatusEffect, FText& Desc1, FText& EffectDuration, FText& ChanceToTrigger);
 
-	UFUNCTION(BlueprintPure, BlueprintCallable)
-	bool GetIsFrozen();
-	// Status Effect Functions
+
+	//* Status Effect Functions
 	UFUNCTION(BlueprintCallable, meta = (Category = "StatusEffects"))
 	bool Trigger_Daze(int EffectTier);
 
@@ -176,6 +177,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta = (Category = "StatusEffects"))
 	bool Trigger_Frozen(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim);
+	
+	UFUNCTION(BlueprintPure, BlueprintCallable)
+	bool GetIsFrozen();
 
 	UFUNCTION(BlueprintCallable, meta = (Category = "StatusEffects"))
 	bool Trigger_Intoxicated(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim);
@@ -186,6 +190,7 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (Category = "StatusEffects"))
 	bool Trigger_Invigorated(int EffectTier, UStatusEffectComponent* Instigator, UStatusEffectComponent* Victim);
 
+	// Reference Variables
 	UHealthComponent* ParentHealthComponent;
 	UCombatComponent* ParentCombatComponent;
 };

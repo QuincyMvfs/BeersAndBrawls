@@ -51,15 +51,16 @@ void AEnemy::StartSendingCombatInputs(FCombatPatterns Pattern, bool IsDefending)
 	CombatComponent->SetCombatPattern(Pattern);
 	InputIndex = 0;
 	
+	float AttackSpeed;
 	if (IsDefending)
 	{
-		float AttackSpeed = EnemyInfo.CounterSpeedMultiplier;
+		AttackSpeed = EnemyInfo.CounterSpeedMultiplier;
 		GetWorld()->GetTimerManager().SetTimer(
 			AttackLoop, this, &AEnemy::SendInput, AttackSpeed, true);
 	}
 	else
 	{
-		float AttackSpeed = EnemyInfo.AttackSpeedMultiplier;
+		AttackSpeed = EnemyInfo.AttackSpeedMultiplier;
 		GetWorld()->GetTimerManager().SetTimer(
 			AttackLoop, this, &AEnemy::SendInput, AttackSpeed, true);
 	}
