@@ -12,6 +12,7 @@
 #include "InputActionValue.h"
 #include "Actors/ActorComponents/CombatComponent.h"
 #include "Actors/ActorComponents/CurrencyComponent.h"
+#include "Actors/ActorComponents/CustomizationComponent.h"
 #include "Actors/ActorComponents/HealthComponent.h"
 #include "Actors/ActorComponents/InventoryComponent.h"
 #include "Actors/ActorComponents/LevelingComponent.h"
@@ -35,6 +36,7 @@ ABeersAndBrawlsCharacter::ABeersAndBrawlsCharacter()
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
 	LevelingComponent = CreateDefaultSubobject<ULevelingComponent>(TEXT("LevelingComponent"));
+	CustomizationComponent = CreateDefaultSubobject<UCustomizationComponent>(TEXT("CustomizationComponent"));
 	
 	StatusEffectComponent = CreateDefaultSubobject<UStatusEffectComponent>(TEXT("StatusEffectComponent"));
 	WeaponEquippedStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponMeshSlot"));

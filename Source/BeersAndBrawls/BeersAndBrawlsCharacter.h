@@ -7,6 +7,7 @@
 #include "Logging/LogMacros.h"
 #include "BeersAndBrawlsCharacter.generated.h"
 
+class UCustomizationComponent;
 class UStatusEffectComponent;
 enum class EPlayerInputState : uint8;
 class ULevelingComponent;
@@ -61,6 +62,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
 	UStatusEffectComponent* StatusEffectComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
+	UCustomizationComponent* CustomizationComponent;
 
 	// Weapon Mesh Slots
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
