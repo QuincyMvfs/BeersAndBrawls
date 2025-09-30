@@ -44,6 +44,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* CombatCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UCameraComponent* CustomizationCamera;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
 	UCombatComponent* CombatComponent;
@@ -94,6 +97,7 @@ public:
 
 	void DisplayNewConsumableMesh();
 
+	UFUNCTION(BlueprintCallable)
 	void SwapCameras(int Index);
 
 	UFUNCTION(BlueprintCallable)
@@ -107,8 +111,11 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool CanMove = true;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int ActiveCameraIndex = 0;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)

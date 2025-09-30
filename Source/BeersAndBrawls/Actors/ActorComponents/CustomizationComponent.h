@@ -9,6 +9,8 @@
 #include "CustomizationComponent.generated.h"
 
 
+class UCameraComponent;
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BEERSANDBRAWLS_API UCustomizationComponent : public UActorComponent
 {
@@ -25,7 +27,7 @@ protected:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Body Size Changes")
 	FBoneSizes M_BoneSizes;
-
+	
 // Selected Cosmetics
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
 	USkeletalMeshComponent* C_Selected_Boots;
