@@ -45,6 +45,10 @@ void ACustomizationShop::UnlockCosmetic(ECosmeticType Type, UCosmeticInfo* NewMe
 			Unlocked_Hair.Add(NewMeshInfo);
 			Locked_Hair.Remove(NewMeshInfo);
 			break;
+		case ECosmeticType::Eyes:
+			Unlocked_Eyes.Add(NewMeshInfo);
+			Locked_Eyes.Remove(NewMeshInfo);
+			break;
 		case ECosmeticType::Eyebrows:
 			Unlocked_Eyebrows.Add(NewMeshInfo);
 			Locked_Eyebrows.Remove(NewMeshInfo);
@@ -63,6 +67,57 @@ void ACustomizationShop::UnlockCosmetic(ECosmeticType Type, UCosmeticInfo* NewMe
 	}
 
 	OnCosmeticUnlockedEvent.Broadcast(Type, NewMeshInfo);
+}
+
+void ACustomizationShop::GetCosmetics(ECosmeticType Type, TArray<UCosmeticInfo*>& UnlockedCosmetics,
+	TArray<UCosmeticInfo*>& LockedCosmetics)
+{
+	switch (Type)
+	{
+		case ECosmeticType::Boots:
+			UnlockedCosmetics = Unlocked_Boots;
+			LockedCosmetics = Locked_Boots;
+			break;
+		case ECosmeticType::Gloves:
+			UnlockedCosmetics = Unlocked_Gloves;
+			LockedCosmetics = Locked_Gloves;
+			break;
+		case ECosmeticType::Head:
+			UnlockedCosmetics = Unlocked_Heads;
+			LockedCosmetics = Locked_Heads;
+			break;
+		case ECosmeticType::Teeth:
+			UnlockedCosmetics = Unlocked_Teeth;
+			LockedCosmetics = Locked_Teeth;
+			break;
+		case ECosmeticType::Beard:
+			UnlockedCosmetics = Unlocked_Beards;
+			LockedCosmetics = Locked_Beards;
+			break;
+		case ECosmeticType::Hair:
+			UnlockedCosmetics = Unlocked_Hair;
+			LockedCosmetics = Locked_Hair;
+			break;
+		case ECosmeticType::Eyebrows:
+			UnlockedCosmetics = Unlocked_Eyebrows;
+			LockedCosmetics = Locked_Eyebrows;
+			break;
+		case ECosmeticType::Eyes:
+			UnlockedCosmetics = Unlocked_Eyes;
+			LockedCosmetics = Locked_Eyes;
+			break;
+		case ECosmeticType::Shirt:
+			UnlockedCosmetics = Unlocked_Shirts;
+			LockedCosmetics = Locked_Shirts;
+			break;
+		case ECosmeticType::Pants:
+			UnlockedCosmetics = Unlocked_Pants;
+			LockedCosmetics = Locked_Pants;
+			break;
+		default:
+			UE_LOG(LogTemp, Error, TEXT("Customization Shop: Invalid CosmeticType"));
+			break;
+	}
 }
 
 

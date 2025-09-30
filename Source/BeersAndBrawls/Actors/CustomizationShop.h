@@ -97,4 +97,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UnlockCosmetic(ECosmeticType Type, UCosmeticInfo* NewMeshInfo);
 
+	UFUNCTION(BlueprintCallable)
+	void GetCosmetics(ECosmeticType Type, TArray<UCosmeticInfo*> &UnlockedCosmetics, TArray<UCosmeticInfo*> &LockedCosmetics);
+
 };
