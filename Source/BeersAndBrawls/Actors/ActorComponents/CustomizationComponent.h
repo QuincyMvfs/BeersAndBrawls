@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BeersAndBrawls/Enums/ECosmeticType.h"
 #include "BeersAndBrawls/Structs/FBoneSizes.h"
 #include "Components/ActorComponent.h"
 #include "CustomizationComponent.generated.h"
@@ -24,5 +25,39 @@ protected:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Body Size Changes")
 	FBoneSizes M_BoneSizes;
-		
+
+// Selected Cosmetics
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	USkeletalMeshComponent* C_Selected_Boots;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	USkeletalMeshComponent* C_Selected_Gloves;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	USkeletalMeshComponent* C_Selected_Head;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	USkeletalMeshComponent* C_Selected_Teeth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	USkeletalMeshComponent* C_Selected_Beard;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	USkeletalMeshComponent* C_Selected_Hair;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	USkeletalMeshComponent* C_Selected_Eyes;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	USkeletalMeshComponent* C_Selected_Eyebrows;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	USkeletalMeshComponent* C_Selected_Shirt;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	USkeletalMeshComponent* C_Selected_Pants;
+
+	UFUNCTION(BlueprintCallable, Category = "Customization Cosmetics")
+	void SwapCosmetic(ECosmeticType CosmeticType, USkeletalMeshComponent* NewMesh);
+	
 };
