@@ -7,9 +7,6 @@
 #include "Engine/DataAsset.h"
 #include "CosmeticInfo.generated.h"
 
-/**
- * 
- */
 UCLASS(BlueprintType)
 class BEERSANDBRAWLS_API UCosmeticInfo : public UDataAsset
 {
@@ -20,7 +17,7 @@ public:
 	FName CosmeticName = TEXT("Cosmetic");
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Cosmetic Info")
-	USkeletalMeshComponent* SkeletalMesh;
+	USkeletalMesh* SkeletalMesh;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Cosmetic Info")
 	ECosmeticType CosmeticType = ECosmeticType::Boots;
