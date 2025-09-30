@@ -29,6 +29,7 @@ DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 ABeersAndBrawlsCharacter::ABeersAndBrawlsCharacter()
 {
 	SetupDefaults();
+	SetupCustomizationMeshs();
 	
 /// Custom Subobjects
 	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
@@ -131,6 +132,33 @@ void ABeersAndBrawlsCharacter::SetupDefaults()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+}
+
+void ABeersAndBrawlsCharacter::SetupCustomizationMeshs()
+{
+	CustomizationRoot = CreateDefaultSubobject<USceneComponent>(TEXT("CustomizationRoot"));
+	SK_Boots_Component = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SK_Boots"));
+	SK_Gloves_Component = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SK_Gloves"));
+	SK_Head_Component = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SK_Head"));
+	SK_Teeth_Component = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SK_Teeth"));
+	SK_Beard_Component = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SK_Beard"));
+	SK_Hair_Component = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SK_Hair"));
+	SK_Eyes_Component = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SK_Eyes"));
+	SK_Eyebrows_Component = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SK_Eyebrows"));
+	SK_Shirt_Component = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SK_Shirts"));
+	SK_Pants_Component = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SK_Pants"));
+
+	SK_Boots_Component->SetupAttachment(GetMesh());
+	SK_Gloves_Component->SetupAttachment(GetMesh());
+	SK_Head_Component->SetupAttachment(GetMesh());
+	SK_Teeth_Component->SetupAttachment(GetMesh());
+	SK_Beard_Component->SetupAttachment(GetMesh());
+	SK_Hair_Component->SetupAttachment(GetMesh());
+	SK_Eyes_Component->SetupAttachment(GetMesh());
+	SK_Eyebrows_Component->SetupAttachment(GetMesh());
+	SK_Shirt_Component->SetupAttachment(GetMesh());
+	SK_Pants_Component->SetupAttachment(GetMesh());
+
 }
 
 void ABeersAndBrawlsCharacter::TryInteract()

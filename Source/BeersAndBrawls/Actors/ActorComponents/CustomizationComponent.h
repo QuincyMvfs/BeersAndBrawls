@@ -3,12 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BeersAndBrawls/DataAssets/CosmeticInfo.h"
 #include "BeersAndBrawls/Enums/ECosmeticType.h"
 #include "BeersAndBrawls/Structs/FBoneSizes.h"
 #include "Components/ActorComponent.h"
 #include "CustomizationComponent.generated.h"
 
 
+class ABeersAndBrawlsCharacter;
 class UCameraComponent;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -30,36 +32,38 @@ public:
 	
 // Selected Cosmetics
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
-	USkeletalMeshComponent* C_Selected_Boots;
+	UCosmeticInfo* C_Selected_Boots;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
-	USkeletalMeshComponent* C_Selected_Gloves;
+	UCosmeticInfo* C_Selected_Gloves;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
-	USkeletalMeshComponent* C_Selected_Head;
+	UCosmeticInfo* C_Selected_Head;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
-	USkeletalMeshComponent* C_Selected_Teeth;
+	UCosmeticInfo* C_Selected_Teeth;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
-	USkeletalMeshComponent* C_Selected_Beard;
+	UCosmeticInfo* C_Selected_Beard;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
-	USkeletalMeshComponent* C_Selected_Hair;
+	UCosmeticInfo* C_Selected_Hair;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
-	USkeletalMeshComponent* C_Selected_Eyes;
+	UCosmeticInfo* C_Selected_Eyes;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
-	USkeletalMeshComponent* C_Selected_Eyebrows;
+	UCosmeticInfo* C_Selected_Eyebrows;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
-	USkeletalMeshComponent* C_Selected_Shirt;
+	UCosmeticInfo* C_Selected_Shirt;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
-	USkeletalMeshComponent* C_Selected_Pants;
+	UCosmeticInfo* C_Selected_Pants;
 
 	UFUNCTION(BlueprintCallable, Category = "Customization Cosmetics")
-	void SwapCosmetic(ECosmeticType CosmeticType, USkeletalMeshComponent* NewMesh);
+	void SwapCosmetic(ECosmeticType CosmeticType, UCosmeticInfo* NewMesh);
+
+	ABeersAndBrawlsCharacter* PlayerRef;
 	
 };
