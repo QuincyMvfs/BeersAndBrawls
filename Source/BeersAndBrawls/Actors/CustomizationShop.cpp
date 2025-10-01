@@ -3,6 +3,8 @@
 
 #include "CustomizationShop.h"
 
+#include "BeersAndBrawls/DataAssets/CosmeticInfo.h"
+
 // Sets default values
 ACustomizationShop::ACustomizationShop()
 {
@@ -17,9 +19,9 @@ void ACustomizationShop::BeginPlay()
 	
 }
 
-void ACustomizationShop::UnlockCosmetic(ECosmeticType Type, UCosmeticInfo* NewMeshInfo)
+void ACustomizationShop::UnlockCosmetic(UCosmeticInfo* NewMeshInfo)
 {
-	switch (Type)
+	switch (NewMeshInfo->CosmeticType)
 	{
 		case ECosmeticType::Boots:
 			Unlocked_Boots.Add(NewMeshInfo);
@@ -66,7 +68,7 @@ void ACustomizationShop::UnlockCosmetic(ECosmeticType Type, UCosmeticInfo* NewMe
 			break;
 	}
 
-	OnCosmeticUnlockedEvent.Broadcast(Type, NewMeshInfo);
+	OnCosmeticUnlockedEvent.Broadcast(NewMeshInfo->CosmeticType, NewMeshInfo);
 }
 
 void ACustomizationShop::GetCosmetics(ECosmeticType Type, TArray<UCosmeticInfo*>& UnlockedCosmetics,
@@ -117,6 +119,36 @@ void ACustomizationShop::GetCosmetics(ECosmeticType Type, TArray<UCosmeticInfo*>
 		default:
 			UE_LOG(LogTemp, Error, TEXT("Customization Shop: Invalid CosmeticType"));
 			break;
+	}
+}
+
+bool ACustomizationShop::IsCosmeticUnlocked(UCosmeticInfo* CosmeticInfo)
+{
+	switch (CosmeticInfo->CosmeticType)
+	{
+		case ECosmeticType::Boots:
+			if (Unlocked_Boots.Contains(CosmeticInfo)) return true;
+		case ECosmeticType::Gloves:
+			if (Unlocked_Gloves.Contains(CosmeticInfo)) return true;
+		case ECosmeticType::Head:
+			if (Unlocked_Heads.Contains(CosmeticInfo)) return true;
+		case ECosmeticType::Teeth:
+			if (Unlocked_Teeth.Contains(CosmeticInfo)) return true;
+		case ECosmeticType::Beard:
+			if (Unlocked_Beards.Contains(CosmeticInfo)) return true;
+		case ECosmeticType::Hair:
+			if (Unlocked_Hair.Contains(CosmeticInfo)) return true;
+		case ECosmeticType::Eyes:
+			if (Unlocked_Eyes.Contains(CosmeticInfo)) return true;
+		case ECosmeticType::Shirt:
+			if (Unlocked_Shirts.Contains(CosmeticInfo)) return true;
+		case ECosmeticType::Pants:
+			if (Unlocked_Pants.Contains(CosmeticInfo)) return true;
+		case ECosmeticType::Eyebrows:
+			if (Unlocked_Eyebrows.Contains(CosmeticInfo)) return true;
+		default:
+		 return false;
+		
 	}
 }
 

@@ -61,6 +61,17 @@ void ABeersAndBrawlsCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
+
+	SK_Boots_Component->SetLeaderPoseComponent(GetMesh());
+	SK_Beard_Component->SetLeaderPoseComponent(GetMesh());
+	SK_Gloves_Component->SetLeaderPoseComponent(GetMesh());
+	SK_Eyes_Component->SetLeaderPoseComponent(GetMesh());
+	SK_Eyebrows_Component->SetLeaderPoseComponent(GetMesh());
+	SK_Shirt_Component->SetLeaderPoseComponent(GetMesh());
+	SK_Pants_Component->SetLeaderPoseComponent(GetMesh());
+	SK_Head_Component->SetLeaderPoseComponent(GetMesh());
+	SK_Teeth_Component->SetLeaderPoseComponent(GetMesh());
+	SK_Hair_Component->SetLeaderPoseComponent(GetMesh());
 }
 
 void ABeersAndBrawlsCharacter::Move(const FInputActionValue& Value)
@@ -149,6 +160,7 @@ void ABeersAndBrawlsCharacter::SetupCustomizationMeshs()
 	SK_Pants_Component = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SK_Pants"));
 
 	SK_Boots_Component->SetupAttachment(GetMesh());
+	SK_Boots_Component->SetLeaderPoseComponent(GetMesh());
 	SK_Gloves_Component->SetupAttachment(GetMesh());
 	SK_Head_Component->SetupAttachment(GetMesh());
 	SK_Teeth_Component->SetupAttachment(GetMesh());
@@ -158,7 +170,6 @@ void ABeersAndBrawlsCharacter::SetupCustomizationMeshs()
 	SK_Eyebrows_Component->SetupAttachment(GetMesh());
 	SK_Shirt_Component->SetupAttachment(GetMesh());
 	SK_Pants_Component->SetupAttachment(GetMesh());
-
 }
 
 void ABeersAndBrawlsCharacter::TryInteract()

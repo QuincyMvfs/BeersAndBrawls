@@ -62,7 +62,19 @@ public:
 	UCosmeticInfo* C_Selected_Pants;
 
 	UFUNCTION(BlueprintCallable, Category = "Customization Cosmetics")
-	void SwapCosmetic(ECosmeticType CosmeticType, UCosmeticInfo* NewMesh);
+	void UpdateAllCosmetics();
+
+	UFUNCTION(BlueprintCallable, Category = "Customization Cosmetics")
+	void TemporarilySwapCosmetics(UCosmeticInfo* CosmeticInfo);
+
+	UFUNCTION(BlueprintCallable, Category = "Customization Cosmetics")
+	void ResetCosmetic(ECosmeticType CosmeticType);
+	
+	UFUNCTION(BlueprintCallable, Category = "Customization Cosmetics")
+	void SwapCosmetic(UCosmeticInfo* NewMesh);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Customization Cosmetics")
+	bool IsWearingCosmetic(UCosmeticInfo* CosmeticInfo);
 
 	ABeersAndBrawlsCharacter* PlayerRef;
 	
