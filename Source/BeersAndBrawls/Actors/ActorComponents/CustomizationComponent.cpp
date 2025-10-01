@@ -204,3 +204,59 @@ bool UCustomizationComponent::IsWearingCosmetic(UCosmeticInfo* CosmeticInfo)
 			return false;
 	}
 }
+
+void UCustomizationComponent::ChangeCosmeticColor(ECosmeticType CosmeticType, FLinearColor NewColor)
+{
+	if (!PlayerRef) return;
+
+	USkeletalMeshComponent* SkeletalMeshComponent;
+	USkeletalMeshComponent* SkeletalMeshComponent2 = nullptr;
+	int ElementIndex = 0;
+	
+	switch (CosmeticType)
+	{
+		case ECosmeticType::Boots:
+			SkeletalMeshComponent = PlayerRef->SK_Boots_Component;
+			break;
+		case ECosmeticType::Gloves:
+			SkeletalMeshComponent = PlayerRef->SK_Gloves_Component;
+			break;
+		case ECosmeticType::Head:
+			SkeletalMeshComponent = PlayerRef->SK_Head_Component;
+			SkeletalMeshComponent2 = PlayerRef->GetMesh();
+			break;
+		case ECosmeticType::Teeth:
+			SkeletalMeshComponent = PlayerRef->SK_Teeth_Component;
+			break;
+		case ECosmeticType::Beard:
+			SkeletalMeshComponent = PlayerRef->SK_Beard_Component;
+			break;
+		case ECosmeticType::Hair:
+			SkeletalMeshComponent = PlayerRef->SK_Hair_Component;
+			break;
+		case ECosmeticType::Eyebrows:
+			SkeletalMeshComponent = PlayerRef->SK_Eyebrows_Component;
+			break;
+		case ECosmeticType::Eyes:
+			SkeletalMeshComponent = PlayerRef->SK_Eyes_Component;
+			ElementIndex = 2;
+			break;
+		case ECosmeticType::Shirt:
+			SkeletalMeshComponent = PlayerRef->SK_Shirt_Component;
+			break;
+		case ECosmeticType::Pants:
+			SkeletalMeshComponent = PlayerRef->SK_Pants_Component;
+			break;
+		default:
+			SkeletalMeshComponent = PlayerRef->SK_Pants_Component;
+			SkeletalMeshComponent2 = PlayerRef->GetMesh();
+			break;
+	}
+
+	
+	UMaterialInstanceDynamic* DynamicMaterial = UMaterialInstanceDynamic::Create(CustomMaterial, PlayerRef);
+	SkeletalMeshComponent->SetMaterial(ElementIndex, DynamicMaterial);
+	if (SkeletalMeshComponent2) { SkeletalMeshComponent2->SetMaterial(ElementIndex, DynamicMaterial); }
+	
+	DynamicMaterial->SetVectorParameterValue("Color", NewColor);
+}

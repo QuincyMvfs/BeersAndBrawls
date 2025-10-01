@@ -73,9 +73,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Customization Cosmetics")
 	void SwapCosmetic(UCosmeticInfo* NewMesh);
 
+	UFUNCTION(BlueprintCallable)
+	void ChangeCosmeticColor(ECosmeticType CosmeticType, FLinearColor NewColor);
+
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Customization Cosmetics")
 	bool IsWearingCosmetic(UCosmeticInfo* CosmeticInfo);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	UMaterialInterface* CustomMaterial;
+	
 	ABeersAndBrawlsCharacter* PlayerRef;
 	
 };
