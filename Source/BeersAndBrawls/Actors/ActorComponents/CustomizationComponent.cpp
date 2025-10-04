@@ -32,7 +32,18 @@ void UCustomizationComponent::UpdateAllCosmetics()
 	SwapCosmetic(C_Selected_Head);
 	SwapCosmetic(C_Selected_Shirt);
 	SwapCosmetic(C_Selected_Pants);
-	SwapCosmetic(C_Selected_Boots);
+	SwapCosmetic(C_Selected_Teeth);
+	
+	CosmeticColors.Add(C_Selected_Boots->DefaultColor);
+	CosmeticColors.Add(C_Selected_Gloves->DefaultColor);
+	CosmeticColors.Add(C_Selected_Head->DefaultColor);
+	CosmeticColors.Add(C_Selected_Teeth->DefaultColor);
+	CosmeticColors.Add(C_Selected_Beard->DefaultColor);
+	CosmeticColors.Add(C_Selected_Hair->DefaultColor);
+	CosmeticColors.Add(C_Selected_Eyebrows->DefaultColor);
+	CosmeticColors.Add(C_Selected_Eyes->DefaultColor);
+	CosmeticColors.Add(C_Selected_Shirt->DefaultColor);
+	CosmeticColors.Add(C_Selected_Pants->DefaultColor);
 }
 
 void UCustomizationComponent::TemporarilySwapCosmetics(UCosmeticInfo* CosmeticInfo)
@@ -217,6 +228,73 @@ void UCustomizationComponent::ChangeCosmeticColor(ECosmeticType CosmeticType, FL
 	{
 		case ECosmeticType::Boots:
 			SkeletalMeshComponent = PlayerRef->SK_Boots_Component;
+			CosmeticColors [0] = NewColor;
+			break;
+		case ECosmeticType::Gloves:
+			SkeletalMeshComponent = PlayerRef->SK_Gloves_Component;
+			CosmeticColors [1] = NewColor;
+			break;
+		case ECosmeticType::Head:
+			SkeletalMeshComponent = PlayerRef->SK_Head_Component;
+			SkeletalMeshComponent2 = PlayerRef->GetMesh();
+			CosmeticColors [2] = NewColor;
+			break;
+		case ECosmeticType::Teeth:
+			SkeletalMeshComponent = PlayerRef->SK_Teeth_Component;
+			CosmeticColors [3] = NewColor;
+			break;
+		case ECosmeticType::Beard:
+			SkeletalMeshComponent = PlayerRef->SK_Beard_Component;
+			CosmeticColors [4] = NewColor;
+			break;
+		case ECosmeticType::Hair:
+			SkeletalMeshComponent = PlayerRef->SK_Hair_Component;
+			CosmeticColors [5] = NewColor;
+			break;
+		case ECosmeticType::Eyebrows:
+			SkeletalMeshComponent = PlayerRef->SK_Eyebrows_Component;
+			CosmeticColors [6] = NewColor;
+			break;
+		case ECosmeticType::Eyes:
+			SkeletalMeshComponent = PlayerRef->SK_Eyes_Component;
+			ElementIndex = 2;
+			CosmeticColors [7] = NewColor;
+			break;
+		case ECosmeticType::Shirt:
+			SkeletalMeshComponent = PlayerRef->SK_Shirt_Component;
+			CosmeticColors [8] = NewColor;
+			break;
+		case ECosmeticType::Pants:
+			SkeletalMeshComponent = PlayerRef->SK_Pants_Component;
+			CosmeticColors [9] = NewColor;
+			break;
+		default:
+			SkeletalMeshComponent = PlayerRef->SK_Pants_Component;
+			SkeletalMeshComponent2 = PlayerRef->GetMesh();
+			CosmeticColors [9] = NewColor;
+			break;
+	}
+
+	
+	UMaterialInstanceDynamic* DynamicMaterial = UMaterialInstanceDynamic::Create(CustomMaterial, PlayerRef);
+	SkeletalMeshComponent->SetMaterial(ElementIndex, DynamicMaterial);
+	if (SkeletalMeshComponent2) { SkeletalMeshComponent2->SetMaterial(ElementIndex, DynamicMaterial); }
+	
+	DynamicMaterial->SetVectorParameterValue("Color", NewColor);
+}
+
+void UCustomizationComponent::TemporarilyChangeCosmeticColor(ECosmeticType CosmeticType, FLinearColor GivenColor)
+{
+	if (!PlayerRef) return;
+
+	USkeletalMeshComponent* SkeletalMeshComponent;
+	USkeletalMeshComponent* SkeletalMeshComponent2 = nullptr;
+	int ElementIndex = 0;
+	
+	switch (CosmeticType)
+	{
+		case ECosmeticType::Boots:
+			SkeletalMeshComponent = PlayerRef->SK_Boots_Component;
 			break;
 		case ECosmeticType::Gloves:
 			SkeletalMeshComponent = PlayerRef->SK_Gloves_Component;
@@ -252,11 +330,108 @@ void UCustomizationComponent::ChangeCosmeticColor(ECosmeticType CosmeticType, FL
 			SkeletalMeshComponent2 = PlayerRef->GetMesh();
 			break;
 	}
+	
+	UMaterialInstanceDynamic* DynamicMaterial = UMaterialInstanceDynamic::Create(CustomMaterial, PlayerRef);
+	SkeletalMeshComponent->SetMaterial(ElementIndex, DynamicMaterial);
+	if (SkeletalMeshComponent2) { SkeletalMeshComponent2->SetMaterial(ElementIndex, DynamicMaterial); }
+	
+	DynamicMaterial->SetVectorParameterValue("Color", GivenColor);
+}
+
+void UCustomizationComponent::ResetCosmeticColor(ECosmeticType CosmeticType)
+{
+	if (!PlayerRef) return;
+
+	USkeletalMeshComponent* SkeletalMeshComponent;
+	USkeletalMeshComponent* SkeletalMeshComponent2 = nullptr;
+	FLinearColor OriginalColor;
+	int ElementIndex = 0;
+	
+	switch (CosmeticType)
+	{
+		case ECosmeticType::Boots:
+			SkeletalMeshComponent = PlayerRef->SK_Boots_Component;
+			OriginalColor = CosmeticColors [0];
+			break;
+		case ECosmeticType::Gloves:
+			SkeletalMeshComponent = PlayerRef->SK_Gloves_Component;
+			OriginalColor = CosmeticColors [1];
+			break;
+		case ECosmeticType::Head:
+			SkeletalMeshComponent = PlayerRef->SK_Head_Component;
+			SkeletalMeshComponent2 = PlayerRef->GetMesh();
+			OriginalColor = CosmeticColors [2];
+			break;
+		case ECosmeticType::Teeth:
+			SkeletalMeshComponent = PlayerRef->SK_Teeth_Component;
+			OriginalColor = CosmeticColors [3];
+			break;
+		case ECosmeticType::Beard:
+			SkeletalMeshComponent = PlayerRef->SK_Beard_Component;
+			OriginalColor = CosmeticColors [4];
+			break;
+		case ECosmeticType::Hair:
+			SkeletalMeshComponent = PlayerRef->SK_Hair_Component;
+			OriginalColor = CosmeticColors [5];
+			break;
+		case ECosmeticType::Eyebrows:
+			SkeletalMeshComponent = PlayerRef->SK_Eyebrows_Component;
+			OriginalColor = CosmeticColors [6];
+			break;
+		case ECosmeticType::Eyes:
+			SkeletalMeshComponent = PlayerRef->SK_Eyes_Component;
+			ElementIndex = 2;
+			OriginalColor = CosmeticColors [7];
+			break;
+		case ECosmeticType::Shirt:
+			SkeletalMeshComponent = PlayerRef->SK_Shirt_Component;
+			OriginalColor = CosmeticColors [8];
+			break;
+		case ECosmeticType::Pants:
+			SkeletalMeshComponent = PlayerRef->SK_Pants_Component;
+			OriginalColor = CosmeticColors [9];
+			break;
+		default:
+			SkeletalMeshComponent = PlayerRef->SK_Pants_Component;
+			SkeletalMeshComponent2 = PlayerRef->GetMesh();
+			OriginalColor = CosmeticColors [9];
+			break;
+	}
 
 	
 	UMaterialInstanceDynamic* DynamicMaterial = UMaterialInstanceDynamic::Create(CustomMaterial, PlayerRef);
 	SkeletalMeshComponent->SetMaterial(ElementIndex, DynamicMaterial);
 	if (SkeletalMeshComponent2) { SkeletalMeshComponent2->SetMaterial(ElementIndex, DynamicMaterial); }
 	
-	DynamicMaterial->SetVectorParameterValue("Color", NewColor);
+	DynamicMaterial->SetVectorParameterValue("Color", OriginalColor);
+}
+
+FLinearColor UCustomizationComponent::GetSelectedCosmeticColor(ECosmeticType CosmeticType)
+{
+	switch (CosmeticType)
+	{
+		case ECosmeticType::Boots:
+			return CosmeticColors[0];
+		case ECosmeticType::Gloves:
+			return CosmeticColors[1];
+		case ECosmeticType::Head:
+			return CosmeticColors[2];
+		case ECosmeticType::Teeth:
+			return CosmeticColors[3];
+		case ECosmeticType::Beard:
+			return CosmeticColors[4];
+		case ECosmeticType::Hair:
+			return CosmeticColors[5];
+		case ECosmeticType::Eyebrows:
+			return CosmeticColors[6];
+		case ECosmeticType::Eyes:
+			return CosmeticColors[7];
+		case ECosmeticType::Shirt:
+			return CosmeticColors[8];
+		case ECosmeticType::Pants:
+			return CosmeticColors[9];
+		default:
+			UE_LOG(LogTemp, Error, TEXT("Customization Component: Invalid CosmeticType"));
+			return CosmeticColors[0];
+	}
 }

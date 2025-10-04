@@ -61,6 +61,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
 	UCosmeticInfo* C_Selected_Pants;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Color Customization")
+	TArray<FLinearColor> CosmeticColors;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Color Customization")
+	TArray<FLinearColor> Default_CosmeticColors;
+	
 	UFUNCTION(BlueprintCallable, Category = "Customization Cosmetics")
 	void UpdateAllCosmetics();
 
@@ -75,6 +81,15 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeCosmeticColor(ECosmeticType CosmeticType, FLinearColor NewColor);
+
+	UFUNCTION(BlueprintCallable)
+	void TemporarilyChangeCosmeticColor(ECosmeticType CosmeticType, FLinearColor GivenColor);
+
+	UFUNCTION(BlueprintCallable)
+	void ResetCosmeticColor(ECosmeticType CosmeticType);
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FLinearColor GetSelectedCosmeticColor(ECosmeticType CosmeticType);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Customization Cosmetics")
 	bool IsWearingCosmetic(UCosmeticInfo* CosmeticInfo);

@@ -23,5 +23,8 @@ public:
 	ECosmeticType CosmeticType = ECosmeticType::Boots;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Cosmetic Info")
+	FLinearColor DefaultColor = FLinearColor::Red;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Cosmetic Info")
 	int Cost = 50;
 };
