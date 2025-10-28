@@ -4,6 +4,7 @@
 #include "BarFightGenerator.h"
 
 #include "BeersAndBrawls/BeersAndBrawlsCharacter.h"
+#include "BeersAndBrawls/BeersAndBrawlsGameInstance.h"
 #include "BeersAndBrawls/DataAssets/EnemyInfo.h"
 #include "BeersAndBrawls/Items/Weapon.h"
 #include "BeersAndBrawls/Structs/FEnemyInfoStruct.h"
@@ -20,6 +21,7 @@ void ABarFightGenerator::BeginPlay()
 {
 	Super::BeginPlay();
 	PlayerRef = Cast<ABeersAndBrawlsCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	DefaultGameInstanceRef = Cast<UBeersAndBrawlsGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 }
 
 // Name Generator
@@ -96,6 +98,9 @@ UWeapon* ABarFightGenerator::GenerateRandomWeapon(int Level)
 		case 9:
 			WeaponArray = M_Level_09_To_10_PossibleWeapons;
 			break;
+		default:
+			WeaponArray = M_Level_09_To_10_PossibleWeapons;
+			break;
 	}
 	
 	int RandInt = FMath::RandRange(0, WeaponArray.Num() -1);
@@ -169,6 +174,46 @@ EAbilitySpeeds ABarFightGenerator::GetSpeed(int Index)
 	return SelectedSpeed;
 }
 
+TArray<UCosmeticInfo*> ABarFightGenerator::GenerateRandomCosmeticInfo()
+{
+	if (!DefaultGameInstanceRef) return TArray<UCosmeticInfo*>();
+
+	TArray<UCosmeticInfo*> CosmeticInfos;
+	CosmeticInfos.Add(DefaultGameInstanceRef->Boots[FMath::RandRange(0, DefaultGameInstanceRef->Boots.Num() - 1)]);
+	CosmeticInfos.Add(DefaultGameInstanceRef->Gloves[FMath::RandRange(0, DefaultGameInstanceRef->Gloves.Num() - 1)]);
+	CosmeticInfos.Add(DefaultGameInstanceRef->Heads[FMath::RandRange(0, DefaultGameInstanceRef->Heads.Num() - 1)]);
+	CosmeticInfos.Add(DefaultGameInstanceRef->Teeth[FMath::RandRange(0, DefaultGameInstanceRef->Teeth.Num() - 1)]);
+	CosmeticInfos.Add(DefaultGameInstanceRef->Beards[FMath::RandRange(0, DefaultGameInstanceRef->Beards.Num() - 1)]);
+	CosmeticInfos.Add(DefaultGameInstanceRef->Hair[FMath::RandRange(0, DefaultGameInstanceRef->Hair.Num() - 1)]);
+	CosmeticInfos.Add(DefaultGameInstanceRef->Eyes[FMath::RandRange(0, DefaultGameInstanceRef->Eyes.Num() - 1)]);
+	CosmeticInfos.Add(DefaultGameInstanceRef->Eyebrows[FMath::RandRange(0, DefaultGameInstanceRef->Eyebrows.Num() - 1)]);
+	CosmeticInfos.Add(DefaultGameInstanceRef->Shirts[FMath::RandRange(0, DefaultGameInstanceRef->Shirts.Num() - 1)]);
+	CosmeticInfos.Add(DefaultGameInstanceRef->Pants[FMath::RandRange(0, DefaultGameInstanceRef->Pants.Num() - 1)]);
+
+	return CosmeticInfos;
+	
+}
+
+TArray<FLinearColor> ABarFightGenerator::GenerateRandomColors()
+{
+	if (!DefaultGameInstanceRef) return TArray<FLinearColor>();
+
+	TArray<FLinearColor> Colors;
+	Colors.Add(DefaultGameInstanceRef->Boot_ColorPalette[FMath::RandRange(0, DefaultGameInstanceRef->Boot_ColorPalette.Num() - 1)]);
+	Colors.Add(DefaultGameInstanceRef->Gloves_ColorPalette[FMath::RandRange(0, DefaultGameInstanceRef->Gloves_ColorPalette.Num() - 1)]);
+	Colors.Add(DefaultGameInstanceRef->Skin_ColorPalette[FMath::RandRange(0, DefaultGameInstanceRef->Skin_ColorPalette.Num() - 1)]);
+	Colors.Add(DefaultGameInstanceRef->Teeth_ColorPalette[FMath::RandRange(0, DefaultGameInstanceRef->Teeth_ColorPalette.Num() - 1)]);
+	Colors.Add(DefaultGameInstanceRef->Hair_ColorPalette[FMath::RandRange(0, DefaultGameInstanceRef->Hair_ColorPalette.Num() - 1)]);
+	Colors.Add(DefaultGameInstanceRef->Hair_ColorPalette[FMath::RandRange(0, DefaultGameInstanceRef->Hair_ColorPalette.Num() - 1)]);
+	Colors.Add(DefaultGameInstanceRef->Eye_ColorPalette[FMath::RandRange(0, DefaultGameInstanceRef->Eye_ColorPalette.Num() - 1)]);
+	Colors.Add(DefaultGameInstanceRef->Hair_ColorPalette[FMath::RandRange(0, DefaultGameInstanceRef->Hair_ColorPalette.Num() - 1)]);
+	Colors.Add(DefaultGameInstanceRef->Shirt_ColorPalette[FMath::RandRange(0, DefaultGameInstanceRef->Shirt_ColorPalette.Num() - 1)]);
+	Colors.Add(DefaultGameInstanceRef->Pants_ColorPalette[FMath::RandRange(0, DefaultGameInstanceRef->Pants_ColorPalette.Num() - 1)]);
+
+	return Colors;
+
+}
+
 FEnemyInfoStruct ABarFightGenerator::GenerateEnemyInfo(int Level)
 {
 	FEnemyInfoStruct NewEnemy;
@@ -204,6 +249,10 @@ FEnemyInfoStruct ABarFightGenerator::GenerateEnemyInfo(int Level)
 	NewEnemy.EquippedWeapon = GenerateRandomWeapon(Level);
 
 	NewEnemy.EnemyLevel = Level;
+
+	// Cosmetics
+	NewEnemy.Cosmetics = GenerateRandomCosmeticInfo();
+	NewEnemy.Cosmetic_Colors = GenerateRandomColors();
 	
 	return NewEnemy;
 }

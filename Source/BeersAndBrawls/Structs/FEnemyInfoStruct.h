@@ -6,6 +6,7 @@
 #include "BeersAndBrawls/Enums/EAbilitySpeeds.h"
 #include "FEnemyInfoStruct.generated.h"
 
+class UCosmeticInfo;
 class UWeapon;
 
 USTRUCT(BlueprintType)
@@ -45,4 +46,10 @@ struct FEnemyInfoStruct
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UWeapon* EquippedWeapon;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TArray<UCosmeticInfo*> Cosmetics;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TArray<FLinearColor> Cosmetic_Colors;
 };

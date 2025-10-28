@@ -96,7 +96,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
 	UMaterialInterface* CustomMaterial;
-	
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	ABeersAndBrawlsCharacter* PlayerRef;
 	
 };

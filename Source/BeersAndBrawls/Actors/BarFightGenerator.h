@@ -7,6 +7,8 @@
 #include "GameFramework/Actor.h"
 #include "BarFightGenerator.generated.h"
 
+class UCosmeticInfo;
+class UBeersAndBrawlsGameInstance;
 class ABeersAndBrawlsCharacter;
 struct FEnemyInfoStruct;
 class UEnemyInfo;
@@ -100,7 +102,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enemy")
 	UEnemyInfo* TemplateEnemy;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	ABeersAndBrawlsCharacter* PlayerRef;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UBeersAndBrawlsGameInstance* DefaultGameInstanceRef;
 	
 public:
 	FString GenerateRandomName();
@@ -109,6 +115,8 @@ public:
 	int CalculateBeerBuxReward(int MaxHealth, int Level);
 	int CalculateExpReward(int MaxHealth, int Level);
 	EAbilitySpeeds GetSpeed(int Index);
+	TArray<UCosmeticInfo*> GenerateRandomCosmeticInfo();
+	TArray<FLinearColor> GenerateRandomColors();
 	
 	UFUNCTION(BlueprintCallable)
 	FEnemyInfoStruct GenerateEnemyInfo(int Level);
