@@ -55,6 +55,9 @@ ABeersAndBrawlsCharacter::ABeersAndBrawlsCharacter()
 
 	CustomizationCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CustomizationCamera"));
 	CustomizationCamera->SetupAttachment(GetCapsuleComponent());
+
+	EnemySelectorCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("EnemySelectorCamera"));
+	EnemySelectorCamera->SetupAttachment(GetCapsuleComponent());
 }
 
 void ABeersAndBrawlsCharacter::BeginPlay()
@@ -255,6 +258,15 @@ void ABeersAndBrawlsCharacter::SwapCameras(int Index)
 			CustomizationCamera->SetActive(true);
 			FollowCamera->SetActive(false);
 			CombatCamera->SetActive(false);
+		}
+		else if (Index == 3)
+		{
+			PlayerController->SetViewTargetWithBlend(this, 0.5f);
+			EnemySelectorCamera->SetActive(true);
+			CustomizationCamera->SetActive(false);
+			FollowCamera->SetActive(false);
+			CombatCamera->SetActive(false);
+			
 		}
 	}
 }

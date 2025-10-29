@@ -62,15 +62,12 @@ FString ABarFightGenerator::GenerateRandomDescription()
 }
 
 // Weapon Generator
-UWeapon* ABarFightGenerator::GenerateRandomWeapon(int Level)
+UWeapon* ABarFightGenerator::GenerateRandomWeapon(int Level = 1)
 {
 	TArray<UWeapon*> WeaponArray;
 	
 	switch (Level)
 	{
-		case 0:
-			WeaponArray = M_Level_01_To_02_PossibleWeapons;
-			break;
 		case 1:
 			WeaponArray = M_Level_01_To_02_PossibleWeapons;
 			break;
@@ -78,24 +75,27 @@ UWeapon* ABarFightGenerator::GenerateRandomWeapon(int Level)
 			WeaponArray = M_Level_01_To_02_PossibleWeapons;
 			break;
 		case 3:
-			WeaponArray = M_Level_03_To_04_PossibleWeapons;
+			WeaponArray = M_Level_01_To_02_PossibleWeapons;
 			break;
 		case 4:
 			WeaponArray = M_Level_03_To_04_PossibleWeapons;
 			break;
 		case 5:
-			WeaponArray = M_Level_05_To_06_PossibleWeapons;
+			WeaponArray = M_Level_03_To_04_PossibleWeapons;
 			break;
 		case 6:
 			WeaponArray = M_Level_05_To_06_PossibleWeapons;
 			break;
 		case 7:
-			WeaponArray = M_Level_07_To_08_PossibleWeapons;
+			WeaponArray = M_Level_05_To_06_PossibleWeapons;
 			break;
 		case 8:
 			WeaponArray = M_Level_07_To_08_PossibleWeapons;
 			break;
 		case 9:
+			WeaponArray = M_Level_07_To_08_PossibleWeapons;
+			break;
+		case 10:
 			WeaponArray = M_Level_09_To_10_PossibleWeapons;
 			break;
 		default:
@@ -104,6 +104,8 @@ UWeapon* ABarFightGenerator::GenerateRandomWeapon(int Level)
 	}
 	
 	int RandInt = FMath::RandRange(0, WeaponArray.Num() -1);
+	//UE_LOG(LogTemp, Warning, TEXT("rand %i | max %i"), RandInt, WeaponArray.Num() - 1);
+	//UE_LOG(LogTemp, Warning, TEXT("Player Level %i"), Level);
 	return WeaponArray[RandInt];
 }
 
@@ -245,8 +247,15 @@ FEnemyInfoStruct ABarFightGenerator::GenerateEnemyInfo(int Level)
 	// Rewards
 	NewEnemy.BeerBuxReward = CalculateBeerBuxReward(MaxHealth, Level);
 	NewEnemy.ExpReward = CalculateExpReward(MaxHealth, Level);
-	
+
+	UE_LOG(LogTemp, Warning, TEXT("%i"), Level);
 	NewEnemy.EquippedWeapon = GenerateRandomWeapon(Level);
+	if (!NewEnemy.EquippedWeapon)
+	{
+		NewEnemy.EquippedWeapon = GenerateRandomWeapon(Level + 1);
+	}
+	
+	//UE_LOG(LogTemp, Warning, TEXT("%s"), *NewEnemy.EquippedWeapon->ItemName.ToString());
 
 	NewEnemy.EnemyLevel = Level;
 

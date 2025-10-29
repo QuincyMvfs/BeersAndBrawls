@@ -57,7 +57,6 @@ void AEnemy::InitializeEnemy(FEnemyInfoStruct NewEnemyInfo)
 
 void AEnemy::SetupCustomizationMeshs()
 {
-	CustomizationRoot = CreateDefaultSubobject<USceneComponent>(TEXT("CustomizationRoot"));
 	SK_Boots_Component = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SK_Boots"));
 	SK_Gloves_Component = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SK_Gloves"));
 	SK_Head_Component = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SK_Head"));
@@ -70,7 +69,6 @@ void AEnemy::SetupCustomizationMeshs()
 	SK_Pants_Component = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SK_Pants"));
 
 	SK_Boots_Component->SetupAttachment(GetMesh());
-	SK_Boots_Component->SetLeaderPoseComponent(GetMesh());
 	SK_Gloves_Component->SetupAttachment(GetMesh());
 	SK_Head_Component->SetupAttachment(GetMesh());
 	SK_Teeth_Component->SetupAttachment(GetMesh());
@@ -149,9 +147,7 @@ void AEnemy::UpdateCosmetics()
 
 void AEnemy::UpdateCosmeticColors(ECosmeticType CosmeticType)
 {
-	if (!PlayerRef) return;
-
-	FLinearColor NewColor = FLinearColor::White;
+	FLinearColor NewColor;
 	USkeletalMeshComponent* SkeletalMeshComponent;
 	USkeletalMeshComponent* SkeletalMeshComponent2 = nullptr;
 	int ElementIndex = 0;
@@ -202,7 +198,7 @@ void AEnemy::UpdateCosmeticColors(ECosmeticType CosmeticType)
 			break;
 		default:
 			SkeletalMeshComponent = SK_Head_Component;
-			SkeletalMeshComponent2 = PlayerRef->GetMesh();
+			SkeletalMeshComponent2 = GetMesh();
 			NewColor = EnemyInfo.Cosmetic_Colors[2];
 			break;
 	}
