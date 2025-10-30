@@ -266,3 +266,32 @@ FEnemyInfoStruct ABarFightGenerator::GenerateEnemyInfo(int Level)
 	return NewEnemy;
 }
 
+FEnemyInfoStruct ABarFightGenerator::GetBossEnemy(int Level)
+{
+	FEnemyInfoStruct Boss;
+	
+	switch (Level)
+	{
+		case 1:
+			Boss = M_Boss_Level_01->EnemyInfoStruct;
+			break;
+		case 2:
+			Boss = M_Boss_Level_02->EnemyInfoStruct;
+			break;
+		case 3:
+			Boss = M_Boss_Level_03->EnemyInfoStruct;
+			break;
+		case 4:
+			Boss = M_Boss_Level_04->EnemyInfoStruct;
+			break;
+		case 5:
+			Boss = M_Boss_Level_05->EnemyInfoStruct;
+			break;
+		default:
+			Boss = M_Boss_Level_01->EnemyInfoStruct;
+			break;
+	}
+
+	return Boss;
+}
+

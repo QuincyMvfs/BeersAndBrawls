@@ -44,12 +44,12 @@ struct FEnemyInfoStruct
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float CounterSpeedMultiplier;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Instanced)
 	UWeapon* EquippedWeapon;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ToolTip = " Boots, Gloves, Head, Teeth, Beard, Hair, Eyes, Eyebrows, Shirt, Pants"))
 	TArray<UCosmeticInfo*> Cosmetics;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ToolTip = " Boots, Gloves, Head, Teeth, Beard, Hair, Eyes, Eyebrows, Shirt, Pants"))
 	TArray<FLinearColor> Cosmetic_Colors;
 };

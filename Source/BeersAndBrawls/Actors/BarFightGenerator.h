@@ -98,6 +98,22 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Instanced, Category = "Weapons")
 	TArray<UWeapon*> M_Level_09_To_10_PossibleWeapons;
+
+	// BOSSES
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enemy|Bosses")
+	UEnemyInfo* M_Boss_Level_01;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enemy|Bosses")
+	UEnemyInfo* M_Boss_Level_02;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enemy|Bosses")
+	UEnemyInfo* M_Boss_Level_03;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enemy|Bosses")
+	UEnemyInfo* M_Boss_Level_04;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enemy|Bosses")
+	UEnemyInfo* M_Boss_Level_05;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Enemy")
 	UEnemyInfo* TemplateEnemy;
@@ -120,4 +136,7 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	FEnemyInfoStruct GenerateEnemyInfo(int Level);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FEnemyInfoStruct GetBossEnemy(int Level);
 };
