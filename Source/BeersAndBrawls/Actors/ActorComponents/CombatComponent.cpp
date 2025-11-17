@@ -2,7 +2,6 @@
 
 
 #include "CombatComponent.h"
-
 #include "StatusEffectComponent.h"
 #include "BeersAndBrawls/DataAssets/AbilityInfo.h"
 #include "BeersAndBrawls/DataAssets/AbilityPattern.h"
@@ -22,8 +21,8 @@ void UCombatComponent::BeginPlay()
 
 void UCombatComponent::GenerateRandomPatterns(UAbilityInfo* Ability, UCombatComponent* Victim)
 {
-	FCombatPatterns NewCombatPattern = GenerateRandomCombatPattern(Ability);
-	FCombatPatterns NewCounterPattern = GenerateRandomCounterPattern(Ability, Victim);
+	const FCombatPatterns NewCombatPattern = GenerateRandomCombatPattern(Ability);
+	const FCombatPatterns NewCounterPattern = GenerateRandomCounterPattern(Ability, Victim);
 	
 	M_SelectedCombatPattern = NewCombatPattern;
 	M_SelectedCounterPattern = NewCounterPattern;
@@ -31,7 +30,7 @@ void UCombatComponent::GenerateRandomPatterns(UAbilityInfo* Ability, UCombatComp
 
 FCombatPatterns UCombatComponent::GenerateRandomCombatPattern(UAbilityInfo* Ability)
 {
-	int RandInt = Ability->M_ItemPatterns->CombatPatterns.Num() - 1;
+	const int RandInt = Ability->M_ItemPatterns->CombatPatterns.Num() - 1;
 	FCombatPatterns Pattern = FactorInDazedModifier(Ability->M_ItemPatterns->CombatPatterns[RandInt], M_Dazed_Modifier);
 	
 	return Pattern;
@@ -39,7 +38,7 @@ FCombatPatterns UCombatComponent::GenerateRandomCombatPattern(UAbilityInfo* Abil
 
 FCombatPatterns UCombatComponent::GenerateRandomCounterPattern(UAbilityInfo* Ability, UCombatComponent* Victim)
 {
-	int RandInt = Ability->M_ItemPatterns->CounterPatterns.Num() - 1;
+	const int RandInt = Ability->M_ItemPatterns->CounterPatterns.Num() - 1;
 	FCombatPatterns Pattern = FactorInDazedModifier(Ability->M_ItemPatterns->CounterPatterns[RandInt], Victim->M_Dazed_Modifier);
 	
 	return Pattern;
@@ -49,6 +48,33 @@ void UCombatComponent::SetCombatPattern(FCombatPatterns NewCombatPattern)
 {
 	M_SelectedCombatPattern = NewCombatPattern;
 	M_RemainingInputs = M_SelectedCombatPattern.KeyInputs;
+
+	float SquareRoot = FMath::Sqrt(static_cast<float>(M_RemainingInputs.Num()));
+	//UE_LOG(LogTemp, Warning, TEXT("Remaining: %i, Square: %f"), M_RemainingInputs.Num(), SquareRoot);
+	const int TotalActivePatterns = FMath::FloorToInt(SquareRoot);
+	//const int TotalInputs = FMath::CeilToInt(SquareRoot);
+	
+	for (int i = 0; i <= TotalActivePatterns; i++)
+	{
+		FCombatPatterns ActivePattern;
+		int Index = TotalActivePatterns * i;
+		for (int j = 0; j < TotalActivePatterns; j++)
+		{
+			if (M_RemainingInputs.Num() - 1 <= j + Index)
+			{
+				UE_LOG(LogTemp, Display, TEXT("TOO MANY"));
+				break;
+			}
+			
+			ActivePattern.KeyInputs.Add(M_RemainingInputs[Index + j]);
+			UE_LOG(LogTemp, Display, TEXT("Index: %i, Remaining Inputs: %i"), Index + j, M_RemainingInputs.Num());
+		}
+		
+		M_ActiveRemainingCombos.Add(ActivePattern);
+	}
+
+	//UE_LOG(LogTemp, Display, TEXT("COMBAT PATTERN: %i"), M_ActiveRemainingCombos.Num());
+	
 	M_CanReceiveInputs = true;
 	OnCombatPatternReceived.Broadcast(M_SelectedCombatPattern);
 

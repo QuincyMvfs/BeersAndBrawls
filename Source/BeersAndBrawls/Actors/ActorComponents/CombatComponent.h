@@ -34,6 +34,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	// Events
 	UPROPERTY(BlueprintAssignable)
 	FOnCombatPatternReceived OnCombatPatternReceived;
 
@@ -51,12 +52,44 @@ public:
     	
 	UPROPERTY(BlueprintAssignable)
 	FOnElectrocuteEnded OnElectrocuteEndedEvent;
+	//
+
+	// Input Logic
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(HideInDetailPanel))
+	bool M_CanReceiveInputs = false;
+
+	UFUNCTION()
+	void ReceiveInput(ECombatKey InputKey);
+
+	UFUNCTION(BlueprintCallable)
+	void StopInputs();
+	//
+
+	// Abilities
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(HideInDetailPanel))
+	UAbilityInfo* SelectedAbility;
+	//
 	
+	// Patterns
 	UFUNCTION(BlueprintCallable)
 	void GenerateRandomPatterns(UAbilityInfo* Ability, UCombatComponent* Victim);
 	FCombatPatterns GenerateRandomCombatPattern(UAbilityInfo* Ability);
 	FCombatPatterns GenerateRandomCounterPattern(UAbilityInfo* Ability, UCombatComponent* Victim);
 
+	UFUNCTION(BlueprintCallable)
+	void SetCombatPattern(FCombatPatterns NewCombatPattern);
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(HideInDetailPanel))
+	FCombatPatterns M_SelectedCombatPattern;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(HideInDetailPanel))
+	FCombatPatterns M_SelectedCounterPattern;
+
+	TArray<ECombatKey> M_RemainingInputs;
+
+	TArray<FCombatPatterns> M_ActiveRemainingCombos;
+	//
+	
 	// ELECTROCUTION
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(HideInDetailPanel))
 	bool M_IsElectrocuted = false;
@@ -72,44 +105,20 @@ public:
 	void ElectrocutingLoop();
 	void StopElectrocuting();
 	//
-	
-	UFUNCTION(BlueprintCallable)
-	void SetCombatPattern(FCombatPatterns NewCombatPattern);
 
-	UFUNCTION()
-	void ReceiveInput(ECombatKey InputKey);
-
-	UFUNCTION(BlueprintCallable)
-	void StopInputs();
-
+	/// Status Effects
+	// Dazed
 	FCombatPatterns FactorInDazedModifier(FCombatPatterns Pattern, float Modifier);
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(HideInDetailPanel))
-	FCombatPatterns M_SelectedCombatPattern;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(HideInDetailPanel))
-	FCombatPatterns M_SelectedCounterPattern;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(HideInDetailPanel))
-	UAbilityInfo* SelectedAbility;
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(HideInDetailPanel))
-	bool M_CanReceiveInputs = false;
-
-	TArray<ECombatKey> M_RemainingInputs;
-
+	void AdjustDazedModifier(float Amount);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(HideInDetailPanel))
 	float M_Dazed_Modifier = 1.0f;
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(HideInDetailPanel))
 	float M_Damage_Multiplier = 1.0f;
 	
-	void AdjustDazedModifier(float Amount);
 	void AdjustDamageModifier(float Amount);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(HideInDetailPanel))
 	bool M_IsActiveUser = false;
-	
-
 };
