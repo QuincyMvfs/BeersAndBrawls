@@ -15,6 +15,7 @@ enum class ECombatKey : uint8;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCombatPatternReceived, FCombatPatterns, CombatPattern);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCombatPatternCompleted);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCombatPatternRowCompleted);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCorrectInputGiven, ECombatKey, InputKey);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnFailInputGiven, ECombatKey, InputKey);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnElectrocuted);
@@ -40,6 +41,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnCombatPatternCompleted OnCombatPatternCompleted;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnCombatPatternRowCompleted OnCombatPatternRowCompleted;
 	
 	UPROPERTY(BlueprintAssignable)
 	FOnCorrectInputGiven OnCorrectInputGiven;

@@ -50,10 +50,7 @@ void UCombatComponent::SetCombatPattern(FCombatPatterns NewCombatPattern)
 	M_RemainingInputs = M_SelectedCombatPattern.KeyInputs;
 
 	float SquareRoot = FMath::Sqrt(static_cast<float>(M_RemainingInputs.Num()));
-	//UE_LOG(LogTemp, Warning, TEXT("Remaining: %i, Square: %f"), M_RemainingInputs.Num(), SquareRoot);
 	const int TotalActivePatterns = FMath::FloorToInt(SquareRoot);
-	//const int TotalInputs = FMath::CeilToInt(SquareRoot);
-	
 	for (int i = 0; i <= TotalActivePatterns; i++)
 	{
 		FCombatPatterns ActivePattern;
@@ -62,18 +59,14 @@ void UCombatComponent::SetCombatPattern(FCombatPatterns NewCombatPattern)
 		{
 			if (M_RemainingInputs.Num() - 1 <= j + Index)
 			{
-				UE_LOG(LogTemp, Display, TEXT("TOO MANY"));
 				break;
 			}
 			
 			ActivePattern.KeyInputs.Add(M_RemainingInputs[Index + j]);
-			UE_LOG(LogTemp, Display, TEXT("Index: %i, Remaining Inputs: %i"), Index + j, M_RemainingInputs.Num());
 		}
 		
 		M_ActiveRemainingCombos.Add(ActivePattern);
 	}
-
-	//UE_LOG(LogTemp, Display, TEXT("COMBAT PATTERN: %i"), M_ActiveRemainingCombos.Num());
 	
 	M_CanReceiveInputs = true;
 	OnCombatPatternReceived.Broadcast(M_SelectedCombatPattern);
