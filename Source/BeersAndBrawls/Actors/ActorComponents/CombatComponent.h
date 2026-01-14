@@ -15,9 +15,11 @@ enum class ECombatKey : uint8;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCombatPatternReceived, FCombatPatterns, CombatPattern);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCombatPatternCompleted);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCombatPatternRowCompleted);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCombatPatternSegmentCompleted, int, SegmentNum);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCorrectInputGiven, ECombatKey, InputKey);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnFailInputGiven, ECombatKey, InputKey);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnElectrocuted);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnElectrocuteEnded);
 
@@ -43,7 +45,7 @@ public:
 	FOnCombatPatternCompleted OnCombatPatternCompleted;
 	
 	UPROPERTY(BlueprintAssignable)
-	FOnCombatPatternRowCompleted OnCombatPatternRowCompleted;
+	FOnCombatPatternSegmentCompleted OnCombatPatternSegmentCompleted;
 	
 	UPROPERTY(BlueprintAssignable)
 	FOnCorrectInputGiven OnCorrectInputGiven;
@@ -89,9 +91,23 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(HideInDetailPanel))
 	FCombatPatterns M_SelectedCounterPattern;
 
+	// Total Inputs
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(HideInDetailPanel))
 	TArray<ECombatKey> M_RemainingInputs;
 
-	TArray<FCombatPatterns> M_ActiveRemainingCombos;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(HideInDetailPanel))
+	int M_ActiveInputIndex;
+
+	// Total Segments
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(HideInDetailPanel))
+	TArray<FCombatPatterns> M_ActiveRemainingSegments;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(HideInDetailPanel))
+	int M_ActiveSegmentIndex;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(HideInDetailPanel))
+	int M_InputSegmentThreshold;
+	
 	//
 	
 	// ELECTROCUTION
@@ -122,6 +138,7 @@ public:
 	float M_Damage_Multiplier = 1.0f;
 	
 	void AdjustDamageModifier(float Amount);
+	//
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(HideInDetailPanel))
 	bool M_IsActiveUser = false;

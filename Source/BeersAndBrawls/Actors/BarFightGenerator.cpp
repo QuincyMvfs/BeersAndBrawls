@@ -248,7 +248,7 @@ FEnemyInfoStruct ABarFightGenerator::GenerateEnemyInfo(int Level)
 	NewEnemy.BeerBuxReward = CalculateBeerBuxReward(MaxHealth, Level);
 	NewEnemy.ExpReward = CalculateExpReward(MaxHealth, Level);
 
-	UE_LOG(LogTemp, Warning, TEXT("%i"), Level);
+	//UE_LOG(LogTemp, Warning, TEXT("%i"), Level);
 	NewEnemy.EquippedWeapon = GenerateRandomWeapon(Level);
 	if (!NewEnemy.EquippedWeapon)
 	{

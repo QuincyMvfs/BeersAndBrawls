@@ -50,14 +50,15 @@ void UCombatComponent::SetCombatPattern(FCombatPatterns NewCombatPattern)
 	M_RemainingInputs = M_SelectedCombatPattern.KeyInputs;
 
 	float SquareRoot = FMath::Sqrt(static_cast<float>(M_RemainingInputs.Num()));
-	const int TotalActivePatterns = FMath::FloorToInt(SquareRoot);
-	for (int i = 0; i <= TotalActivePatterns; i++)
+	const int TotalPatterns = FMath::CeilToInt(SquareRoot);
+	M_InputSegmentThreshold = TotalPatterns;
+	for (int i = 0; i <= TotalPatterns; i++)
 	{
 		FCombatPatterns ActivePattern;
-		int Index = TotalActivePatterns * i;
-		for (int j = 0; j < TotalActivePatterns; j++)
+		int Index = TotalPatterns * i;
+		for (int j = 0; j < TotalPatterns; j++)
 		{
-			if (M_RemainingInputs.Num() - 1 <= j + Index)
+			if (M_RemainingInputs.Num() <= j + Index)
 			{
 				break;
 			}
@@ -65,7 +66,7 @@ void UCombatComponent::SetCombatPattern(FCombatPatterns NewCombatPattern)
 			ActivePattern.KeyInputs.Add(M_RemainingInputs[Index + j]);
 		}
 		
-		M_ActiveRemainingCombos.Add(ActivePattern);
+		M_ActiveRemainingSegments.Add(ActivePattern);
 	}
 	
 	M_CanReceiveInputs = true;
@@ -78,25 +79,37 @@ void UCombatComponent::ReceiveInput(ECombatKey InputKey)
 {
 	if (!M_CanReceiveInputs) return;
 
-	if (InputKey == M_RemainingInputs[0])
+	if (InputKey == M_RemainingInputs[M_ActiveInputIndex])
 	{
 		OnCorrectInputGiven.Broadcast(InputKey);
-		M_RemainingInputs.RemoveAt(0);
-		if (M_RemainingInputs.Num() <= 0)
+		M_ActiveInputIndex++;
+		
+		if (M_RemainingInputs.Num() <= M_ActiveInputIndex)
 		{
 			M_CanReceiveInputs = false;
 			OnCombatPatternCompleted.Broadcast();
 		}
+		else if (M_ActiveInputIndex >= M_InputSegmentThreshold)
+		{
+			M_ActiveSegmentIndex++;
+			M_InputSegmentThreshold += M_ActiveRemainingSegments[0].KeyInputs.Num();
+			OnCombatPatternSegmentCompleted.Broadcast(M_ActiveSegmentIndex);
+		}
+		
 	}
-	else if (InputKey != M_RemainingInputs[0])
+	else if (InputKey != M_RemainingInputs[M_ActiveInputIndex])
 	{
-		M_RemainingInputs = M_SelectedCombatPattern.KeyInputs;
+		M_ActiveInputIndex = 0;
 		OnFailInputGiven.Broadcast(InputKey);
 	}
 }
 
 void UCombatComponent::StopInputs()
 {
+	M_CanReceiveInputs = false;
+	M_ActiveInputIndex = 0;
+	M_ActiveSegmentIndex = 0;
+	
 	if (M_IsElectrocuted)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(M_ElectrocuteLoopTimer);
@@ -111,8 +124,6 @@ void UCombatComponent::StopInputs()
 	}
 
 	M_Dazed_Modifier = 1.0f;
-	M_CanReceiveInputs = false;
-	
 }
 
 FCombatPatterns UCombatComponent::FactorInDazedModifier(FCombatPatterns Pattern, float Modifier)
