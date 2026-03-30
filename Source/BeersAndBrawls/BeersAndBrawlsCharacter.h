@@ -150,6 +150,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetCanSelectAbility(bool Value);
+	
+	UFUNCTION(BlueprintCallable)
+	void SetLeaderPoseComponents();
+	
+	UFUNCTION(BlueprintCallable)
+	void ResetLeaderPoseComponents();
 protected:
 	// To add mapping context
 	virtual void BeginPlay();

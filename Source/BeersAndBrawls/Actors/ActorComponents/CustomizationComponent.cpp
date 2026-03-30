@@ -135,7 +135,7 @@ void UCustomizationComponent::ResetCosmetic(ECosmeticType CosmeticType)
 void UCustomizationComponent::SwapCosmetic(UCosmeticInfo* CosmeticInfo)
 {
 	if (!PlayerRef) return;
-
+	
 	USkeletalMesh* NewMesh = CosmeticInfo->SkeletalMesh;
 	
 	switch (CosmeticInfo->CosmeticType)
@@ -158,7 +158,7 @@ void UCustomizationComponent::SwapCosmetic(UCosmeticInfo* CosmeticInfo)
 			break;
 		case ECosmeticType::Beard:
 			C_Selected_Beard = CosmeticInfo;
-			PlayerRef->SK_Beard_Component->SetSkeletalMesh(NewMesh);
+			PlayerRef->SK_Beard_Component->SetSkeletalMeshAsset(NewMesh);
 			break;
 		case ECosmeticType::Hair:
 			C_Selected_Hair = CosmeticInfo;
@@ -184,6 +184,11 @@ void UCustomizationComponent::SwapCosmetic(UCosmeticInfo* CosmeticInfo)
 			UE_LOG(LogTemp, Error, TEXT("Customization Component: Invalid CosmeticType"));
 			break;
 	}
+}
+
+void UCustomizationComponent::ForceSwapCosmetics(UCosmeticInfo* CosmeticInfo)
+{
+	PlayerRef->SK_Beard_Component->SetSkeletalMesh(CosmeticInfo->SkeletalMesh);
 }
 
 bool UCustomizationComponent::IsWearingCosmetic(UCosmeticInfo* CosmeticInfo)

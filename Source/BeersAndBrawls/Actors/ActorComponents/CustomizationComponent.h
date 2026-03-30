@@ -13,6 +13,8 @@
 class ABeersAndBrawlsCharacter;
 class UCameraComponent;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnSwapSkeletalMesh, USkeletalMeshComponent*, SkeletalMeshComponent, USkeletalMesh*, NewSkeletalMesh);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BEERSANDBRAWLS_API UCustomizationComponent : public UActorComponent
 {
@@ -67,6 +69,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Color Customization")
 	TArray<FLinearColor> Default_CosmeticColors;
 	
+	UPROPERTY(BlueprintAssignable)
+	FOnSwapSkeletalMesh OnSwapSkeletalMeshEvent;
+	
 	UFUNCTION(BlueprintCallable, Category = "Customization Cosmetics")
 	void UpdateAllCosmetics();
 
@@ -77,8 +82,11 @@ public:
 	void ResetCosmetic(ECosmeticType CosmeticType);
 	
 	UFUNCTION(BlueprintCallable, Category = "Customization Cosmetics")
-	void SwapCosmetic(UCosmeticInfo* NewMesh);
+	void SwapCosmetic(UCosmeticInfo* CosmeticInfo);
 
+	UFUNCTION(BlueprintCallable, Category = "Customization Cosmetics")
+	void ForceSwapCosmetics(UCosmeticInfo* CosmeticInfo);
+	
 	UFUNCTION(BlueprintCallable)
 	void ChangeCosmeticColor(ECosmeticType CosmeticType, FLinearColor NewColor);
 
