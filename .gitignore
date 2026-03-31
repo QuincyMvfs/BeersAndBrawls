@@ -71,3 +71,6 @@ SavedData.txt
 
 # Mac
 *.DS_Store
+
+#Rider
+Plugins/Developer/RiderLink/
