@@ -3,6 +3,7 @@
 
 #include "CombatComponent.h"
 #include "StatusEffectComponent.h"
+#include "BeersAndBrawls/BeersAndBrawlsCharacter.h"
 #include "BeersAndBrawls/DataAssets/AbilityInfo.h"
 #include "BeersAndBrawls/DataAssets/AbilityPattern.h"
 
@@ -100,6 +101,7 @@ void UCombatComponent::ReceiveInput(ECombatKey InputKey)
 	else if (InputKey != M_RemainingInputs[M_ActiveInputIndex])
 	{
 		M_ActiveInputIndex = 0;
+		//M_ActiveInputIndex = FMath::Clamp(M_ActiveInputIndex, 0, 99999);
 		OnFailInputGiven.Broadcast(InputKey);
 	}
 }
@@ -109,6 +111,7 @@ void UCombatComponent::StopInputs()
 	M_CanReceiveInputs = false;
 	M_ActiveInputIndex = 0;
 	M_ActiveSegmentIndex = 0;
+	M_ActiveRemainingSegments.Empty();
 	
 	if (M_IsElectrocuted)
 	{
