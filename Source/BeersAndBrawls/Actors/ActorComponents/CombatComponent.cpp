@@ -51,13 +51,13 @@ void UCombatComponent::SetCombatPattern(FCombatPatterns NewCombatPattern)
 	M_RemainingInputs = M_SelectedCombatPattern.KeyInputs;
 
 	float SquareRoot = FMath::Sqrt(static_cast<float>(M_RemainingInputs.Num()));
-	const int TotalPatterns = FMath::CeilToInt(SquareRoot);
-	M_InputSegmentThreshold = TotalPatterns;
-	for (int i = 0; i <= TotalPatterns; i++)
+	M_TotalPatterns = FMath::CeilToInt(SquareRoot);
+	M_InputSegmentThreshold = M_TotalPatterns;
+	for (int i = 0; i <= M_TotalPatterns; i++)
 	{
 		FCombatPatterns ActivePattern;
-		int Index = TotalPatterns * i;
-		for (int j = 0; j < TotalPatterns; j++)
+		int Index = M_TotalPatterns * i;
+		for (int j = 0; j < M_TotalPatterns; j++)
 		{
 			if (M_RemainingInputs.Num() <= j + Index)
 			{
@@ -101,7 +101,8 @@ void UCombatComponent::ReceiveInput(ECombatKey InputKey)
 	else if (InputKey != M_RemainingInputs[M_ActiveInputIndex])
 	{
 		M_ActiveInputIndex = 0;
-		//M_ActiveInputIndex = FMath::Clamp(M_ActiveInputIndex, 0, 99999);
+		M_ActiveSegmentIndex = 0;
+		M_InputSegmentThreshold = M_TotalPatterns;
 		OnFailInputGiven.Broadcast(InputKey);
 	}
 }

@@ -108,6 +108,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(HideInDetailPanel))
 	int M_InputSegmentThreshold;
 	
+	int M_TotalPatterns = 0;
+	
 	//
 	
 	// ELECTROCUTION
