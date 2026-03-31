@@ -9,13 +9,13 @@
 // Sets default values for this component's properties
 UCustomizationComponent::UCustomizationComponent()
 {
-	PlayerRef = Cast<ABeersAndBrawlsCharacter>(GetOwner());
 }
 
 // Called when the game starts
 void UCustomizationComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	PlayerRef = Cast<ABeersAndBrawlsCharacter>(GetOwner());
 
 	UpdateAllCosmetics();
 }
