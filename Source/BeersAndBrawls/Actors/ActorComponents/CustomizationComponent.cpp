@@ -85,7 +85,7 @@ void UCustomizationComponent::TemporarilySwapCosmetics(UCosmeticInfo* CosmeticIn
 			PlayerRef->SK_Pants_Component->SetSkeletalMesh(NewMesh);
 			break;
 		default:
-			UE_LOG(LogTemp, Error, TEXT("Customization Component: Invalid CosmeticType"));
+			UE_LOG(LogTemp, Error, TEXT("Customization Component: TempSwap Fail!"));
 			break;
 	}
 }
@@ -127,7 +127,7 @@ void UCustomizationComponent::ResetCosmetic(ECosmeticType CosmeticType)
 			PlayerRef->SK_Pants_Component->SetSkeletalMesh(C_Selected_Pants->SkeletalMesh);
 			break;
 		default:
-			UE_LOG(LogTemp, Error, TEXT("Customization Component: Invalid CosmeticType"));
+			UE_LOG(LogTemp, Error, TEXT("Customization Component: Reset Cosmetic Fail!"));
 			break;
 	}
 }
@@ -181,7 +181,7 @@ void UCustomizationComponent::SwapCosmetic(UCosmeticInfo* CosmeticInfo)
 			PlayerRef->SK_Pants_Component->SetSkeletalMesh(NewMesh);
 			break;
 		default:
-			UE_LOG(LogTemp, Error, TEXT("Customization Component: Invalid CosmeticType"));
+			UE_LOG(LogTemp, Error, TEXT("Customization Component: Swap Cosmetic Fail!"));
 			break;
 	}
 }
@@ -211,7 +211,6 @@ bool UCustomizationComponent::IsWearingCosmetic(UCosmeticInfo* CosmeticInfo)
 		case ECosmeticType::Pants:
 			if (CosmeticInfo == C_Selected_Pants) return true;
 		default:
-			UE_LOG(LogTemp, Error, TEXT("Customization Component: Invalid CosmeticType"));
 			return false;
 	}
 }
