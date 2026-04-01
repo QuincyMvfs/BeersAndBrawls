@@ -85,6 +85,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetCombatPattern(FCombatPatterns NewCombatPattern);
 	
+	UFUNCTION(BlueprintCallable)
+	void SetCanReceiveInputs(bool CanReceiveInputs);
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(HideInDetailPanel))
 	FCombatPatterns M_SelectedCombatPattern;
 

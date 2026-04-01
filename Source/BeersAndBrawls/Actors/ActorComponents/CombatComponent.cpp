@@ -72,10 +72,14 @@ void UCombatComponent::SetCombatPattern(FCombatPatterns NewCombatPattern)
 		M_ActiveRemainingSegments.Add(ActivePattern);
 	}
 	
-	M_CanReceiveInputs = true;
 	OnCombatPatternReceived.Broadcast(M_SelectedCombatPattern);
 
 	if (M_IsElectrocuted) StartElectrocuting();
+}
+
+void UCombatComponent::SetCanReceiveInputs(bool CanReceiveInputs)
+{
+	M_CanReceiveInputs = CanReceiveInputs;
 }
 
 void UCombatComponent::ReceiveInput(ECombatKey InputKey)
