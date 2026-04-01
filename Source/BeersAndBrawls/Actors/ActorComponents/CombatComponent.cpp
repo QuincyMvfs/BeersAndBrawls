@@ -101,8 +101,6 @@ void UCombatComponent::ReceiveInput(ECombatKey InputKey)
 	else if (InputKey != M_RemainingInputs[M_ActiveInputIndex])
 	{
 		M_ActiveInputIndex = M_InputSegmentThreshold - M_ActiveRemainingSegments[0].KeyInputs.Num();
-		// M_ActiveSegmentIndex = 0;
-		// M_InputSegmentThreshold = M_TotalPatterns;
 		OnFailInputGiven.Broadcast(InputKey);
 	}
 }
