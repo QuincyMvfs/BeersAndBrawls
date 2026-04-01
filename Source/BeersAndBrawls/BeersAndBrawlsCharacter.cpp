@@ -11,6 +11,7 @@
 #include "GameFramework/Controller.h"
 #include "InputActionValue.h"
 #include "Actors/ActorComponents/CombatComponent.h"
+#include "Actors/ActorComponents/ComboComponent.h"
 #include "Actors/ActorComponents/CurrencyComponent.h"
 #include "Actors/ActorComponents/CustomizationComponent.h"
 #include "Actors/ActorComponents/HealthComponent.h"
@@ -38,8 +39,9 @@ ABeersAndBrawlsCharacter::ABeersAndBrawlsCharacter()
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
 	LevelingComponent = CreateDefaultSubobject<ULevelingComponent>(TEXT("LevelingComponent"));
 	CustomizationComponent = CreateDefaultSubobject<UCustomizationComponent>(TEXT("CustomizationComponent"));
-	
+	ComboComponent = CreateDefaultSubobject<UComboComponent>(TEXT("ComboComponent"));
 	StatusEffectComponent = CreateDefaultSubobject<UStatusEffectComponent>(TEXT("StatusEffectComponent"));
+	
 	WeaponEquippedStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponMeshSlot"));
 	WeaponEquippedStaticMeshComponent->SetupAttachment(GetMesh(), "WeaponSocket");
 
@@ -48,7 +50,6 @@ ABeersAndBrawlsCharacter::ABeersAndBrawlsCharacter()
 	
 	ConsumableSlotStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ConsumableSocket"));
 	ConsumableSlotStaticMeshComponent->SetupAttachment(GetMesh(), "ConsumableSocket");
-	
 	
 	CombatCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CombatCamera"));
 	CombatCamera->SetupAttachment(GetCapsuleComponent());

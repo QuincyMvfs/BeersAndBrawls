@@ -8,6 +8,7 @@
 #include "Logging/LogMacros.h"
 #include "BeersAndBrawlsCharacter.generated.h"
 
+class UComboComponent;
 class UCosmeticInfo;
 class UCustomizationComponent;
 class UStatusEffectComponent;
@@ -73,6 +74,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
 	UCustomizationComponent* CustomizationComponent;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))
+	UComboComponent* ComboComponent;
 
 	// Weapon Mesh Slots
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Custom Components", meta = (AllowPrivateAccess = "true"))

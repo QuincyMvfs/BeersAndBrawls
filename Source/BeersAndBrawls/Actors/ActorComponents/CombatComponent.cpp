@@ -22,6 +22,8 @@ void UCombatComponent::BeginPlay()
 
 void UCombatComponent::GenerateRandomPatterns(UAbilityInfo* Ability, UCombatComponent* Victim)
 {
+	SelectedAbility = Ability;
+	
 	const FCombatPatterns NewCombatPattern = GenerateRandomCombatPattern(Ability);
 	const FCombatPatterns NewCounterPattern = GenerateRandomCounterPattern(Ability, Victim);
 	
