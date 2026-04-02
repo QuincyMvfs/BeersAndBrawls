@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BeersAndBrawls/Structs/FEnemyInfoStruct.h"
+#include "BeersAndBrawls/Structs/FLootInfo.h"
 #include "GameFramework/Actor.h"
 #include "LootRewardStation.generated.h"
 
@@ -16,12 +18,6 @@ class BEERSANDBRAWLS_API ALootRewardStation : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ALootRewardStation();
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	USceneComponent* SC_WinnerPodiumLocation;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	USceneComponent* SC_LoserPodiumLocation;
 
 protected:
 	// Called when the game starts or when spawned
@@ -29,6 +25,7 @@ protected:
 	
 public:
 	UFUNCTION(BlueprintCallable)
-	void GenerateRewards(UEnemyInfo* EnemyInfo);
+	void GenerateRewards(FEnemyInfoStruct EnemyInfo, FText& OutEnemyName, FText& OutEnemyDesc, int& OutEnemyLevel, 
+		int& OutBeerBuxReward, int& OutExperienceReward, FLootInfo& OutLootInfo);
 
 };

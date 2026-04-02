@@ -22,7 +22,4 @@ class BEERSANDBRAWLS_API UEnemyInfo : public UDataAsset
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FEnemyInfoStruct EnemyInfoStruct;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FLootInfo LootInfoStruct;
 };

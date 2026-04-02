@@ -14,7 +14,7 @@ struct FLootInfo
 	GENERATED_BODY();
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TMap<ECosmeticType, UCosmeticInfo*> Lootable_Cosmetics;
+	TArray<UCosmeticInfo*> Lootable_Cosmetics;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TMap<ECosmeticType, FLinearColor> Lootable_Cosmetic_Colors;

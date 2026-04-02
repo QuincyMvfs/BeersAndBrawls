@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FLootInfo.h"
 #include "BeersAndBrawls/Enums/EAbilitySpeeds.h"
 #include "FEnemyInfoStruct.generated.h"
 
@@ -52,4 +53,7 @@ struct FEnemyInfoStruct
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ToolTip = " Boots, Gloves, Head, Teeth, Beard, Hair, Eyes, Eyebrows, Shirt, Pants"))
 	TArray<FLinearColor> Cosmetic_Colors;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FLootInfo LootInfo;
 };

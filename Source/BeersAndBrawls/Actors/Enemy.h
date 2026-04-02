@@ -6,6 +6,7 @@
 #include "BeersAndBrawls/Enums/ECosmeticType.h"
 #include "BeersAndBrawls/Structs/FCombatPatterns.h"
 #include "BeersAndBrawls/Structs/FEnemyInfoStruct.h"
+#include "BeersAndBrawls/Structs/FLootInfo.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/Character.h"
 #include "Enemy.generated.h"
