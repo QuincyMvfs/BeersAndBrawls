@@ -60,7 +60,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Health, meta = (HideInDetailPanel))
 	float M_DamageResistance = 1.0f;
 
-	void AdjustDamageResistance(float Amount);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Health, meta = (HideInDetailPanel))
+	bool IsDead = false;
 
-		
+	void AdjustDamageResistance(float Amount);
 };

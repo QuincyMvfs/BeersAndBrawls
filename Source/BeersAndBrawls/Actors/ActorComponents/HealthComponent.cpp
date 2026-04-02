@@ -27,6 +27,7 @@ bool UHealthComponent::TakeDamage(float Damage, AActor* Instigator, AActor* Vict
 	OnDamageTakenEvent.Broadcast(Damage);
 	if (M_CurrentHealth <= 0)
 	{
+		IsDead = true;
 		OnDeathEvent.Broadcast(Victim);
 		return true;
 	}
