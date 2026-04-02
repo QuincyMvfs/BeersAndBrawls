@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "BeersAndBrawls/Structs/FEnemyInfoStruct.h"
+#include "BeersAndBrawls/Structs/FLootInfo.h"
 #include "Engine/DataAsset.h"
 #include "EnemyInfo.generated.h"
 
@@ -21,4 +22,7 @@ class BEERSANDBRAWLS_API UEnemyInfo : public UDataAsset
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FEnemyInfoStruct EnemyInfoStruct;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FLootInfo LootInfoStruct;
 };
