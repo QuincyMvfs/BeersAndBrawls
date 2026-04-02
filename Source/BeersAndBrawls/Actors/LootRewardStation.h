@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "LootRewardStation.generated.h"
 
+class UEnemyInfo;
+
 UCLASS()
 class BEERSANDBRAWLS_API ALootRewardStation : public AActor
 {
@@ -14,9 +16,19 @@ class BEERSANDBRAWLS_API ALootRewardStation : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ALootRewardStation();
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USceneComponent* SC_WinnerPodiumLocation;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USceneComponent* SC_LoserPodiumLocation;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
+public:
+	UFUNCTION(BlueprintCallable)
+	void GenerateRewards(UEnemyInfo* EnemyInfo);
 
 };
