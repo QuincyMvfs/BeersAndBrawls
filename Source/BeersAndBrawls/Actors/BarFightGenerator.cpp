@@ -111,9 +111,14 @@ UWeapon* ABarFightGenerator::GenerateRandomWeapon(int Level = 1)
 
 int ABarFightGenerator::CalculateBeerBuxReward(int MaxHealth, int Level)
 {
+	int ClampedLevel = FMath::Clamp(Level, 0, M_Combat_Speeds.Num() - 1);
+	
 	int TotalReward = FMath::RandRange(M_Reward_MinimumCurrency, M_Reward_MaximumCurrency);
-	const int AttackSpeedReward = TotalReward * (M_Combat_Speeds.Last() / M_Combat_Speeds[Level]);     
-	const int CounterSpeedReward = TotalReward * (M_Counter_Speeds.Last() / M_Counter_Speeds[Level]);   
+	const int AttackSpeedReward = TotalReward * (M_Combat_Speeds.Last() / M_Combat_Speeds[ClampedLevel]); 
+	
+	ClampedLevel = FMath::Clamp(Level, 0, M_Counter_Speeds.Num() - 1);
+	const int CounterSpeedReward = TotalReward * (M_Counter_Speeds.Last() / M_Counter_Speeds[ClampedLevel]);   
+	
 	const int HealthReward = TotalReward * (MaxHealth / (M_Health_Maximum / 5));
 	TotalReward = (TotalReward + (AttackSpeedReward + CounterSpeedReward + HealthReward)) / 50;
 	TotalReward *= Level;
@@ -123,9 +128,14 @@ int ABarFightGenerator::CalculateBeerBuxReward(int MaxHealth, int Level)
 
 int ABarFightGenerator::CalculateExpReward(int MaxHealth, int Level)
 {
+	int ClampedLevel = FMath::Clamp(Level, 0, M_Combat_Speeds.Num() - 1);
+
 	int TotalReward = FMath::RoundToInt(FMath::RandRange(M_Reward_MinimumExp, M_Reward_MaximumExp));
-	const int AttackSpeedReward = TotalReward * (M_Combat_Speeds.Last() / M_Combat_Speeds[Level]);
-	const int CounterSpeedReward = TotalReward * (M_Counter_Speeds.Last() / M_Counter_Speeds[Level]);
+	const int AttackSpeedReward = TotalReward * (M_Combat_Speeds.Last() / M_Combat_Speeds[ClampedLevel]);
+	
+	ClampedLevel = FMath::Clamp(Level, 0, M_Counter_Speeds.Num() - 1);
+	const int CounterSpeedReward = TotalReward * (M_Counter_Speeds.Last() / M_Counter_Speeds[ClampedLevel]);
+	
 	const int HealthReward = TotalReward * (MaxHealth / (M_Health_Maximum / 5));
 	TotalReward = (TotalReward + (AttackSpeedReward + CounterSpeedReward + HealthReward)) / 50;
 	TotalReward *= Level;
@@ -169,7 +179,7 @@ EAbilitySpeeds ABarFightGenerator::GetSpeed(int Index)
 			SelectedSpeed = EAbilitySpeeds::Unfathomably_Fast;
 			break;
 		default:
-			SelectedSpeed = EAbilitySpeeds::Average;
+			SelectedSpeed = EAbilitySpeeds::Very_Quick;
 			break;
 	}
 
@@ -226,6 +236,7 @@ FEnemyInfoStruct ABarFightGenerator::GenerateEnemyInfo(int Level)
 	
 	// Combat Speed
 	int RandomAttackSpeedIndex = FMath::RandRange(0, Level);
+	RandomAttackSpeedIndex = FMath::Clamp(RandomAttackSpeedIndex, 0, M_Combat_Speeds.Num() - 1);
 	float AttackSpeedMultiplier = M_Combat_Speeds[RandomAttackSpeedIndex];
 	AttackSpeedMultiplier *= PlayerRef->M_CombatSpeedMultiplier;
 	NewEnemy.AttackSpeedMultiplier = AttackSpeedMultiplier;
@@ -234,6 +245,7 @@ FEnemyInfoStruct ABarFightGenerator::GenerateEnemyInfo(int Level)
 
 	// Counter Speed
 	int RandomCounterSpeedIndex = FMath::RandRange(0, Level);
+	RandomCounterSpeedIndex = FMath::Clamp(RandomCounterSpeedIndex, 0, M_Counter_Speeds.Num() - 1);
 	float CounterSpeedMultiplier = M_Counter_Speeds[RandomCounterSpeedIndex];
 	CounterSpeedMultiplier *= PlayerRef->M_CounterSpeedMultiplier;
 	NewEnemy.CounterSpeedMultiplier = CounterSpeedMultiplier;
@@ -241,7 +253,9 @@ FEnemyInfoStruct ABarFightGenerator::GenerateEnemyInfo(int Level)
 	NewEnemy.CounterSpeed = GetSpeed(RandomCounterSpeedIndex);
 
 	// Max Health
-	const int MaxHealth = FMath::RandRange(M_Health_Minimum, M_Health_Maximum);
+	int HealthMultiplierIndex = Level;
+	HealthMultiplierIndex = FMath::Clamp(HealthMultiplierIndex, 0, M_Health_Level_Multipliers.Num() - 1);
+	const int MaxHealth = FMath::RandRange(M_Health_Minimum, M_Health_Maximum) * M_Health_Level_Multipliers[HealthMultiplierIndex];
 	NewEnemy.MaxHealth = MaxHealth;
 
 	// Rewards

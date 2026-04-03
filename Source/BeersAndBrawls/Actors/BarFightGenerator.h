@@ -52,7 +52,7 @@ public:
 	};
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats| Health")
-	TArray<float> M_Health_Level_Multipliers = { 1, 1.2, 1.4, 2, 3, 4.5, 5};
+	TArray<float> M_Health_Level_Multipliers = { 1, 1.2, 1.4, 2, 3, 4.5, 5, 6.5, 8, 10, 15};
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats| Health")
 	int M_Health_Minimum = 80;
