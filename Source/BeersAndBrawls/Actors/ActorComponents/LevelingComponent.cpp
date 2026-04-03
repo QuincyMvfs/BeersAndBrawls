@@ -29,10 +29,22 @@ void ULevelingComponent::AddExp(int AmountToAdd)
 {
 	M_CurrentExp += AmountToAdd;
 	
-	if (M_CurrentExp >= M_ExpRequiredPerLevel[M_CurrentLevel])
+	bool HasLeveledUp = false;
+	
+	for (int i = M_CurrentLevel; i < M_ExpRequiredPerLevel.Num(); i++)
 	{
-		M_CurrentLevel++;
-		M_SkillPoints++;
+		if (i > M_ExpRequiredPerLevel.Num()) break;
+		
+		if (M_CurrentExp >= M_ExpRequiredPerLevel[i])
+		{
+			M_CurrentLevel++;
+			M_SkillPoints++;
+			HasLeveledUp = true;
+		}
+	}
+	
+	if (HasLeveledUp)
+	{
 		OnLevelUpEvent.Broadcast();
 	}
 	

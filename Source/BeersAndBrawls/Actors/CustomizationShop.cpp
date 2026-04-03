@@ -152,5 +152,54 @@ bool ACustomizationShop::IsCosmeticUnlocked(UCosmeticInfo* CosmeticInfo)
 	}
 }
 
+void ACustomizationShop::AddCosmeticToShop(UCosmeticInfo* CosmeticInfo)
+{
+	switch (CosmeticInfo->CosmeticType)
+	{
+		case ECosmeticType::Boots:
+			if (Unlocked_Boots.Contains(CosmeticInfo)) break;
+			Unlocked_Boots.Add(CosmeticInfo);
+			break;
+		case ECosmeticType::Gloves:
+			if (Unlocked_Gloves.Contains(CosmeticInfo)) break;
+			Unlocked_Gloves.Add(CosmeticInfo);
+			break;
+		case ECosmeticType::Head:
+			if (Unlocked_Heads.Contains(CosmeticInfo)) break;
+			Unlocked_Heads.Add(CosmeticInfo);
+			break;
+		case ECosmeticType::Teeth:
+			if (Unlocked_Teeth.Contains(CosmeticInfo)) break;
+			Unlocked_Teeth.Add(CosmeticInfo);
+			break;
+		case ECosmeticType::Beard:
+			if (Unlocked_Beards.Contains(CosmeticInfo)) break;
+			Unlocked_Beards.Add(CosmeticInfo);
+			break;
+		case ECosmeticType::Hair:
+			if (Unlocked_Hair.Contains(CosmeticInfo)) break;
+			Unlocked_Hair.Add(CosmeticInfo);
+			break;
+		case ECosmeticType::Eyes:
+			if (Unlocked_Eyes.Contains(CosmeticInfo)) break;
+			Unlocked_Eyes.Add(CosmeticInfo);
+			break;
+		case ECosmeticType::Shirt:
+			if (Unlocked_Shirts.Contains(CosmeticInfo)) break;
+			Unlocked_Shirts.Add(CosmeticInfo);
+			break;
+		case ECosmeticType::Pants:
+			if (Unlocked_Pants.Contains(CosmeticInfo)) break;
+			Unlocked_Pants.Add(CosmeticInfo);
+			break;
+		case ECosmeticType::Eyebrows:
+			if (Unlocked_Eyebrows.Contains(CosmeticInfo)) break;
+			Unlocked_Eyebrows.Add(CosmeticInfo);
+			break;
+		default:
+			break;
+	}
+}
+
 
 

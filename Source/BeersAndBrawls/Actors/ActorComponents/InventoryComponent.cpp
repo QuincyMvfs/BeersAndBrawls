@@ -62,6 +62,8 @@ void UInventoryComponent::EquipConsumable(UItem* ConsumableToEquip)
 
 void UInventoryComponent::AddItem(UItem* ItemToAdd)
 {
+	if (M_Items.Contains(ItemToAdd)) return;
+	
 	M_Items.Add(ItemToAdd);
 	OnItemAddedEvent.Broadcast(ItemToAdd);
 }

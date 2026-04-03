@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Enums/ECosmeticType.h"
 #include "UObject/NoExportTypes.h"
 #include "BeersAndBrawlsGameInstance.generated.h"
 
@@ -89,6 +90,9 @@ public:
 	void UpdatePlayerBeerBux(int NewValue);
 	
 	void UpdatePlayerExp(int NewValue);
+	
+	UFUNCTION(BlueprintCallable)
+	void AddColorToPalette(ECosmeticType CosmeticType, FLinearColor NewColor);
 
 	
 };

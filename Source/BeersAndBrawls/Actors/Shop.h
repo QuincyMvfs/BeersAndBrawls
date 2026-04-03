@@ -43,7 +43,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	bool CanSellItem(UItem* ItemToSell);
-
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Instanced, Category = "Items")
 	TArray<UItem*> M_ItemsForSale;
 

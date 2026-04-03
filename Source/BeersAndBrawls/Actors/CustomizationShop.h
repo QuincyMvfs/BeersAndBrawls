@@ -102,5 +102,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	bool IsCosmeticUnlocked(UCosmeticInfo* CosmeticInfo);
+	
+	UFUNCTION(BlueprintCallable)
+	void AddCosmeticToShop(UCosmeticInfo* CosmeticInfo);
 
 };
