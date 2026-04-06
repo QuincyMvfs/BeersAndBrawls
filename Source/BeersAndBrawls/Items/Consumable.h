@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "UItem.h"
+#include "BeersAndBrawls/Enums/EAbilitySpeeds.h"
+#include "BeersAndBrawls/Enums/EComboComplexity.h"
 #include "Consumable.generated.h"
 
 /**
@@ -17,4 +19,10 @@ class BEERSANDBRAWLS_API UConsumable : public UItem
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float HealAmount = 25.0f;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	EAbilitySpeeds AverageDrinkingSpeed = EAbilitySpeeds::Average;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	EComboComplexity DrinkComplexity = EComboComplexity::Average;
 };
