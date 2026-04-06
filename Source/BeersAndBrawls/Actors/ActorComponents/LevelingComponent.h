@@ -44,14 +44,14 @@ public:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Levels")
 	TArray<int> M_ExpRequiredPerLevel = {
-		500, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 7500, 10000, 999999999
+		1500, 4000, 10000, 20000, 35000, 45000, 70000, 100000, 150000, 250000, 999999999
 	};
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Levels")
 	int M_CurrentLevel = 1;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Levels")
-	int M_CurrentExp = 501;
+	int M_CurrentExp = 5;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Levels")
 	int M_SkillPoints = 0;
@@ -65,6 +65,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AddExp(int AmountToAdd);
 
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	int GetPreviousLevel(int ExpToRemove);
+	
 	void SpendSkillPoints(int Amount);
 
 	void UpdateAllAbilities();

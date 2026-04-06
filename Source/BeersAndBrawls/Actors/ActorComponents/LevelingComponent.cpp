@@ -56,6 +56,27 @@ void ULevelingComponent::AddExp(int AmountToAdd)
 	}
 }
 
+int ULevelingComponent::GetPreviousLevel(int ExpToRemove)
+{
+	int PreviousLevel = 1;
+	int PreviousExp = M_CurrentExp - ExpToRemove;
+	for (int i = 0; i < M_ExpRequiredPerLevel.Num() - 1; i++)
+	{
+		if (PreviousExp >= M_ExpRequiredPerLevel[i] && PreviousExp <= M_ExpRequiredPerLevel[i + 1])
+		{
+			PreviousLevel = i;
+			break;
+		}
+	}
+	
+	if (PreviousExp < M_ExpRequiredPerLevel[0])
+	{
+		PreviousLevel = 0;
+	}
+	
+	return PreviousLevel;
+}
+
 void ULevelingComponent::SpendSkillPoints(int Amount)
 {
 	M_SkillPoints -= Amount;

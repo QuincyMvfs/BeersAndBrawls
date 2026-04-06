@@ -75,10 +75,10 @@ public:
 	int M_Reward_MaximumCurrency;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Rewards")
-	float M_Reward_MinimumExp;
+	int M_Reward_MinimumExp;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Rewards")
-	float M_Reward_MaximumExp;
+	int M_Reward_MaximumExp;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Bar Fight Generator")
 	int M_FightsToGenerate = 4;

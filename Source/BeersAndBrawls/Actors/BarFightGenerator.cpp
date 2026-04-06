@@ -111,16 +111,10 @@ UWeapon* ABarFightGenerator::GenerateRandomWeapon(int Level = 1)
 
 int ABarFightGenerator::CalculateBeerBuxReward(int MaxHealth, int Level)
 {
-	int ClampedLevel = FMath::Clamp(Level, 0, M_Combat_Speeds.Num() - 1);
-	
 	int TotalReward = FMath::RandRange(M_Reward_MinimumCurrency, M_Reward_MaximumCurrency);
-	const int AttackSpeedReward = TotalReward * (M_Combat_Speeds.Last() / M_Combat_Speeds[ClampedLevel]); 
 	
-	ClampedLevel = FMath::Clamp(Level, 0, M_Counter_Speeds.Num() - 1);
-	const int CounterSpeedReward = TotalReward * (M_Counter_Speeds.Last() / M_Counter_Speeds[ClampedLevel]);   
-	
-	const int HealthReward = TotalReward * (MaxHealth / (M_Health_Maximum / 5));
-	TotalReward = (TotalReward + (AttackSpeedReward + CounterSpeedReward + HealthReward)) / 50;
+	const int HealthReward = TotalReward * (MaxHealth / M_Health_Maximum);
+	TotalReward = TotalReward + HealthReward;
 	TotalReward *= Level;
 	
 	return TotalReward;
@@ -128,16 +122,10 @@ int ABarFightGenerator::CalculateBeerBuxReward(int MaxHealth, int Level)
 
 int ABarFightGenerator::CalculateExpReward(int MaxHealth, int Level)
 {
-	int ClampedLevel = FMath::Clamp(Level, 0, M_Combat_Speeds.Num() - 1);
-
-	int TotalReward = FMath::RoundToInt(FMath::RandRange(M_Reward_MinimumExp, M_Reward_MaximumExp));
-	const int AttackSpeedReward = TotalReward * (M_Combat_Speeds.Last() / M_Combat_Speeds[ClampedLevel]);
+	int TotalReward = FMath::RandRange(M_Reward_MinimumExp, M_Reward_MaximumExp);
 	
-	ClampedLevel = FMath::Clamp(Level, 0, M_Counter_Speeds.Num() - 1);
-	const int CounterSpeedReward = TotalReward * (M_Counter_Speeds.Last() / M_Counter_Speeds[ClampedLevel]);
-	
-	const int HealthReward = TotalReward * (MaxHealth / (M_Health_Maximum / 5));
-	TotalReward = (TotalReward + (AttackSpeedReward + CounterSpeedReward + HealthReward)) / 50;
+	const int HealthReward = TotalReward * (MaxHealth / M_Health_Maximum);
+	TotalReward = TotalReward + HealthReward;
 	TotalReward *= Level;
 	
 	return TotalReward;
