@@ -62,9 +62,9 @@ int ULevelingComponent::GetPreviousLevel(int ExpToRemove)
 	int PreviousExp = M_CurrentExp - ExpToRemove;
 	for (int i = 0; i < M_ExpRequiredPerLevel.Num() - 1; i++)
 	{
-		if (PreviousExp >= M_ExpRequiredPerLevel[i] && PreviousExp <= M_ExpRequiredPerLevel[i + 1])
+		if (PreviousExp >= M_ExpRequiredPerLevel[i])
 		{
-			PreviousLevel = i;
+			PreviousLevel++;
 			break;
 		}
 	}
