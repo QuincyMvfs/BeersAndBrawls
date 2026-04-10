@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BeersAndBrawls/Enums/EDuelingStatus.h"
 #include "BeersAndBrawls/Structs/FCombatPatterns.h"
 #include "Components/ActorComponent.h"
 #include "CombatComponent.generated.h"
@@ -64,6 +65,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(HideInDetailPanel))
 	bool M_CanReceiveInputs = false;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(HideInDetailPanel))
+	EDuelingStatus M_DuelingStatus;
+	
 	UFUNCTION()
 	void ReceiveInput(ECombatKey InputKey);
 
