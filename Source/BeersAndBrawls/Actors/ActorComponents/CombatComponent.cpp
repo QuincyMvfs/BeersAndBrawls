@@ -82,6 +82,11 @@ void UCombatComponent::SetCanReceiveInputs(bool CanReceiveInputs)
 	M_CanReceiveInputs = CanReceiveInputs;
 }
 
+void UCombatComponent::SetDuelingStatus(EDuelingStatus NewDuelingStatus)
+{
+	M_DuelingStatus = NewDuelingStatus;
+}
+
 void UCombatComponent::ReceiveInput(ECombatKey InputKey)
 {
 	if (!M_CanReceiveInputs) return;

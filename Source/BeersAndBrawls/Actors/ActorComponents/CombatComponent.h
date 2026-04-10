@@ -68,6 +68,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(HideInDetailPanel))
 	EDuelingStatus M_DuelingStatus;
 	
+	UFUNCTION(BlueprintCallable)
+	void SetDuelingStatus(EDuelingStatus NewDuelingStatus);
+	
 	UFUNCTION()
 	void ReceiveInput(ECombatKey InputKey);
 
