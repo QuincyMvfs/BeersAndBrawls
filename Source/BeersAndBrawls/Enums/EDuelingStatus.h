@@ -7,7 +7,9 @@
 UENUM(BlueprintType)
 enum class EDuelingStatus:uint8
 {
+	Inactive,
 	Idle,
+	Countered,
 	Pushing,
 	Shoved,
 };
