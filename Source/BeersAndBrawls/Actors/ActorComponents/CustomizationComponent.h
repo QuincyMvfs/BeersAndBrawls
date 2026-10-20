@@ -94,6 +94,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Customization Cosmetics")
 	bool IsWearingCosmetic(UCosmeticInfo* CosmeticInfo);
 
+	void ChangeColor(USkeletalMeshComponent* SkeletalMeshComponent, USkeletalMeshComponent* SkeletalMeshComponent2, 
+	int ElementIndex, FLinearColor NewColor);
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
 	UMaterialInterface* CustomMaterial;
 

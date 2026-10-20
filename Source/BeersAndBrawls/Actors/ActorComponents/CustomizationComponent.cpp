@@ -215,6 +215,16 @@ bool UCustomizationComponent::IsWearingCosmetic(UCosmeticInfo* CosmeticInfo)
 	}
 }
 
+void UCustomizationComponent::ChangeColor(USkeletalMeshComponent* SkeletalMeshComponent, USkeletalMeshComponent* SkeletalMeshComponent2, 
+	int ElementIndex, FLinearColor NewColor)
+{
+	UMaterialInstanceDynamic* DynamicMaterial = UMaterialInstanceDynamic::Create(CustomMaterial, PlayerRef);
+	SkeletalMeshComponent->SetMaterial(ElementIndex, DynamicMaterial);
+	if (SkeletalMeshComponent2) { SkeletalMeshComponent2->SetMaterial(ElementIndex, DynamicMaterial); }
+	
+	DynamicMaterial->SetVectorParameterValue("Color", NewColor);
+}
+
 void UCustomizationComponent::ChangeCosmeticColor(ECosmeticType CosmeticType, FLinearColor NewColor)
 {
 	if (!PlayerRef) return;
@@ -275,11 +285,7 @@ void UCustomizationComponent::ChangeCosmeticColor(ECosmeticType CosmeticType, FL
 	}
 
 	
-	UMaterialInstanceDynamic* DynamicMaterial = UMaterialInstanceDynamic::Create(CustomMaterial, PlayerRef);
-	SkeletalMeshComponent->SetMaterial(ElementIndex, DynamicMaterial);
-	if (SkeletalMeshComponent2) { SkeletalMeshComponent2->SetMaterial(ElementIndex, DynamicMaterial); }
-	
-	DynamicMaterial->SetVectorParameterValue("Color", NewColor);
+	ChangeColor(SkeletalMeshComponent, SkeletalMeshComponent2, ElementIndex, NewColor);
 }
 
 void UCustomizationComponent::TemporarilyChangeCosmeticColor(ECosmeticType CosmeticType, FLinearColor GivenColor)
@@ -330,11 +336,7 @@ void UCustomizationComponent::TemporarilyChangeCosmeticColor(ECosmeticType Cosme
 			break;
 	}
 	
-	UMaterialInstanceDynamic* DynamicMaterial = UMaterialInstanceDynamic::Create(CustomMaterial, PlayerRef);
-	SkeletalMeshComponent->SetMaterial(ElementIndex, DynamicMaterial);
-	if (SkeletalMeshComponent2) { SkeletalMeshComponent2->SetMaterial(ElementIndex, DynamicMaterial); }
-	
-	DynamicMaterial->SetVectorParameterValue("Color", GivenColor);
+	ChangeColor(SkeletalMeshComponent, SkeletalMeshComponent2, ElementIndex, GivenColor);
 }
 
 void UCustomizationComponent::ResetCosmeticColor(ECosmeticType CosmeticType)
@@ -398,11 +400,7 @@ void UCustomizationComponent::ResetCosmeticColor(ECosmeticType CosmeticType)
 	}
 
 	
-	UMaterialInstanceDynamic* DynamicMaterial = UMaterialInstanceDynamic::Create(CustomMaterial, PlayerRef);
-	SkeletalMeshComponent->SetMaterial(ElementIndex, DynamicMaterial);
-	if (SkeletalMeshComponent2) { SkeletalMeshComponent2->SetMaterial(ElementIndex, DynamicMaterial); }
-	
-	DynamicMaterial->SetVectorParameterValue("Color", OriginalColor);
+	ChangeColor(SkeletalMeshComponent, SkeletalMeshComponent2, ElementIndex, OriginalColor);
 }
 
 FLinearColor UCustomizationComponent::GetSelectedCosmeticColor(ECosmeticType CosmeticType)
