@@ -67,6 +67,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Color Customization")
 	TArray<FLinearColor> Default_CosmeticColors;
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Color Customization")
+	TArray<UMaterialInterface*> BaseCosmeticMaterials;
+	
 	UFUNCTION(BlueprintCallable, Category = "Customization Cosmetics")
 	void UpdateAllCosmetics();
 
@@ -80,13 +83,13 @@ public:
 	void SwapCosmetic(UCosmeticInfo* NewMesh);
 
 	UFUNCTION(BlueprintCallable)
-	void ChangeCosmeticColor(ECosmeticType CosmeticType, FLinearColor NewColor);
+	void ChangeCosmeticColor(ECosmeticType CosmeticType, FLinearColor NewColor, UCosmeticInfo* CosmeticInfo);
 
 	UFUNCTION(BlueprintCallable)
-	void TemporarilyChangeCosmeticColor(ECosmeticType CosmeticType, FLinearColor GivenColor);
+	void TemporarilyChangeCosmeticColor(ECosmeticType CosmeticType, FLinearColor GivenColor, UCosmeticInfo* CosmeticInfo);
 
 	UFUNCTION(BlueprintCallable)
-	void ResetCosmeticColor(ECosmeticType CosmeticType);
+	void ResetCosmeticColor(ECosmeticType CosmeticType, UCosmeticInfo* CosmeticInfo);
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FLinearColor GetSelectedCosmeticColor(ECosmeticType CosmeticType);
@@ -94,8 +97,11 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Customization Cosmetics")
 	bool IsWearingCosmetic(UCosmeticInfo* CosmeticInfo);
 
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Customization Cosmetics")
+	UCosmeticInfo* GetCosmeticInfo(ECosmeticType CosmeticType);
+	
 	void ChangeColor(USkeletalMeshComponent* SkeletalMeshComponent, USkeletalMeshComponent* SkeletalMeshComponent2, 
-	int ElementIndex, FLinearColor NewColor);
+	int ElementIndex, FLinearColor NewColor, UCosmeticInfo* CosmeticInfo);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
 	UMaterialInterface* CustomMaterial;

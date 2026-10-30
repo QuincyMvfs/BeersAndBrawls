@@ -215,17 +215,47 @@ bool UCustomizationComponent::IsWearingCosmetic(UCosmeticInfo* CosmeticInfo)
 	}
 }
 
-void UCustomizationComponent::ChangeColor(USkeletalMeshComponent* SkeletalMeshComponent, USkeletalMeshComponent* SkeletalMeshComponent2, 
-	int ElementIndex, FLinearColor NewColor)
+UCosmeticInfo* UCustomizationComponent::GetCosmeticInfo(ECosmeticType CosmeticType)
 {
-	UMaterialInstanceDynamic* DynamicMaterial = UMaterialInstanceDynamic::Create(CustomMaterial, PlayerRef);
+	switch (CosmeticType)
+	{
+		case ECosmeticType::Boots:
+			return C_Selected_Boots;
+		case ECosmeticType::Gloves:
+			return C_Selected_Gloves;
+		case ECosmeticType::Head:
+			return C_Selected_Head;
+		case ECosmeticType::Teeth:
+			return C_Selected_Teeth;
+		case ECosmeticType::Beard:
+			return C_Selected_Beard;
+		case ECosmeticType::Hair:
+			return C_Selected_Hair;
+		case ECosmeticType::Eyebrows:
+			return C_Selected_Eyebrows;
+		case ECosmeticType::Eyes:
+			return C_Selected_Eyes;
+		case ECosmeticType::Shirt:
+			return C_Selected_Shirt;
+		case ECosmeticType::Pants:
+			return C_Selected_Pants;
+		default:
+			return C_Selected_Boots;
+	}
+}
+
+void UCustomizationComponent::ChangeColor(USkeletalMeshComponent* SkeletalMeshComponent, USkeletalMeshComponent* SkeletalMeshComponent2, 
+                                          int ElementIndex, FLinearColor NewColor, UCosmeticInfo* CosmeticInfo)
+{
+	UMaterialInstanceDynamic* DynamicMaterial = UMaterialInstanceDynamic::Create(CosmeticInfo->DefaultCosmeticMaterial, PlayerRef);
+	
 	SkeletalMeshComponent->SetMaterial(ElementIndex, DynamicMaterial);
 	if (SkeletalMeshComponent2) { SkeletalMeshComponent2->SetMaterial(ElementIndex, DynamicMaterial); }
 	
 	DynamicMaterial->SetVectorParameterValue("Color", NewColor);
 }
 
-void UCustomizationComponent::ChangeCosmeticColor(ECosmeticType CosmeticType, FLinearColor NewColor)
+void UCustomizationComponent::ChangeCosmeticColor(ECosmeticType CosmeticType, FLinearColor NewColor, UCosmeticInfo* CosmeticInfo)
 {
 	if (!PlayerRef) return;
 
@@ -285,10 +315,10 @@ void UCustomizationComponent::ChangeCosmeticColor(ECosmeticType CosmeticType, FL
 	}
 
 	
-	ChangeColor(SkeletalMeshComponent, SkeletalMeshComponent2, ElementIndex, NewColor);
+	ChangeColor(SkeletalMeshComponent, SkeletalMeshComponent2, ElementIndex, NewColor, CosmeticInfo);
 }
 
-void UCustomizationComponent::TemporarilyChangeCosmeticColor(ECosmeticType CosmeticType, FLinearColor GivenColor)
+void UCustomizationComponent::TemporarilyChangeCosmeticColor(ECosmeticType CosmeticType, FLinearColor GivenColor, UCosmeticInfo* CosmeticInfo)
 {
 	if (!PlayerRef) return;
 
@@ -336,10 +366,10 @@ void UCustomizationComponent::TemporarilyChangeCosmeticColor(ECosmeticType Cosme
 			break;
 	}
 	
-	ChangeColor(SkeletalMeshComponent, SkeletalMeshComponent2, ElementIndex, GivenColor);
+	ChangeColor(SkeletalMeshComponent, SkeletalMeshComponent2, ElementIndex, GivenColor, CosmeticInfo);
 }
 
-void UCustomizationComponent::ResetCosmeticColor(ECosmeticType CosmeticType)
+void UCustomizationComponent::ResetCosmeticColor(ECosmeticType CosmeticType, UCosmeticInfo* CosmeticInfo)
 {
 	if (!PlayerRef) return;
 
@@ -400,7 +430,7 @@ void UCustomizationComponent::ResetCosmeticColor(ECosmeticType CosmeticType)
 	}
 
 	
-	ChangeColor(SkeletalMeshComponent, SkeletalMeshComponent2, ElementIndex, OriginalColor);
+	ChangeColor(SkeletalMeshComponent, SkeletalMeshComponent2, ElementIndex, OriginalColor, CosmeticInfo);
 }
 
 FLinearColor UCustomizationComponent::GetSelectedCosmeticColor(ECosmeticType CosmeticType)

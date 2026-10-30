@@ -159,7 +159,7 @@ void ACustomizableCharacter::UpdateCosmeticColors(ECosmeticType CosmeticType)
 			break;
 	}
 	
-	UMaterialInstanceDynamic* DynamicMaterial = UMaterialInstanceDynamic::Create(CustomMaterial, this);
+	UMaterialInstanceDynamic* DynamicMaterial = UMaterialInstanceDynamic::Create(SkeletalMeshComponent->GetMaterial(0), this);
 	SkeletalMeshComponent->SetMaterial(ElementIndex, DynamicMaterial);
 	if (SkeletalMeshComponent2) { SkeletalMeshComponent2->SetMaterial(ElementIndex, DynamicMaterial); }
 	
