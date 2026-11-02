@@ -97,7 +97,6 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Customization Cosmetics")
 	void SetupCosmetics(FEnemyInfoStruct NewEnemyInfo);
-	
 	void UpdateCosmetics();
 	void UpdateCosmeticColors(UCosmeticInfo* CosmeticInfo);
 

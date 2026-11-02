@@ -72,6 +72,37 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Customization Skeletal Mesh Components", meta = (AllowPrivateAccess = "true"))
 	USkeletalMeshComponent* SK_Pants_Component;
 	
+	// Selected Cosmetics
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	UCosmeticInfo* C_Selected_Boots;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	UCosmeticInfo* C_Selected_Gloves;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	UCosmeticInfo* C_Selected_Head;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	UCosmeticInfo* C_Selected_Teeth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	UCosmeticInfo* C_Selected_Beard;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	UCosmeticInfo* C_Selected_Hair;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	UCosmeticInfo* C_Selected_Eyes;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	UCosmeticInfo* C_Selected_Eyebrows;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	UCosmeticInfo* C_Selected_Shirt;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Customization Cosmetics")
+	UCosmeticInfo* C_Selected_Pants;
+	
 	// Mesh Slots
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Meshs", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* EquippedWeaponComponent;
@@ -97,7 +128,11 @@ public:
 	UAbilityInfo* GenerateRandomAbility();
 
 	void UpdateCosmetics();
-	void UpdateCosmeticColors(ECosmeticType CosmeticType);
+	void UpdateCosmeticColors(UCosmeticInfo* CosmeticInfo);
+	
+	void ChangeColor(USkeletalMeshComponent* SkeletalMeshComponent, USkeletalMeshComponent* SkeletalMeshComponent2, 
+	int ElementIndex, FLinearColor NewColor, UCosmeticInfo* CosmeticInfo);
+	//
 	
 	void SendInput();
 	int InputIndex = 0;

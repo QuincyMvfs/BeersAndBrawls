@@ -274,8 +274,7 @@ void UCustomizationComponent::ChangeCosmeticColor(ECosmeticType CosmeticType, FL
 			CosmeticColors [1] = NewColor;
 			break;
 		case ECosmeticType::Head:
-			SkeletalMeshComponent = PlayerRef->SK_Head_Component;
-			SkeletalMeshComponent2 = PlayerRef->GetMesh();
+			SkeletalMeshComponent = PlayerRef->GetMesh();
 			CosmeticColors [2] = NewColor;
 			break;
 		case ECosmeticType::Teeth:
@@ -296,7 +295,6 @@ void UCustomizationComponent::ChangeCosmeticColor(ECosmeticType CosmeticType, FL
 			break;
 		case ECosmeticType::Eyes:
 			SkeletalMeshComponent = PlayerRef->SK_Eyes_Component;
-			ElementIndex = 2;
 			CosmeticColors [7] = NewColor;
 			break;
 		case ECosmeticType::Shirt:
@@ -335,8 +333,7 @@ void UCustomizationComponent::TemporarilyChangeCosmeticColor(ECosmeticType Cosme
 			SkeletalMeshComponent = PlayerRef->SK_Gloves_Component;
 			break;
 		case ECosmeticType::Head:
-			SkeletalMeshComponent = PlayerRef->SK_Head_Component;
-			SkeletalMeshComponent2 = PlayerRef->GetMesh();
+			SkeletalMeshComponent = PlayerRef->GetMesh();
 			break;
 		case ECosmeticType::Teeth:
 			SkeletalMeshComponent = PlayerRef->SK_Teeth_Component;
@@ -352,7 +349,6 @@ void UCustomizationComponent::TemporarilyChangeCosmeticColor(ECosmeticType Cosme
 			break;
 		case ECosmeticType::Eyes:
 			SkeletalMeshComponent = PlayerRef->SK_Eyes_Component;
-			ElementIndex = 2;
 			break;
 		case ECosmeticType::Shirt:
 			SkeletalMeshComponent = PlayerRef->SK_Shirt_Component;
@@ -389,8 +385,7 @@ void UCustomizationComponent::ResetCosmeticColor(ECosmeticType CosmeticType, UCo
 			OriginalColor = CosmeticColors [1];
 			break;
 		case ECosmeticType::Head:
-			SkeletalMeshComponent = PlayerRef->SK_Head_Component;
-			SkeletalMeshComponent2 = PlayerRef->GetMesh();
+			SkeletalMeshComponent = PlayerRef->GetMesh();
 			OriginalColor = CosmeticColors [2];
 			break;
 		case ECosmeticType::Teeth:
@@ -411,7 +406,6 @@ void UCustomizationComponent::ResetCosmeticColor(ECosmeticType CosmeticType, UCo
 			break;
 		case ECosmeticType::Eyes:
 			SkeletalMeshComponent = PlayerRef->SK_Eyes_Component;
-			ElementIndex = 2;
 			OriginalColor = CosmeticColors [7];
 			break;
 		case ECosmeticType::Shirt:
