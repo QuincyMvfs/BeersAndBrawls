@@ -53,6 +53,18 @@ void ACustomizableCharacter::BeginPlay()
 	SK_Hair_Component->SetLeaderPoseComponent(SK_BaseMesh_Component);
 }
 
+void ACustomizableCharacter::ChangeColor(USkeletalMeshComponent* SkeletalMeshComponent,
+	USkeletalMeshComponent* SkeletalMeshComponent2, int ElementIndex, FLinearColor NewColor,
+	UCosmeticInfo* CosmeticInfo)
+{
+	UMaterialInstanceDynamic* DynamicMaterial = UMaterialInstanceDynamic::Create(CosmeticInfo->DefaultCosmeticMaterial, this);
+	
+	SkeletalMeshComponent->SetMaterial(ElementIndex, DynamicMaterial);
+	if (SkeletalMeshComponent2) { SkeletalMeshComponent2->SetMaterial(ElementIndex, DynamicMaterial); }
+	
+	DynamicMaterial->SetVectorParameterValue("Color", NewColor);
+}
+
 void ACustomizableCharacter::SetupCosmetics(FEnemyInfoStruct NewEnemyInfo)
 {
 	EnemyInfo = NewEnemyInfo;
@@ -80,35 +92,35 @@ void ACustomizableCharacter::SetupCosmetics(FEnemyInfoStruct NewEnemyInfo)
 void ACustomizableCharacter::UpdateCosmetics()
 {
 	SK_Boots_Component->SetSkeletalMesh(EnemyInfo.Cosmetics[0]->SkeletalMesh);
-	UpdateCosmeticColors(ECosmeticType::Boots);
+	UpdateCosmeticColors(EnemyInfo.Cosmetics[0]);
 	SK_Gloves_Component->SetSkeletalMesh(EnemyInfo.Cosmetics[1]->SkeletalMesh);
-	UpdateCosmeticColors(ECosmeticType::Gloves);
+	UpdateCosmeticColors(EnemyInfo.Cosmetics[1]);
 	SK_Head_Component->SetSkeletalMesh(EnemyInfo.Cosmetics[2]->SkeletalMesh);
-	UpdateCosmeticColors(ECosmeticType::Head);
+	UpdateCosmeticColors(EnemyInfo.Cosmetics[2]);
 	SK_Teeth_Component->SetSkeletalMesh(EnemyInfo.Cosmetics[3]->SkeletalMesh);
-	UpdateCosmeticColors(ECosmeticType::Teeth);
+	UpdateCosmeticColors(EnemyInfo.Cosmetics[3]);
 	SK_Beard_Component->SetSkeletalMesh(EnemyInfo.Cosmetics[4]->SkeletalMesh);
-	UpdateCosmeticColors(ECosmeticType::Beard);
+	UpdateCosmeticColors(EnemyInfo.Cosmetics[4]);
 	SK_Hair_Component->SetSkeletalMesh(EnemyInfo.Cosmetics[5]->SkeletalMesh);
-	UpdateCosmeticColors(ECosmeticType::Hair);
+	UpdateCosmeticColors(EnemyInfo.Cosmetics[5]);
 	SK_Eyes_Component->SetSkeletalMesh(EnemyInfo.Cosmetics[6]->SkeletalMesh);
-	UpdateCosmeticColors(ECosmeticType::Eyes);
+	UpdateCosmeticColors(EnemyInfo.Cosmetics[6]);
 	SK_Eyebrows_Component->SetSkeletalMesh(EnemyInfo.Cosmetics[7]->SkeletalMesh);
-	UpdateCosmeticColors(ECosmeticType::Eyebrows);
+	UpdateCosmeticColors(EnemyInfo.Cosmetics[7]);
 	SK_Shirt_Component->SetSkeletalMesh(EnemyInfo.Cosmetics[8]->SkeletalMesh);
-	UpdateCosmeticColors(ECosmeticType::Shirt);
+	UpdateCosmeticColors(EnemyInfo.Cosmetics[8]);
 	SK_Pants_Component->SetSkeletalMesh(EnemyInfo.Cosmetics[9]->SkeletalMesh);
-	UpdateCosmeticColors(ECosmeticType::Pants);
+	UpdateCosmeticColors(EnemyInfo.Cosmetics[9]);
 }
 
-void ACustomizableCharacter::UpdateCosmeticColors(ECosmeticType CosmeticType)
+void ACustomizableCharacter::UpdateCosmeticColors(UCosmeticInfo* CosmeticInfo)
 {
 	FLinearColor NewColor;
 	USkeletalMeshComponent* SkeletalMeshComponent;
 	USkeletalMeshComponent* SkeletalMeshComponent2 = nullptr;
 	int ElementIndex = 0;
 	
-	switch (CosmeticType)
+	switch (CosmeticInfo->CosmeticType)
 	{
 		case ECosmeticType::Boots:
 			SkeletalMeshComponent = SK_Boots_Component;
@@ -159,10 +171,6 @@ void ACustomizableCharacter::UpdateCosmeticColors(ECosmeticType CosmeticType)
 			break;
 	}
 	
-	UMaterialInstanceDynamic* DynamicMaterial = UMaterialInstanceDynamic::Create(SkeletalMeshComponent->GetMaterial(0), this);
-	SkeletalMeshComponent->SetMaterial(ElementIndex, DynamicMaterial);
-	if (SkeletalMeshComponent2) { SkeletalMeshComponent2->SetMaterial(ElementIndex, DynamicMaterial); }
-	
-	DynamicMaterial->SetVectorParameterValue("Color", NewColor);
+	ChangeColor(SkeletalMeshComponent, SkeletalMeshComponent2, ElementIndex, NewColor, CosmeticInfo);
 }
 
