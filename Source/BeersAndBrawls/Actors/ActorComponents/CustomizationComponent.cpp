@@ -315,7 +315,7 @@ void UCustomizationComponent::ChangeCosmeticColor(ECosmeticType CosmeticType, FL
 	}
 
 	
-	ChangeColor(SkeletalMeshComponent, SkeletalMeshComponent2, ElementIndex, NewColor, CosmeticInfo);
+	if (CosmeticInfo) ChangeColor(SkeletalMeshComponent, SkeletalMeshComponent2, ElementIndex, NewColor, CosmeticInfo);
 }
 
 void UCustomizationComponent::TemporarilyChangeCosmeticColor(ECosmeticType CosmeticType, FLinearColor GivenColor, UCosmeticInfo* CosmeticInfo)
@@ -366,7 +366,7 @@ void UCustomizationComponent::TemporarilyChangeCosmeticColor(ECosmeticType Cosme
 			break;
 	}
 	
-	ChangeColor(SkeletalMeshComponent, SkeletalMeshComponent2, ElementIndex, GivenColor, CosmeticInfo);
+	if (CosmeticInfo) ChangeColor(SkeletalMeshComponent, SkeletalMeshComponent2, ElementIndex, GivenColor, CosmeticInfo);
 }
 
 void UCustomizationComponent::ResetCosmeticColor(ECosmeticType CosmeticType, UCosmeticInfo* CosmeticInfo)
@@ -430,7 +430,7 @@ void UCustomizationComponent::ResetCosmeticColor(ECosmeticType CosmeticType, UCo
 	}
 
 	
-	ChangeColor(SkeletalMeshComponent, SkeletalMeshComponent2, ElementIndex, OriginalColor, CosmeticInfo);
+	if (CosmeticInfo) ChangeColor(SkeletalMeshComponent, SkeletalMeshComponent2, ElementIndex, OriginalColor, CosmeticInfo);
 }
 
 FLinearColor UCustomizationComponent::GetSelectedCosmeticColor(ECosmeticType CosmeticType)
