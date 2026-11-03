@@ -61,7 +61,7 @@ void UCustomizationComponent::TemporarilySwapCosmetics(UCosmeticInfo* CosmeticIn
 			PlayerRef->SK_Gloves_Component->SetSkeletalMesh(NewMesh);
 			break;
 		case ECosmeticType::Head:
-			PlayerRef->SK_Head_Component->SetSkeletalMesh(NewMesh);
+			//PlayerRef->SK_Head_Component->SetSkeletalMesh(NewMesh);
 			break;
 		case ECosmeticType::Teeth:
 			PlayerRef->SK_Teeth_Component->SetSkeletalMesh(NewMesh);
@@ -103,7 +103,7 @@ void UCustomizationComponent::ResetCosmetic(ECosmeticType CosmeticType)
 			PlayerRef->SK_Gloves_Component->SetSkeletalMesh(C_Selected_Gloves->SkeletalMesh);
 			break;
 		case ECosmeticType::Head:
-			PlayerRef->SK_Head_Component->SetSkeletalMesh(C_Selected_Head->SkeletalMesh);
+			//PlayerRef->SK_Head_Component->SetSkeletalMesh(C_Selected_Head->SkeletalMesh);
 			break;
 		case ECosmeticType::Teeth:
 			PlayerRef->SK_Teeth_Component->SetSkeletalMesh(C_Selected_Teeth->SkeletalMesh);
@@ -150,7 +150,7 @@ void UCustomizationComponent::SwapCosmetic(UCosmeticInfo* CosmeticInfo)
 			break;
 		case ECosmeticType::Head:
 			C_Selected_Head = CosmeticInfo;
-			PlayerRef->SK_Head_Component->SetSkeletalMesh(NewMesh);
+			//PlayerRef->SK_Head_Component->SetSkeletalMesh(NewMesh);
 			break;
 		case ECosmeticType::Teeth:
 			C_Selected_Teeth = CosmeticInfo;
