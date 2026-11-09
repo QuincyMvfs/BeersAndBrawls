@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BeersAndBrawls/Enums/ERarity.h"
 #include "UItem.generated.h"
 
 class UAbilityInfo;
+enum class ERarity : uint8;
 enum class EItemType:uint8;
 class ABeersAndBrawlsCharacter;
 
@@ -32,6 +34,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	int Cost;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	ERarity Rarity = ERarity::Common;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<UAbilityInfo*> Abilities;
